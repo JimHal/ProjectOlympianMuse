@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F3EEE6" />
+  <title>Olympian Muse | Product Detail</title>
+  <link rel="icon" href="images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:#F3EEE6;
+      --cream-light:#FAF5EC;
+      --sand:#E6DCCC;
+      --sand-deep:#D3C3AD;
+      --taupe:#A68F7B;
+      --brown:#5C4334;
+      --espresso:#3B2A22;
+      --olive:#5B6443;
+      --olive-deep:#474F34;
+      --sage:#9AA284;
+      --clay:#94573B;
+      --rose:#C49A8C;
+      --line:rgba(59,42,34,0.14);
+      --shadow:0 30px 60px rgba(59,42,34,0.15);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--cream);
+      color:var(--espresso);
+      font-family:'Fraunces', serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { max-width:100%; display:block; }
+    button, input { font:inherit; }
+
+    .display { font-family:'Archivo Expanded', sans-serif; text-transform:uppercase; letter-spacing:-0.01em; }
+    .sans { font-family:'Archivo', sans-serif; }
+
+    header {
+      position:sticky;
+      top:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 5vw;
+      background:rgba(243,238,230,0.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { width:42px; height:42px; border-radius:50%; object-fit:cover; }
+    .wordmark { font-family:'Archivo', sans-serif; font-size:20px; letter-spacing:0.01em; }
+    .nav { display:flex; align-items:center; gap:18px; }
+    .nav a { font-family:'Archivo', sans-serif; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; }
+    .nav a:hover { opacity:0.75; }
+
+    .page {
+      max-width:1200px;
+      margin:0 auto;
+      padding:48px 5vw 80px;
+    }
+
+    .crumbs {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:var(--text-muted, #6B5748);
+    }
+    .crumbs .dot { opacity:0.5; }
+
+    .product-layout {
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:40px;
+      align-items:start;
+      margin-top:28px;
+    }
+
+    .gallery {
+      position:relative;
+      background:linear-gradient(150deg, rgba(122,86,66,0.08), rgba(59,42,34,0.04));
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .hero-shot {
+      aspect-ratio:4/5;
+      background:linear-gradient(140deg, var(--tone-1, #7A5642), var(--tone-2, #3B2A22) 75%);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-shot::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(125deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 15px);
+    }
+    .hero-shot::after {
+      content:attr(data-name);
+      position:absolute;
+      left:22px;
+      bottom:22px;
+      font-family:'Archivo', sans-serif;
+      font-size:11px;
+      letter-spacing:0.13em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.88);
+    }
+    .thumbs {
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      padding:14px;
+      background:rgba(255,255,255,0.15);
+    }
+    .thumb {
+      aspect-ratio:1;
+      border-radius:12px;
+      border:2px solid transparent;
+      background:linear-gradient(140deg, var(--tone-1, #7A5642), var(--tone-2, #3B2A22) 75%);
+      cursor:pointer;
+      transition:transform .25s ease, border-color .25s ease;
+    }
+    .thumb.active {
+      border-color:var(--espresso);
+      transform:translateY(-2px);
+    }
+
+    .product-info {
+      padding:12px 0;
+    }
+    .eyebrow {
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--olive);
+      margin-bottom:12px;
+    }
+    h1 {
+      font-size:clamp(32px, 4vw, 56px);
+      line-height:0.96;
+      letter-spacing:-0.04em;
+      margin-bottom:12px;
+    }
+    .meta-row {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:18px 0 10px;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      margin-bottom:20px;
+    }
+    .price {
+      font-family:'Archivo', sans-serif;
+      font-size:20px;
+      font-weight:700;
+      color:var(--clay);
+    }
+    .reviews {
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      color:#6B5748;
+    }
+    .stars { color:#C09843; letter-spacing:0.1em; }
+
+    .description {
+      font-family:'Archivo', sans-serif;
+      font-size:15px;
+      color:rgba(59,42,34,0.78);
+      margin-bottom:28px;
+      max-width:52ch;
+    }
+
+    .section-label {
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.12em;
+      font-weight:700;
+      text-transform:uppercase;
+      color:var(--brown);
+      margin-bottom:12px;
+    }
+
+    .color-row, .size-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:26px;
+    }
+    .swatch {
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      border:2px solid rgba(59,42,34,0.2);
+      background:linear-gradient(135deg, var(--c1), var(--c2));
+      cursor:pointer;
+      position:relative;
+      transition:transform .2s ease, border-color .2s ease;
+    }
+    .swatch.active {
+      border-color:var(--espresso);
+      transform:scale(1.08);
+      box-shadow:0 0 0 3px rgba(59,42,34,0.08);
+    }
+    .swatch::after {
+      content:'';
+      position:absolute;
+      inset:8px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.35);
+    }
+
+    .size-btn {
+      min-width:48px;
+      padding:10px 11px;
+      border:1px solid rgba(59,42,34,0.25);
+      background:transparent;
+      border-radius:2px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+    .size-btn.selected {
+      background:var(--espresso);
+      border-color:var(--espresso);
+      color:var(--cream);
+    }
+
+    .buy-actions {
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:center;
+      margin-top:10px;
+    }
+    .primary-btn {
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      min-height:48px;
+      background:var(--olive);
+      color:var(--cream);
+      border:0;
+      border-radius:2px;
+      padding:0 24px;
+      font-family:'Archivo', sans-serif;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:background .25s ease, transform .25s ease;
+    }
+    .primary-btn:hover {
+      background:var(--olive-deep);
+      transform:translateY(-1px);
+    }
+    .ghost-btn {
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      min-height:48px;
+      padding:0 18px;
+      border:1px solid var(--line);
+      background:transparent;
+      border-radius:2px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:background .2s ease;
+    }
+    .ghost-btn:hover { background:rgba(91,100,67,0.06); }
+
+    .product-meta {
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:18px;
+      margin-top:28px;
+      padding-top:22px;
+      border-top:1px solid var(--line);
+    }
+    .meta-card {
+      background:rgba(255,255,255,0.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:16px 14px;
+    }
+    .meta-card .k {
+      display:block;
+      font-family:'Archivo', sans-serif;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--olive);
+      margin-bottom:8px;
+    }
+    .meta-card .v {
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      color:var(--espresso);
+    }
+
+    .detail-grid {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:28px;
+      margin-top:54px;
+    }
+    .detail-panel {
+      background:rgba(255,255,255,0.18);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+    }
+    .detail-panel h2 {
+      font-size:clamp(22px, 2.4vw, 30px);
+      margin-bottom:12px;
+    }
+    .detail-panel ul {
+      list-style:none;
+      display:grid;
+      gap:10px;
+      font-family:'Archivo', sans-serif;
+      font-size:15px;
+      color:rgba(59,42,34,0.75);
+    }
+    .detail-panel ul li::before {
+      content:'•';
+      margin-right:8px;
+      color:var(--olive);
+    }
+
+    .footer-note {
+      margin-top:46px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      color:var(--brown);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+    }
+
+    .sr-only {
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0, 0, 0, 0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    .status {
+      margin-top:12px;
+      min-height:20px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      color:var(--clay);
+    }
+
+    @media (max-width: 900px) {
+      .product-layout { grid-template-columns:1fr; }
+      .detail-grid { grid-template-columns:1fr; }
+      .nav { display:none; }
+    }
+    @media (max-width: 560px) {
+      .page { padding-left:20px; padding-right:20px; }
+      .buy-actions { grid-template-columns:1fr; }
+      .product-meta { grid-template-columns:1fr; }
+      .thumbs { grid-template-columns:repeat(3, 1fr); }
+      .footer-note { flex-direction:column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration:0.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="OlympianMuse.html" class="brand" aria-label="Olympian Muse home">
+      <img src="images/logo.jpg" alt="Olympian Muse logo" />
+      <span class="wordmark">Olympian Muse</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="OlympianMuse.html#shop">Shop</a>
+      <a href="OlympianMuse.html#story">Our story</a>
+      <a href="OlympianMuse.html#size-guide">Size guide</a>
+      <a href="OlympianMuse.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="OlympianMuse.html">Home</a>
+      <span class="dot">/</span>
+      <span>Shop</span>
+      <span class="dot">/</span>
+      <span id="crumb-name">Product</span>
+    </nav>
+
+    <div class="product-layout">
+      <section class="gallery" aria-label="Product gallery">
+        <div class="hero-shot" id="hero-shot" data-name="Olympian Muse"></div>
+        <div class="thumbs" id="thumbs" aria-label="Product variations"></div>
+      </section>
+
+      <section class="product-info" aria-live="polite">
+        <div class="eyebrow">Premium activewear</div>
+        <h1 id="product-name">Product name</h1>
+
+        <div class="meta-row">
+          <div class="reviews"><span class="stars">★★★★★</span> 4.9 / 5 from 120 reviews</div>
+          <div class="price" id="product-price">€0</div>
+        </div>
+
+        <p class="description" id="product-description"></p>
+
+        <div>
+          <div class="section-label">Color</div>
+          <div class="color-row" id="color-row" aria-label="Choose a color"></div>
+        </div>
+
+        <div>
+          <div class="section-label">Size</div>
+          <div class="size-row" id="size-row" aria-label="Choose a size"></div>
+        </div>
+
+        <div class="buy-actions">
+          <button class="primary-btn" type="button" id="add-to-basket">Add to basket</button>
+          <button class="ghost-btn" type="button" onclick="window.location.href='OlympianMuse.html#shop'">Keep shopping</button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite"></div>
+
+        <div class="product-meta">
+          <div class="meta-card">
+            <span class="k">Fabric</span>
+            <span class="v" id="meta-fabric">-</span>
+          </div>
+          <div class="meta-card">
+            <span class="k">Fit</span>
+            <span class="v" id="meta-fit">-</span>
+          </div>
+          <div class="meta-card">
+            <span class="k">Made in</span>
+            <span class="v" id="meta-made">Greece</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="detail-grid">
+      <article class="detail-panel">
+        <h2>What makes it feel premium</h2>
+        <ul id="feature-list"></ul>
+      </article>
+      <article class="detail-panel">
+        <h2>Care & fit</h2>
+        <ul>
+          <li>Machine wash cold on delicate cycle.</li>
+          <li>Air dry to keep the stretch and structure intact.</li>
+          <li>For a closer, second-skin fit, choose one size down.</li>
+          <li>Designed for movement, not restriction.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="footer-note">
+      <span>Free express delivery over €120</span>
+      <span>Designed in Dion, Pieria • Made in Greece</span>
+    </div>
+  </main>
+
+  <script>
+    const products = {
+      'interval-legging': {
+        name: 'Interval High-Rise Legging',
+        price: 98,
+        description: 'A squat-proof, matte-finish compression legging with buttery stretch and a secure zip pocket for your phone or keys.',
+        fabric: 'Recycled matte stretch fabric',
+        fit: 'High compression, sculpting fit',
+        colors: [
+          { name: 'Espresso', c1: '#6B4A3A', c2: '#3B2A22' },
+          { name: 'Olive', c1: '#7C8760', c2: '#474F34' },
+          { name: 'Sand', c1: '#D7C7B0', c2: '#A68F7B' }
+        ],
+        features: [
+          'No-chafe waistband with soft elastic support',
+          'Heated-satin matte finish for a premium feel',
+          'Phone sleeve pocket + hidden key sleeve',
+          '3D shape retention that moves with your stride'
+        ],
+        tones: ['#7A5642', '#3B2A22']
+      },
+      'hover-bra': {
+        name: 'Hover Racerback Bra',
+        price: 58,
+        description: 'A medium-support racerback made for longer miles, lighter weights and warm-weather sessions without feeling clingy.',
+        fabric: 'Breathable recycled performance knit',
+        fit: 'Medium support, athletic contour',
+        colors: [
+          { name: 'Rose Clay', c1: '#DAB7A7', c2: '#A96D5E' },
+          { name: 'Forest', c1: '#7B8362', c2: '#4C5B3E' },
+          { name: 'Espresso', c1: '#8B6554', c2: '#4D3A32' }
+        ],
+        features: [
+          'Wide racerback for full range of motion',
+          'Moisture-wicking construction with a soft hand-feel',
+          'Cushioned lining for high-impact comfort',
+          'Clean, minimal shape designed to sit flat under layers'
+        ],
+        tones: ['#D2AE9F', '#8E6A5C']
+      },
+      'windward-half-zip': {
+        name: 'Windward Half-Zip',
+        price: 118,
+        description: 'A brushed-fleece layer with a polished finish, ideal for early mornings, warm-up runs and post-session layering.',
+        fabric: 'Lightweight brushed fleece',
+        fit: 'Relaxed layer fit with stretch sleeves',
+        colors: [
+          { name: 'Dust Rose', c1: '#E4C5B8', c2: '#B78373' },
+          { name: 'Mocha', c1: '#A17D69', c2: '#5C4334' },
+          { name: 'Olive', c1: '#A4A980', c2: '#5B6443' }
+        ],
+        features: [
+          'Soft brushed inside for warmth without bulk',
+          'Half-zip silhouette with micro-placket detail',
+          'Thumbhole cuffs and secure front pocket',
+          'Easy layering piece for crisp mornings and studio sessions'
+        ],
+        tones: ['#D2AE9F', '#8E6A5C']
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product') || 'interval-legging';
+    const product = products[productId] || products['interval-legging'];
+
+    const nameEl = document.getElementById('product-name');
+    const priceEl = document.getElementById('product-price');
+    const descriptionEl = document.getElementById('product-description');
+    const colorRow = document.getElementById('color-row');
+    const sizeRow = document.getElementById('size-row');
+    const thumbs = document.getElementById('thumbs');
+    const heroShot = document.getElementById('hero-shot');
+    const featureList = document.getElementById('feature-list');
+    const statusEl = document.getElementById('status');
+    const crumbName = document.getElementById('crumb-name');
+    const metaFabric = document.getElementById('meta-fabric');
+    const metaFit = document.getElementById('meta-fit');
+
+    let selectedColor = 0;
+    let selectedSize = 'M';
+
+    function formatPrice(value) {
+      return new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
+    }
+
+    function renderColors() {
+      colorRow.innerHTML = product.colors.map((color, i) => `
+        <button
+          type="button"
+          class="swatch ${i === selectedColor ? 'active' : ''}"
+          style="--c1:${color.c1}; --c2:${color.c2};"
+          data-index="${i}"
+          aria-label="Choose ${color.name}"
+          title="${color.name}"
+        ></button>
+      `).join('');
+
+      colorRow.querySelectorAll('.swatch').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedColor = Number(btn.dataset.index);
+          renderColors();
+          renderMainVisual();
+        });
+      });
+    }
+
+    function renderSizes() {
+      const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+      sizeRow.innerHTML = sizes.map(size => `
+        <button type="button" class="size-btn ${size === selectedSize ? 'selected' : ''}" data-size="${size}">${size}</button>
+      `).join('');
+
+      sizeRow.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedSize = btn.dataset.size;
+          renderSizes();
+        });
+      });
+    }
+
+    function renderMainVisual() {
+      const { c1, c2 } = product.colors[selectedColor];
+      heroShot.style.setProperty('--tone-1', c1);
+      heroShot.style.setProperty('--tone-2', c2);
+      heroShot.dataset.name = `${product.name} • ${product.colors[selectedColor].name}`;
+
+      thumbs.innerHTML = product.colors.map((color, i) => `
+        <button
+          type="button"
+          class="thumb ${i === selectedColor ? 'active' : ''}"
+          style="--tone-1:${color.c1}; --tone-2:${color.c2};"
+          data-index="${i}"
+          aria-label="Preview ${color.name}"
+        ></button>
+      `).join('');
+
+      thumbs.querySelectorAll('.thumb').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedColor = Number(btn.dataset.index);
+          renderColors();
+          renderMainVisual();
+        });
+      });
+    }
+
+    function renderProduct() {
+      nameEl.textContent = product.name;
+      priceEl.textContent = formatPrice(product.price);
+      descriptionEl.textContent = product.description;
+      crumbName.textContent = product.name;
+      metaFabric.textContent = product.fabric;
+      metaFit.textContent = product.fit;
+      featureList.innerHTML = product.features.map(item => `<li>${item}</li>`).join('');
+      renderColors();
+      renderSizes();
+      renderMainVisual();
+    }
+
+    document.getElementById('add-to-basket').addEventListener('click', () => {
+      const colorName = product.colors[selectedColor].name;
+      const basket = JSON.parse(localStorage.getItem('olympian-muse-basket') || '[]');
+      const existing = basket.find(item => item.id === productId && item.size === selectedSize && item.color === colorName);
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        basket.push({
+          id: productId,
+          name: product.name,
+          size: selectedSize,
+          color: colorName,
+          price: product.price,
+          qty: 1,
+          t1: product.colors[selectedColor].c1,
+          t2: product.colors[selectedColor].c2
+        });
+      }
+
+      localStorage.setItem('olympian-muse-basket', JSON.stringify(basket));
+      statusEl.textContent = `${product.name} in ${colorName} / ${selectedSize} was added to basket.`;
+    });
+
+    renderProduct();
+  </script>
+</body>
+</html>

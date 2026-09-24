@@ -231,7 +231,15 @@
     background:var(--line);
   }
   .product-card{
-    background:var(--bg); padding:0; position:relative; overflow:hidden;
+    display:block; background:var(--bg); padding:0; position:relative; overflow:hidden;
+    transition:transform .28s var(--ease-out), box-shadow .28s var(--ease-out), border-color .28s var(--ease-out);
+    box-shadow:0 0 0 1px transparent;
+    cursor:pointer;
+  }
+  .product-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 42px rgba(59,42,34,0.10);
+    border-color:rgba(59,42,34,0.2);
   }
   .product-media{
     aspect-ratio:4/5; position:relative;
@@ -844,30 +852,30 @@
     <p>Three pieces built around one idea: gear that disappears while you're moving in it.</p>
   </div>
   <div class="grid-products">
-    <div class="product-card" data-id="interval-legging" data-name="Interval High-Rise Legging" data-price="98" data-tones="#7A5642,#3B2A22">
+    <a class="product-card" href="product-detail.html?product=interval-legging" data-id="interval-legging" data-name="Interval High-Rise Legging" data-price="98" data-tones="#7A5642,#3B2A22">
       <div class="product-media"><span class="product-tag">BEST SELLER</span></div>
       <div class="product-info">
         <h3>Interval High-Rise Legging</h3>
         <p class="desc">Squat-proof compression with a phone pocket that actually stays shut.</p>
         <div class="price-row"><span>Espresso / Olive / Sand</span><span class="price">€98</span></div>
       </div>
-    </div>
-    <div class="product-card" data-id="hover-bra" data-name="Hover Racerback Bra" data-price="58" data-tones="#7C8760,#474F34">
+    </a>
+    <a class="product-card" href="product-detail.html?product=hover-bra" data-id="hover-bra" data-name="Hover Racerback Bra" data-price="58" data-tones="#7C8760,#474F34">
       <div class="product-media"><span class="product-tag">NEW</span></div>
       <div class="product-info">
         <h3>Hover Racerback Bra</h3>
         <p class="desc">Medium-high support with a keyhole back for long runs in the heat.</p>
         <div class="price-row"><span>3 colorways</span><span class="price">€58</span></div>
       </div>
-    </div>
-    <div class="product-card" data-id="windward-half-zip" data-name="Windward Half-Zip" data-price="118" data-tones="#D2AE9F,#8E6A5C">
+    </a>
+    <a class="product-card" href="product-detail.html?product=windward-half-zip" data-id="windward-half-zip" data-name="Windward Half-Zip" data-price="118" data-tones="#D2AE9F,#8E6A5C">
       <div class="product-media"><span class="product-tag">RESTOCKED</span></div>
       <div class="product-info">
         <h3>Windward Half-Zip</h3>
         <p class="desc">Brushed-back fleece, thumbholes, one zip pocket that fits a key and a card.</p>
         <div class="price-row"><span>Rose / Espresso</span><span class="price">€118</span></div>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 
