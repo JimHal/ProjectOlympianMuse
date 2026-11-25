@@ -203,6 +203,17 @@ drop trigger if exists orders_status_stamp on public.orders;
 create trigger orders_status_stamp before update on public.orders
   for each row execute function public.orders_status_stamp();
 
+-- ---------- API access ----------
+-- Explicit grants, so this works even when the project was created with
+-- "Grant API access to new tables automatically" switched off. RLS rules above still apply.
+grant usage on schema public to anon, authenticated;
+grant select on public.products to anon, authenticated;
+grant insert, update, delete on public.products to authenticated;
+grant select on public.profiles to authenticated;
+grant select, insert, update, delete on public.favorites to authenticated;
+grant select, update on public.orders to authenticated;
+grant execute on function public.is_admin() to anon, authenticated;
+
 -- ---------- Product photos (Storage) ----------
 insert into storage.buckets (id, name, public)
 values ('product-images', 'product-images', true)

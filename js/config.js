@@ -10,8 +10,8 @@
    2. Payment details shown to customers after they place an order.
    ============================================================ */
 window.OM_CONFIG = {
-  supabaseUrl: '',
-  supabaseAnonKey: '',
+  supabaseUrl: 'https://kmsrvpskmbavljhvcowg.supabase.co',
+  supabaseAnonKey: 'sb_publishable_9Fs7GQm9xz7XNiPbOR_qSg_G0f-nn6J',
 
   payment: {
     iris: {

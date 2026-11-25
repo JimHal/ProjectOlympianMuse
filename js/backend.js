@@ -2,7 +2,7 @@
    Connection to Supabase (accounts, products, favourites, orders), shared by every page.
 
    Load order on a page:
-     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
      <script src="js/config.js"></script>
      <script src="products.js"></script>      (fallback products while the database is empty / not set up)
      page texts (window.I18N) + i18n.js

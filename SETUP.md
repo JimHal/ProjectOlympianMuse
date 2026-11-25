@@ -53,6 +53,9 @@ To remove an admin: `update public.profiles set role = 'client' where email = '.
    (Until you verify your own domain in Resend, mail is sent from `onboarding@resend.dev` and can only go to the email you signed up to Resend with — use that as `ADMIN_EMAIL`.)
 2. Supabase Dashboard → **Edge Functions** → **Deploy a new function** → *Via Editor* → name it `notify-order`,
    paste [`supabase/functions/notify-order/index.ts`](supabase/functions/notify-order/index.ts) → **Deploy**.
+   Then open the function → **Details / Settings** → switch **Enforce JWT verification** *off* → save.
+   (New projects use `sb_...` keys, which are not JWTs, so the webhook would be rejected otherwise.
+   This is safe: the function only re-reads the order from the database and emails each order once.)
 3. **Edge Functions → Secrets** → add:
    - `RESEND_API_KEY` = your Resend key
    - `ADMIN_EMAIL` = where orders should go (several: comma separated)
