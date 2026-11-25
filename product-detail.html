@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#F3EEE6" />
-  <title>Olympian Muse | Product Detail</title>
+  <title>Olympia Muse | Product Detail</title>
   <link rel="icon" href="images/logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
@@ -60,6 +60,22 @@
     .nav { display:flex; align-items:center; gap:18px; }
     .nav a { font-family:'Archivo', sans-serif; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; }
     .nav a:hover { opacity:0.75; }
+    .header-right { display:flex; align-items:center; gap:22px; }
+    .lang-switch { display:flex; border:1px solid var(--line); border-radius:999px; padding:2px; }
+    .lang-switch button {
+      border:0;
+      background:transparent;
+      color:inherit;
+      cursor:pointer;
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      padding:5px 10px;
+      border-radius:999px;
+      transition:background .2s ease, color .2s ease;
+    }
+    .lang-switch button[aria-pressed="true"] { background:var(--espresso); color:var(--cream); }
 
     .page {
       max-width:1200px;
@@ -407,73 +423,79 @@
 </head>
 <body>
   <header>
-    <a href="OlympianMuse.html" class="brand" aria-label="Olympian Muse home">
-      <img src="images/logo.jpg" alt="Olympian Muse logo" />
-      <span class="wordmark">Olympian Muse</span>
+    <a href="OlympiaMuse.html" class="brand" data-i18n-attr="aria-label:homeLabel">
+      <img src="images/logo.jpg" alt="" />
+      <span class="wordmark">Olympia Muse</span>
     </a>
-    <nav class="nav" aria-label="Main navigation">
-      <a href="OlympianMuse.html#shop">Shop</a>
-      <a href="OlympianMuse.html#story">Our story</a>
-      <a href="OlympianMuse.html#size-guide">Size guide</a>
-      <a href="OlympianMuse.html#contact">Contact</a>
-    </nav>
+    <div class="header-right">
+      <nav class="nav" data-i18n-attr="aria-label:mainNav">
+        <a href="OlympiaMuse.html#shop" data-i18n="navShop"></a>
+        <a href="OlympiaMuse.html#story" data-i18n="navStory"></a>
+        <a href="OlympiaMuse.html#size-guide" data-i18n="navSize"></a>
+        <a href="OlympiaMuse.html#contact" data-i18n="navContact"></a>
+      </nav>
+      <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+        <button type="button" data-set-lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+    </div>
   </header>
 
   <main class="page">
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="OlympianMuse.html">Home</a>
+    <nav class="crumbs" data-i18n-attr="aria-label:breadcrumb">
+      <a href="OlympiaMuse.html" data-i18n="crumbHome"></a>
       <span class="dot">/</span>
-      <span>Shop</span>
+      <a href="OlympiaMuse.html#shop" data-i18n="navShop"></a>
       <span class="dot">/</span>
-      <span id="crumb-name">Product</span>
+      <span id="crumb-name"></span>
     </nav>
 
     <div class="product-layout">
-      <section class="gallery" aria-label="Product gallery">
-        <div class="hero-shot" id="hero-shot" data-name="Olympian Muse"></div>
-        <div class="thumbs" id="thumbs" aria-label="Product variations"></div>
+      <section class="gallery" data-i18n-attr="aria-label:gallery">
+        <div class="hero-shot" id="hero-shot" data-name="Olympia Muse"></div>
+        <div class="thumbs" id="thumbs" data-i18n-attr="aria-label:variations"></div>
       </section>
 
       <section class="product-info" aria-live="polite">
-        <div class="eyebrow">Premium activewear</div>
-        <h1 id="product-name">Product name</h1>
+        <div class="eyebrow" data-i18n="eyebrow"></div>
+        <h1 id="product-name"></h1>
 
         <div class="meta-row">
-          <div class="reviews"><span class="stars">★★★★★</span> 4.9 / 5 from 120 reviews</div>
-          <div class="price" id="product-price">€0</div>
+          <div class="reviews"><span class="stars">★★★★★</span> <span data-i18n="reviews"></span></div>
+          <div class="price" id="product-price"></div>
         </div>
 
         <p class="description" id="product-description"></p>
 
         <div>
-          <div class="section-label">Color</div>
-          <div class="color-row" id="color-row" aria-label="Choose a color"></div>
+          <div class="section-label" data-i18n="colorLabel"></div>
+          <div class="color-row" id="color-row" data-i18n-attr="aria-label:chooseColor"></div>
         </div>
 
         <div>
-          <div class="section-label">Size</div>
-          <div class="size-row" id="size-row" aria-label="Choose a size"></div>
+          <div class="section-label" data-i18n="sizeLabel"></div>
+          <div class="size-row" id="size-row" data-i18n-attr="aria-label:chooseSize"></div>
         </div>
 
         <div class="buy-actions">
-          <button class="primary-btn" type="button" id="add-to-basket">Add to basket</button>
-          <button class="ghost-btn" type="button" onclick="window.location.href='OlympianMuse.html#shop'">Keep shopping</button>
+          <button class="primary-btn" type="button" id="add-to-basket" data-i18n="addToBasket"></button>
+          <a class="ghost-btn" href="OlympiaMuse.html#shop" data-i18n="keepShopping"></a>
         </div>
 
         <div id="status" class="status" aria-live="polite"></div>
 
         <div class="product-meta">
           <div class="meta-card">
-            <span class="k">Fabric</span>
+            <span class="k" data-i18n="fabricLabel"></span>
             <span class="v" id="meta-fabric">-</span>
           </div>
           <div class="meta-card">
-            <span class="k">Fit</span>
+            <span class="k" data-i18n="fitLabel"></span>
             <span class="v" id="meta-fit">-</span>
           </div>
           <div class="meta-card">
-            <span class="k">Made in</span>
-            <span class="v" id="meta-made">Greece</span>
+            <span class="k" data-i18n="madeLabel"></span>
+            <span class="v" data-i18n="greece"></span>
           </div>
         </div>
       </section>
@@ -481,90 +503,202 @@
 
     <div class="detail-grid">
       <article class="detail-panel">
-        <h2>What makes it feel premium</h2>
+        <h2 data-i18n="premiumTitle"></h2>
         <ul id="feature-list"></ul>
       </article>
       <article class="detail-panel">
-        <h2>Care & fit</h2>
+        <h2 data-i18n="careTitle"></h2>
         <ul>
-          <li>Machine wash cold on delicate cycle.</li>
-          <li>Air dry to keep the stretch and structure intact.</li>
-          <li>For a closer, second-skin fit, choose one size down.</li>
-          <li>Designed for movement, not restriction.</li>
+          <li data-i18n="care1"></li>
+          <li data-i18n="care2"></li>
+          <li data-i18n="care3"></li>
+          <li data-i18n="care4"></li>
         </ul>
       </article>
     </div>
 
     <div class="footer-note">
-      <span>Free express delivery over €120</span>
-      <span>Designed in Dion, Pieria • Made in Greece</span>
+      <span data-i18n="freeDelivery"></span>
+      <span data-i18n="designedIn"></span>
     </div>
   </main>
 
   <script>
+    // ---- Products: each text has a Greek (el) and English (en) version ----
     const products = {
       'interval-legging': {
-        name: 'Interval High-Rise Legging',
+        name: { el: 'Κολάν Interval ψηλόμεσο', en: 'Interval High-Rise Legging' },
         price: 98,
-        description: 'A squat-proof, matte-finish compression legging with buttery stretch and a secure zip pocket for your phone or keys.',
-        fabric: 'Recycled matte stretch fabric',
-        fit: 'High compression, sculpting fit',
+        description: {
+          el: 'Κολάν συμπίεσης με ματ φινίρισμα που δεν διαφανίζει στα squats, με απαλή ελαστικότητα και ασφαλή τσέπη με φερμουάρ για κινητό ή κλειδιά.',
+          en: 'A squat-proof, matte-finish compression legging with buttery stretch and a secure zip pocket for your phone or keys.'
+        },
+        fabric: { el: 'Ανακυκλωμένο ματ ελαστικό ύφασμα', en: 'Recycled matte stretch fabric' },
+        fit: { el: 'Υψηλή συμπίεση, εφαρμογή που σμιλεύει', en: 'High compression, sculpting fit' },
         colors: [
           { name: 'Espresso', c1: '#6B4A3A', c2: '#3B2A22' },
           { name: 'Olive', c1: '#7C8760', c2: '#474F34' },
           { name: 'Sand', c1: '#D7C7B0', c2: '#A68F7B' }
         ],
-        features: [
-          'No-chafe waistband with soft elastic support',
-          'Heated-satin matte finish for a premium feel',
-          'Phone sleeve pocket + hidden key sleeve',
-          '3D shape retention that moves with your stride'
-        ],
+        features: {
+          el: [
+            'Λάστιχο μέσης χωρίς τριβή, με απαλή ελαστική στήριξη',
+            'Ματ σατινέ φινίρισμα για premium αίσθηση',
+            'Τσέπη για κινητό + κρυφή θήκη για κλειδί',
+            'Διατηρεί το σχήμα του και ακολουθεί κάθε σου βήμα'
+          ],
+          en: [
+            'No-chafe waistband with soft elastic support',
+            'Heated-satin matte finish for a premium feel',
+            'Phone sleeve pocket + hidden key sleeve',
+            '3D shape retention that moves with your stride'
+          ]
+        },
         tones: ['#7A5642', '#3B2A22']
       },
       'hover-bra': {
-        name: 'Hover Racerback Bra',
+        name: { el: 'Αθλητικό μπουστάκι Hover', en: 'Hover Racerback Bra' },
         price: 58,
-        description: 'A medium-support racerback made for longer miles, lighter weights and warm-weather sessions without feeling clingy.',
-        fabric: 'Breathable recycled performance knit',
-        fit: 'Medium support, athletic contour',
+        description: {
+          el: 'Μπουστάκι racerback μεσαίας στήριξης για μεγάλες αποστάσεις, ελαφριά βάρη και προπονήσεις στη ζέστη, χωρίς να κολλάει πάνω σου.',
+          en: 'A medium-support racerback made for longer miles, lighter weights and warm-weather sessions without feeling clingy.'
+        },
+        fabric: { el: 'Ανακυκλωμένο, διαπνέον ύφασμα υψηλής απόδοσης', en: 'Breathable recycled performance knit' },
+        fit: { el: 'Μεσαία στήριξη, αθλητική γραμμή', en: 'Medium support, athletic contour' },
         colors: [
           { name: 'Rose Clay', c1: '#DAB7A7', c2: '#A96D5E' },
           { name: 'Forest', c1: '#7B8362', c2: '#4C5B3E' },
           { name: 'Espresso', c1: '#8B6554', c2: '#4D3A32' }
         ],
-        features: [
-          'Wide racerback for full range of motion',
-          'Moisture-wicking construction with a soft hand-feel',
-          'Cushioned lining for high-impact comfort',
-          'Clean, minimal shape designed to sit flat under layers'
-        ],
+        features: {
+          el: [
+            'Φαρδιά racerback πλάτη για πλήρη ελευθερία κινήσεων',
+            'Απομακρύνει την υγρασία, με απαλή αίσθηση στο δέρμα',
+            'Ενισχυμένη επένδυση για άνεση στην έντονη άσκηση',
+            'Λιτή, καθαρή γραμμή που κάθεται επίπεδα κάτω από άλλα ρούχα'
+          ],
+          en: [
+            'Wide racerback for full range of motion',
+            'Moisture-wicking construction with a soft hand-feel',
+            'Cushioned lining for high-impact comfort',
+            'Clean, minimal shape designed to sit flat under layers'
+          ]
+        },
         tones: ['#D2AE9F', '#8E6A5C']
       },
       'windward-half-zip': {
-        name: 'Windward Half-Zip',
+        name: { el: 'Μπλούζα Windward με μισό φερμουάρ', en: 'Windward Half-Zip' },
         price: 118,
-        description: 'A brushed-fleece layer with a polished finish, ideal for early mornings, warm-up runs and post-session layering.',
-        fabric: 'Lightweight brushed fleece',
-        fit: 'Relaxed layer fit with stretch sleeves',
+        description: {
+          el: 'Ζεστό fleece με κομψό φινίρισμα, ιδανικό για νωρίς το πρωί, για ζέσταμα πριν το τρέξιμο και για πάνω από άλλα ρούχα μετά την προπόνηση.',
+          en: 'A brushed-fleece layer with a polished finish, ideal for early mornings, warm-up runs and post-session layering.'
+        },
+        fabric: { el: 'Ελαφρύ βουρτσισμένο fleece', en: 'Lightweight brushed fleece' },
+        fit: { el: 'Χαλαρή εφαρμογή με ελαστικά μανίκια', en: 'Relaxed layer fit with stretch sleeves' },
         colors: [
           { name: 'Dust Rose', c1: '#E4C5B8', c2: '#B78373' },
           { name: 'Mocha', c1: '#A17D69', c2: '#5C4334' },
           { name: 'Olive', c1: '#A4A980', c2: '#5B6443' }
         ],
-        features: [
-          'Soft brushed inside for warmth without bulk',
-          'Half-zip silhouette with micro-placket detail',
-          'Thumbhole cuffs and secure front pocket',
-          'Easy layering piece for crisp mornings and studio sessions'
-        ],
+        features: {
+          el: [
+            'Βουρτσισμένο εσωτερικό για ζεστασιά χωρίς όγκο',
+            'Μισό φερμουάρ με λεπτή λεπτομέρεια στο πατιλέτο',
+            'Τρύπες για τον αντίχειρα και ασφαλής μπροστινή τσέπη',
+            'Εύκολο να το φορέσεις από πάνω σε δροσερά πρωινά και στο studio'
+          ],
+          en: [
+            'Soft brushed inside for warmth without bulk',
+            'Half-zip silhouette with micro-placket detail',
+            'Thumbhole cuffs and secure front pocket',
+            'Easy layering piece for crisp mornings and studio sessions'
+          ]
+        },
         tones: ['#D2AE9F', '#8E6A5C']
       }
     };
 
+    // ---- Page texts in Greek (el) and English (en) — see i18n.js ----
+    window.I18N = {
+      el: {
+        homeLabel: 'Olympia Muse, αρχική',
+        langLabel: 'Γλώσσα',
+        mainNav: 'Κύριο μενού',
+        breadcrumb: 'Διαδρομή',
+        gallery: 'Φωτογραφίες προϊόντος',
+        variations: 'Χρωματικές παραλλαγές',
+        navShop: 'Κατάστημα',
+        navStory: 'Η ιστορία μας',
+        navSize: 'Οδηγός μεγεθών',
+        navContact: 'Επικοινωνία',
+        crumbHome: 'Αρχική',
+        eyebrow: 'Premium αθλητικά ρούχα',
+        reviews: '4.9 / 5 από 120 κριτικές',
+        colorLabel: 'Χρώμα',
+        sizeLabel: 'Μέγεθος',
+        chooseColor: 'Διάλεξε χρώμα',
+        chooseSize: 'Διάλεξε μέγεθος',
+        colorAria: 'Χρώμα {color}',
+        addToBasket: 'Προσθήκη στο καλάθι',
+        keepShopping: 'Συνέχεια αγορών',
+        added: '{name} σε {color} / {size}: προστέθηκε στο καλάθι.',
+        fabricLabel: 'Ύφασμα',
+        fitLabel: 'Εφαρμογή',
+        madeLabel: 'Κατασκευή',
+        greece: 'Ελλάδα',
+        premiumTitle: 'Τι το κάνει premium',
+        careTitle: 'Φροντίδα & εφαρμογή',
+        care1: 'Πλύσιμο σε κρύο νερό, σε πρόγραμμα για ευαίσθητα.',
+        care2: 'Στέγνωμα στον αέρα, για να κρατήσει την ελαστικότητα και το σχήμα του.',
+        care3: 'Για πιο εφαρμοστό αποτέλεσμα, σαν δεύτερο δέρμα, διάλεξε ένα νούμερο μικρότερο.',
+        care4: 'Σχεδιασμένο για κίνηση, όχι για περιορισμό.',
+        freeDelivery: 'Δωρεάν express αποστολή για αγορές άνω των 120 €',
+        designedIn: 'Σχεδιασμένο στο Δίον Πιερίας • Κατασκευασμένο στην Ελλάδα'
+      },
+      en: {
+        homeLabel: 'Olympia Muse home',
+        langLabel: 'Language',
+        mainNav: 'Main navigation',
+        breadcrumb: 'Breadcrumb',
+        gallery: 'Product gallery',
+        variations: 'Product variations',
+        navShop: 'Shop',
+        navStory: 'Our story',
+        navSize: 'Size guide',
+        navContact: 'Contact',
+        crumbHome: 'Home',
+        eyebrow: 'Premium activewear',
+        reviews: '4.9 / 5 from 120 reviews',
+        colorLabel: 'Color',
+        sizeLabel: 'Size',
+        chooseColor: 'Choose a color',
+        chooseSize: 'Choose a size',
+        colorAria: 'Choose {color}',
+        addToBasket: 'Add to basket',
+        keepShopping: 'Keep shopping',
+        added: '{name} in {color} / {size} was added to basket.',
+        fabricLabel: 'Fabric',
+        fitLabel: 'Fit',
+        madeLabel: 'Made in',
+        greece: 'Greece',
+        premiumTitle: 'What makes it feel premium',
+        careTitle: 'Care & fit',
+        care1: 'Machine wash cold on delicate cycle.',
+        care2: 'Air dry to keep the stretch and structure intact.',
+        care3: 'For a closer, second-skin fit, choose one size down.',
+        care4: 'Designed for movement, not restriction.',
+        freeDelivery: 'Free express delivery over €120',
+        designedIn: 'Designed in Dion, Pieria • Made in Greece'
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script>
     const params = new URLSearchParams(window.location.search);
-    const productId = params.get('product') || 'interval-legging';
-    const product = products[productId] || products['interval-legging'];
+    const productId = products[params.get('product')] ? params.get('product') : 'interval-legging';
+    const product = products[productId];
+    const t = OM.t;
+    const pick = OM.pick;
 
     const nameEl = document.getElementById('product-name');
     const priceEl = document.getElementById('product-price');
@@ -583,7 +717,7 @@
     let selectedSize = 'M';
 
     function formatPrice(value) {
-      return new Intl.NumberFormat('en-IE', { style: 'currency', currency: 'EUR' }).format(value);
+      return new Intl.NumberFormat(OM.lang === 'el' ? 'el-GR' : 'en-IE', { style: 'currency', currency: 'EUR' }).format(value);
     }
 
     function renderColors() {
@@ -593,7 +727,7 @@
           class="swatch ${i === selectedColor ? 'active' : ''}"
           style="--c1:${color.c1}; --c2:${color.c2};"
           data-index="${i}"
-          aria-label="Choose ${color.name}"
+          aria-label="${t('colorAria').replace('{color}', color.name)}"
           title="${color.name}"
         ></button>
       `).join('');
@@ -625,7 +759,7 @@
       const { c1, c2 } = product.colors[selectedColor];
       heroShot.style.setProperty('--tone-1', c1);
       heroShot.style.setProperty('--tone-2', c2);
-      heroShot.dataset.name = `${product.name} • ${product.colors[selectedColor].name}`;
+      heroShot.dataset.name = `${pick(product.name)} • ${product.colors[selectedColor].name}`;
 
       thumbs.innerHTML = product.colors.map((color, i) => `
         <button
@@ -633,7 +767,7 @@
           class="thumb ${i === selectedColor ? 'active' : ''}"
           style="--tone-1:${color.c1}; --tone-2:${color.c2};"
           data-index="${i}"
-          aria-label="Preview ${color.name}"
+          aria-label="${color.name}"
         ></button>
       `).join('');
 
@@ -647,13 +781,14 @@
     }
 
     function renderProduct() {
-      nameEl.textContent = product.name;
+      document.title = `Olympia Muse | ${pick(product.name)}`;
+      nameEl.textContent = pick(product.name);
       priceEl.textContent = formatPrice(product.price);
-      descriptionEl.textContent = product.description;
-      crumbName.textContent = product.name;
-      metaFabric.textContent = product.fabric;
-      metaFit.textContent = product.fit;
-      featureList.innerHTML = product.features.map(item => `<li>${item}</li>`).join('');
+      descriptionEl.textContent = pick(product.description);
+      crumbName.textContent = pick(product.name);
+      metaFabric.textContent = pick(product.fabric);
+      metaFit.textContent = pick(product.fit);
+      featureList.innerHTML = pick(product.features).map(item => `<li>${item}</li>`).join('');
       renderColors();
       renderSizes();
       renderMainVisual();
@@ -661,7 +796,8 @@
 
     document.getElementById('add-to-basket').addEventListener('click', () => {
       const colorName = product.colors[selectedColor].name;
-      const basket = JSON.parse(localStorage.getItem('olympian-muse-basket') || '[]');
+      let basket = [];
+      try { basket = JSON.parse(localStorage.getItem('olympian-muse-basket') || '[]'); } catch (e) {}
       const existing = basket.find(item => item.id === productId && item.size === selectedSize && item.color === colorName);
 
       if (existing) {
@@ -669,7 +805,8 @@
       } else {
         basket.push({
           id: productId,
-          name: product.name,
+          name: product.name.el,
+          names: product.name,
           size: selectedSize,
           color: colorName,
           price: product.price,
@@ -679,8 +816,16 @@
         });
       }
 
-      localStorage.setItem('olympian-muse-basket', JSON.stringify(basket));
-      statusEl.textContent = `${product.name} in ${colorName} / ${selectedSize} was added to basket.`;
+      try { localStorage.setItem('olympian-muse-basket', JSON.stringify(basket)); } catch (e) {}
+      statusEl.textContent = t('added')
+        .replace('{name}', pick(product.name))
+        .replace('{color}', colorName)
+        .replace('{size}', selectedSize);
+    });
+
+    document.addEventListener('langchange', () => {
+      statusEl.textContent = '';
+      renderProduct();
     });
 
     renderProduct();

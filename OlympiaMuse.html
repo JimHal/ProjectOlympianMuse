@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="el">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#F3EEE6">
-<title>Olympian Muse — Premium Activewear, Designed and Made in Greece</title>
+<title>Olympia Muse — Premium Activewear, Designed and Made in Greece</title>
 <link rel="icon" href="images/logo.jpg">
 <script>
   /* Turn on entrance animations only if the visitor hasn't asked their device to reduce motion */
@@ -198,7 +198,7 @@
     padding:18px 0; overflow:hidden; white-space:nowrap;
   }
   .marquee-track{
-    display:inline-flex; gap:60px; animation:scroll 28s linear infinite;
+    display:inline-flex; gap:60px; animation:scroll 56s linear infinite;
     font-family:'Archivo Expanded', sans-serif; font-size:14px;
     letter-spacing:0.08em; color:var(--brown);
   }
@@ -782,6 +782,15 @@
     ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*){ animation:none !important; }
   }
 
+  /* language switch ΕΛ / EN */
+  .lang-switch{display:flex; border:1px solid var(--line, rgba(59,42,34,.14)); border-radius:999px; padding:2px;}
+  .lang-switch button{
+    border:0; background:transparent; color:inherit; cursor:pointer;
+    font-family:'Archivo', sans-serif; font-size:12px; font-weight:600; letter-spacing:.06em;
+    padding:5px 10px; border-radius:999px; transition:background .2s ease, color .2s ease;
+  }
+  .lang-switch button[aria-pressed="true"]{background:var(--espresso); color:var(--cream);}
+
   /* bigger tap targets on touch screens */
   @media(pointer:coarse){
     .size-opt{height:44px;}
@@ -795,25 +804,29 @@
 <body>
 
 <header>
-  <a href="#" class="brand" aria-label="Olympian Muse home">
+  <a href="#" class="brand" data-i18n-attr="aria-label:homeLabel">
     <img src="images/logo.jpg" alt="">
-    <span class="wordmark">Olympian Muse</span>
+    <span class="wordmark">Olympia Muse</span>
   </a>
   <nav id="site-nav"><ul>
-    <li><a href="#shop">Shop</a></li>
-    <li><a href="#story">Our Story</a></li>
-    <li><a href="#size-guide">Size Guide</a></li>
-    <li><a href="#fit">Fit Finder</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#shop" data-i18n="navShop"></a></li>
+    <li><a href="#story" data-i18n="navStory"></a></li>
+    <li><a href="#size-guide" data-i18n="navSize"></a></li>
+    <li><a href="#fit" data-i18n="navFit"></a></li>
+    <li><a href="#contact" data-i18n="navContact"></a></li>
   </ul></nav>
   <div class="header-actions">
-    <a href="#contact" class="nav-cta">Find us</a>
+    <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+      <button type="button" data-set-lang="el">ΕΛ</button>
+      <button type="button" data-set-lang="en">EN</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="findUs"></a>
     <button type="button" class="basket-btn" id="basket-btn" aria-controls="basket" aria-expanded="false">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
-      <span class="basket-label">Basket</span>
+      <span class="basket-label" data-i18n="basket"></span>
       <span class="basket-count" id="basket-count">0</span>
     </button>
-    <button type="button" class="menu-btn" id="menu-btn" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">
+    <button type="button" class="menu-btn" id="menu-btn" aria-controls="site-nav" aria-expanded="false" data-i18n-attr="aria-label:menuLabel">
       <svg class="i-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       <svg class="i-close" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
@@ -822,18 +835,18 @@
 
 <section class="hero" style="padding-top:0;">
   <div class="hero-copy">
-    <div class="eyebrow-line"><div class="rule"></div>PREMIUM ACTIVEWEAR</div>
-    <h1 class="display">Still<span class="indent">then</span>sudden.</h1>
-    <p>Built for the pause before the pace change — the half-second of stillness right before you move. Olympian Muse is made for women who train on their own terms.</p>
+    <div class="eyebrow-line"><div class="rule"></div><span data-i18n="heroEyebrow"></span></div>
+    <h1 class="display" data-i18n-html="heroTitle"></h1>
+    <p data-i18n="heroText"></p>
     <div class="hero-actions">
-      <a href="#shop" class="btn-primary sans">Shop the drop</a>
-      <a href="#story" class="btn-text sans">Our story</a>
+      <a href="#shop" class="btn-primary sans" data-i18n="heroShop"></a>
+      <a href="#story" class="btn-text sans" data-i18n="navStory"></a>
     </div>
   </div>
   <div class="hero-visual">
     <div class="stat-chip">
       <div class="num">4-way</div>
-      <div class="lbl">compression stretch</div>
+      <div class="lbl" data-i18n="statLabel"></div>
     </div>
     <div class="figure"></div>
   </div>
@@ -841,38 +854,63 @@
 
 <div class="marquee">
   <div class="marquee-track">
-    <span>SWEAT-TESTED IN FIELD</span><span>RECYCLED MICROFIBER</span><span>DESIGNED IN DION, PIERIA</span><span>MADE IN GREECE</span><span>NO CHAFE SEAMS</span>
-    <span>SWEAT-TESTED IN FIELD</span><span>RECYCLED MICROFIBER</span><span>DESIGNED IN DION, PIERIA</span><span>MADE IN GREECE</span><span>NO CHAFE SEAMS</span>
+    <span data-i18n="mq1"></span><span data-i18n="mq3"></span><span data-i18n="mq4"></span><span data-i18n="mq5"></span>
+    <span data-i18n="mq1"></span><span data-i18n="mq3"></span><span data-i18n="mq4"></span><span data-i18n="mq5"></span>
+    <span data-i18n="mq1"></span><span data-i18n="mq3"></span><span data-i18n="mq4"></span><span data-i18n="mq5"></span>
+    <span data-i18n="mq1"></span><span data-i18n="mq3"></span><span data-i18n="mq4"></span><span data-i18n="mq5"></span>
   </div>
 </div>
 
 <section id="shop">
   <div class="section-head">
-    <h2>The Sprint Collection</h2>
-    <p>Three pieces built around one idea: gear that disappears while you're moving in it.</p>
+    <h2 data-i18n="shopTitle"></h2>
+    <p data-i18n="shopText"></p>
   </div>
   <div class="grid-products">
-    <a class="product-card" href="product-detail.html?product=interval-legging" data-id="interval-legging" data-name="Interval High-Rise Legging" data-price="98" data-tones="#7A5642,#3B2A22">
-      <div class="product-media"><span class="product-tag">BEST SELLER</span></div>
+    <a class="product-card" href="item.html?p=leggings" data-id="leggings" data-name-el="Κολάν" data-name-en="High-Rise Leggings" data-price="98" data-tones="#6A4532,#36231A" data-sizes="S,M,L">
+      <div class="product-media" style="--tone1:#7A5642; --tone2:#3B2A22;"><span class="product-tag" data-i18n="tagBest"></span></div>
       <div class="product-info">
-        <h3>Interval High-Rise Legging</h3>
-        <p class="desc">Squat-proof compression with a phone pocket that actually stays shut.</p>
-        <div class="price-row"><span>Espresso / Olive / Sand</span><span class="price">€98</span></div>
+        <h3 data-i18n="leggingsName"></h3>
+        <p class="desc" data-i18n="leggingsDesc"></p>
+        <div class="price-row"><span>Chocolate Brown / Pine Green / Navy Blue</span><span class="price">€98</span></div>
       </div>
     </a>
-    <a class="product-card" href="product-detail.html?product=hover-bra" data-id="hover-bra" data-name="Hover Racerback Bra" data-price="58" data-tones="#7C8760,#474F34">
-      <div class="product-media"><span class="product-tag">NEW</span></div>
+    <!-- No data-id / price yet, so these cards just open the product page (no quick "Add to basket") -->
+    <a class="product-card" href="item.html?p=top">
+      <div class="product-media" style="--tone1:#4E6B58; --tone2:#1F3328;"></div>
       <div class="product-info">
-        <h3>Hover Racerback Bra</h3>
-        <p class="desc">Medium-high support with a keyhole back for long runs in the heat.</p>
-        <div class="price-row"><span>3 colorways</span><span class="price">€58</span></div>
+        <h3>Top</h3>
+        <p class="desc" data-i18n="topDesc"></p>
+        <div class="price-row"><span>Chocolate Brown / Pine Green / Navy Blue</span></div>
       </div>
     </a>
-    <a class="product-card" href="product-detail.html?product=windward-half-zip" data-id="windward-half-zip" data-name="Windward Half-Zip" data-price="118" data-tones="#D2AE9F,#8E6A5C">
-      <div class="product-media"><span class="product-tag">RESTOCKED</span></div>
+    <a class="product-card" href="item.html?p=tshirt">
+      <div class="product-media" style="--tone1:#D7C7B0; --tone2:#A68F7B;"></div>
       <div class="product-info">
-        <h3>Windward Half-Zip</h3>
-        <p class="desc">Brushed-back fleece, thumbholes, one zip pocket that fits a key and a card.</p>
+        <h3 data-i18n="tshirtName"></h3>
+        <p class="desc" data-i18n="tshirtDesc"></p>
+      </div>
+    </a>
+    <a class="product-card" href="item.html?p=hoodie">
+      <div class="product-media" style="--tone1:#4A5A7B; --tone2:#1A2438;"></div>
+      <div class="product-info">
+        <h3 data-i18n="hoodieName"></h3>
+        <p class="desc" data-i18n="hoodieDesc"></p>
+      </div>
+    </a>
+    <a class="product-card" href="product-detail.html?product=hover-bra" data-id="hover-bra" data-name-el="Αθλητικό μπουστάκι Hover" data-name-en="Hover Racerback Bra" data-price="58" data-tones="#7C8760,#474F34">
+      <div class="product-media" style="--tone1:#7C8760; --tone2:#474F34;"><span class="product-tag" data-i18n="tagNew"></span></div>
+      <div class="product-info">
+        <h3 data-i18n="braName"></h3>
+        <p class="desc" data-i18n="braDesc"></p>
+        <div class="price-row"><span data-i18n="braColors"></span><span class="price">€58</span></div>
+      </div>
+    </a>
+    <a class="product-card" href="product-detail.html?product=windward-half-zip" data-id="windward-half-zip" data-name-el="Μπλούζα Windward με μισό φερμουάρ" data-name-en="Windward Half-Zip" data-price="118" data-tones="#D2AE9F,#8E6A5C">
+      <div class="product-media" style="--tone1:#D2AE9F; --tone2:#8E6A5C;"><span class="product-tag" data-i18n="tagRestocked"></span></div>
+      <div class="product-info">
+        <h3 data-i18n="zipName"></h3>
+        <p class="desc" data-i18n="zipDesc"></p>
         <div class="price-row"><span>Rose / Espresso</span><span class="price">€118</span></div>
       </div>
     </a>
@@ -881,27 +919,27 @@
 
 <section id="story" class="story">
   <div class="story-media">
-    <img src="images/logo.jpg" alt="Olympian Muse logo: a woman in olive activewear posed inside a circle, with a flowing M beside her">
+    <img src="images/logo.jpg" data-i18n-attr="alt:logoAltLong">
   </div>
   <div class="story-copy">
-    <span class="kicker">Our Story</span>
-    <h2>Where nature meets myth, and simplicity becomes strength.</h2>
-    <p>According to mythology, the nine Muses lived in Pieria, at the foot of Mount Olympus. That is where Olympian Muse was born.</p>
-    <p>We design for modern muses — everyday women who carry strength, beauty and creativity with them. Every piece is built on quality, elegance and Greek inspiration.</p>
-    <p class="story-close">Discover the muse within you.</p>
+    <span class="kicker" data-i18n="navStory"></span>
+    <h2 data-i18n="storyTitle"></h2>
+    <p data-i18n="storyP1"></p>
+    <p data-i18n="storyP2"></p>
+    <p class="story-close" data-i18n="storyClose"></p>
   </div>
   <div class="story-pillars">
     <div class="pillar">
-      <h3>Premium quality</h3>
-      <p>Built on quality, elegance and Greek inspiration.</p>
+      <h3 data-i18n="pillar1Title"></h3>
+      <p data-i18n="pillar1Text"></p>
     </div>
     <div class="pillar">
-      <h3>Limited edition</h3>
-      <p>Small runs, so every piece stays special.</p>
+      <h3 data-i18n="pillar2Title"></h3>
+      <p data-i18n="pillar2Text"></p>
     </div>
     <div class="pillar">
-      <h3>Designed &amp; made in Greece</h3>
-      <p>Designed in Dion, Pieria, at the foot of Olympus.</p>
+      <h3 data-i18n="pillar3Title"></h3>
+      <p data-i18n="pillar3Text"></p>
     </div>
   </div>
 </section>
@@ -909,20 +947,20 @@
 <section id="size-guide">
   <div class="section-head">
     <div>
-      <span class="kicker" style="margin-bottom:14px;">Size Guide</span>
-      <h2>Find your size</h2>
+      <span class="kicker" style="margin-bottom:14px;" data-i18n="navSize"></span>
+      <h2 data-i18n="sizeTitle"></h2>
     </div>
-    <p>Find your height in the left column, then read across to the weight range that fits you.</p>
+    <p data-i18n="sizeText"></p>
   </div>
   <div class="table-wrap">
     <table class="size-table">
-      <caption>Height in metres, weight in kilograms.</caption>
+      <caption data-i18n="sizeCaption"></caption>
       <thead>
         <tr>
-          <th scope="col">Height</th>
-          <th scope="col"><span class="size-letter">S</span><span class="size-word">Small</span></th>
-          <th scope="col"><span class="size-letter">M</span><span class="size-word">Medium</span></th>
-          <th scope="col"><span class="size-letter">L</span><span class="size-word">Large</span></th>
+          <th scope="col" data-i18n="height"></th>
+          <th scope="col"><span class="size-letter">S</span><span class="size-word" data-i18n="small"></span></th>
+          <th scope="col"><span class="size-letter">M</span><span class="size-word" data-i18n="medium"></span></th>
+          <th scope="col"><span class="size-letter">L</span><span class="size-word" data-i18n="large"></span></th>
         </tr>
       </thead>
       <tbody>
@@ -938,35 +976,35 @@
 
 <section id="fit" class="fit-finder">
   <div>
-    <span class="kicker">Fit Finder</span>
-    <h2 class="display">Sized on real training bodies, not a single mannequin.</h2>
-    <p>We fit every style across 14 body types before it ships. Tell us how you train and we'll point you to your size and your style.</p>
+    <span class="kicker" data-i18n="navFit"></span>
+    <h2 class="display" data-i18n="fitTitle"></h2>
+    <p data-i18n="fitText"></p>
     <div class="hero-actions" style="margin-top:32px;">
-      <a href="#" class="btn-primary sans">Start fit quiz</a>
+      <a href="#" class="btn-primary sans" data-i18n="fitQuiz"></a>
     </div>
   </div>
   <div class="fit-panel">
-    <div class="fit-row"><span>What do you train for most?</span><span>Running →</span></div>
-    <div class="fit-row"><span>Preferred rise</span><span>High-rise →</span></div>
-    <div class="fit-row"><span>Compression level</span><span>Medium →</span></div>
-    <a href="#size-guide" class="fit-row"><span>Usual size</span><span>See size guide →</span></a>
+    <div class="fit-row"><span data-i18n="fitQ1"></span><span data-i18n="fitA1"></span></div>
+    <div class="fit-row"><span data-i18n="fitQ2"></span><span data-i18n="fitA2"></span></div>
+    <div class="fit-row"><span data-i18n="fitQ3"></span><span data-i18n="fitA3"></span></div>
+    <a href="#size-guide" class="fit-row"><span data-i18n="fitQ4"></span><span data-i18n="fitA4"></span></a>
   </div>
 </section>
 
 <section id="contact" class="find-us">
-  <span class="kicker">Where to find us</span>
+  <span class="kicker" data-i18n="contactKicker"></span>
   <div class="ad">
     <div class="ad-logo">
-      <img src="images/logo.jpg" alt="Olympian Muse logo">
+      <img src="images/logo.jpg" data-i18n-attr="alt:logoAlt">
     </div>
     <div class="ad-rule" aria-hidden="true"></div>
     <div class="ad-copy">
-      <h2 class="ad-name">Olympian Muse</h2>
-      <p class="ad-tagline">Premium activewear<br>with respect and purpose</p>
+      <h2 class="ad-name">Olympia Muse</h2>
+      <p class="ad-tagline" data-i18n-html="tagline"></p>
       <ul class="ad-points">
-        <li>Premium Quality</li>
-        <li>Limited Edition</li>
-        <li>Designed and Made in Greece</li>
+        <li data-i18n="pillar1Title"></li>
+        <li data-i18n="pillar2Title"></li>
+        <li data-i18n="madeInGreece"></li>
       </ul>
       <div class="find-links">
         <!-- TODO: replace with the real Instagram handle -->
@@ -989,26 +1027,26 @@
     <div class="footer-brand">
       <div class="brand">
         <img src="images/logo.jpg" alt="">
-        <span class="wordmark">Olympian Muse</span>
+        <span class="wordmark">Olympia Muse</span>
       </div>
-      <p>Premium activewear with respect and purpose.</p>
+      <p data-i18n="footerTagline"></p>
     </div>
     <div class="footer-col">
-      <h4>Shop</h4>
-      <ul><li><a href="#shop">Leggings</a></li><li><a href="#shop">Sports Bras</a></li><li><a href="#shop">Outerwear</a></li><li><a href="#shop">New Arrivals</a></li></ul>
+      <h4 data-i18n="navShop"></h4>
+      <ul><li><a href="#shop" data-i18n="fLeggings"></a></li><li><a href="#shop" data-i18n="fBras"></a></li><li><a href="#shop" data-i18n="fOuterwear"></a></li><li><a href="#shop" data-i18n="fNew"></a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Company</h4>
-      <ul><li><a href="#story">Our Story</a></li><li><a href="#">Our Fabrics</a></li><li><a href="#fit">Fit Finder</a></li><li><a href="#">Sustainability</a></li></ul>
+      <h4 data-i18n="fCompany"></h4>
+      <ul><li><a href="#story" data-i18n="navStory"></a></li><li><a href="#" data-i18n="fFabrics"></a></li><li><a href="#fit" data-i18n="navFit"></a></li><li><a href="#" data-i18n="fSustainability"></a></li></ul>
     </div>
     <div class="footer-col">
-      <h4>Support</h4>
-      <ul><li><a href="#size-guide">Size Guide</a></li><li><a href="#">Returns</a></li><li><a href="#">Shipping</a></li><li><a href="#contact">Contact</a></li></ul>
+      <h4 data-i18n="fSupport"></h4>
+      <ul><li><a href="#size-guide" data-i18n="navSize"></a></li><li><a href="#" data-i18n="fReturns"></a></li><li><a href="#" data-i18n="fShipping"></a></li><li><a href="#contact" data-i18n="navContact"></a></li></ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Olympian Muse. All rights reserved.</span>
-    <span>Designed in Dion, Pieria · Made in Greece</span>
+    <span data-i18n="rights"></span>
+    <span data-i18n="designedIn"></span>
   </div>
 </footer>
 
@@ -1016,14 +1054,14 @@
 <div class="overlay" id="basket-overlay"></div>
 <aside class="drawer" id="basket" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
   <div class="drawer-head">
-    <button type="button" class="icon-btn" id="drawer-back" aria-label="Back to basket" hidden>←</button>
-    <h2 id="drawer-title">Your basket</h2>
-    <button type="button" class="icon-btn" id="drawer-close" aria-label="Close basket">✕</button>
+    <button type="button" class="icon-btn" id="drawer-back" data-i18n-attr="aria-label:backToBasket" hidden>←</button>
+    <h2 id="drawer-title"></h2>
+    <button type="button" class="icon-btn" id="drawer-close" data-i18n-attr="aria-label:closeBasket">✕</button>
   </div>
   <ol class="steps">
-    <li data-step-label="cart">Basket</li>
-    <li data-step-label="checkout">Address &amp; payment</li>
-    <li data-step-label="done">Done</li>
+    <li data-step-label="cart" data-i18n="basket"></li>
+    <li data-step-label="checkout" data-i18n="stepCheckout"></li>
+    <li data-step-label="done" data-i18n="stepDone"></li>
   </ol>
 
   <div class="drawer-body">
@@ -1031,43 +1069,43 @@
     <div data-step="cart">
       <ul class="lines" id="basket-lines"></ul>
       <div class="empty" id="basket-empty" hidden>
-        <p>Your basket is empty.</p>
-        <p>Pick a size on any piece and add it here.</p>
+        <p data-i18n="emptyTitle"></p>
+        <p data-i18n="emptyText"></p>
       </div>
     </div>
 
     <!-- Step 2: address + payment method -->
     <form data-step="checkout" class="checkout" id="checkout-form" hidden>
       <fieldset>
-        <legend>Delivery address</legend>
-        <div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <legend data-i18n="deliveryAddress"></legend>
+        <div class="field"><label for="f-name" data-i18n="fullName"></label><input id="f-name" name="name" autocomplete="name" required></div>
         <div class="field-row">
           <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+          <div class="field"><label for="f-phone" data-i18n="phone"></label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
         </div>
-        <div class="field"><label for="f-street">Street and number</label><input id="f-street" name="street" autocomplete="street-address" required></div>
+        <div class="field"><label for="f-street" data-i18n="street"></label><input id="f-street" name="street" autocomplete="street-address" required></div>
         <div class="field-row">
-          <div class="field"><label for="f-city">City</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
-          <div class="field"><label for="f-zip">Postal code</label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="\d{3}\s?\d{2}" title="5 digits, e.g. 601 00" required></div>
+          <div class="field"><label for="f-city" data-i18n="city"></label><input id="f-city" name="city" autocomplete="address-level2" required></div>
+          <div class="field"><label for="f-zip" data-i18n="zip"></label><input id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="\d{3}\s?\d{2}" data-i18n-attr="title:zipHint" required></div>
         </div>
-        <div class="field"><label for="f-country">Country</label><input id="f-country" name="country" autocomplete="country-name" value="Greece" required></div>
-        <div class="field"><label for="f-notes">Delivery notes <span class="opt">(optional)</span></label><textarea id="f-notes" name="notes" placeholder="Floor, doorbell name, best time to deliver…"></textarea></div>
+        <div class="field"><label for="f-country" data-i18n="country"></label><input id="f-country" name="country" autocomplete="country-name" data-i18n-attr="value:countryDefault" required></div>
+        <div class="field"><label for="f-notes"><span data-i18n="notes"></span> <span class="opt" data-i18n="optional"></span></label><textarea id="f-notes" name="notes" data-i18n-attr="placeholder:notesHint"></textarea></div>
       </fieldset>
 
       <fieldset>
-        <legend>Payment method</legend>
+        <legend data-i18n="paymentMethod"></legend>
         <label class="pay-opt">
           <input type="radio" name="payment" value="iris" required checked>
           <span>
             <span class="pay-title">IRIS</span>
-            <span class="pay-desc" style="display:block;">Pay instantly from your bank's app. We'll show you where to send it after you place the order.</span>
+            <span class="pay-desc" style="display:block;" data-i18n="irisDesc"></span>
           </span>
         </label>
         <label class="pay-opt">
           <input type="radio" name="payment" value="bank">
           <span>
-            <span class="pay-title">Bank deposit</span>
-            <span class="pay-desc" style="display:block;">Transfer or deposit to our bank account. You'll see our IBAN after you place the order.</span>
+            <span class="pay-title" data-i18n="bankTitle"></span>
+            <span class="pay-desc" style="display:block;" data-i18n="bankDesc"></span>
           </span>
         </label>
       </fieldset>
@@ -1078,12 +1116,310 @@
   </div>
 
   <div class="drawer-foot" id="drawer-foot">
-    <div class="total-row"><span>Total</span><strong id="basket-total">€0.00</strong></div>
-    <p class="foot-note">Shipping cost is not included yet.</p>
-    <button type="button" class="btn-primary btn-block" id="to-checkout">Continue to address &amp; payment</button>
-    <button type="submit" form="checkout-form" class="btn-primary btn-block" id="place-order" hidden>Place order</button>
+    <div class="total-row"><span data-i18n="total"></span><strong id="basket-total">€0.00</strong></div>
+    <p class="foot-note" data-i18n="shippingNote"></p>
+    <button type="button" class="btn-primary btn-block" id="to-checkout" data-i18n="toCheckout"></button>
+    <button type="submit" form="checkout-form" class="btn-primary btn-block" id="place-order" data-i18n="placeOrder" hidden></button>
   </div>
 </aside>
+
+<script>
+/* ---- Texts of this page in Greek (el) and English (en) — see i18n.js ---- */
+window.I18N = {
+  el: {
+    pageTitle: 'Olympia Muse — Premium αθλητικά ρούχα, σχεδιασμένα και κατασκευασμένα στην Ελλάδα',
+    homeLabel: 'Olympia Muse, αρχική',
+    langLabel: 'Γλώσσα',
+    menuLabel: 'Μενού',
+    navShop: 'Κατάστημα',
+    navStory: 'Η ιστορία μας',
+    navSize: 'Οδηγός μεγεθών',
+    navFit: 'Βρες την εφαρμογή σου',
+    navContact: 'Επικοινωνία',
+    findUs: 'Βρες μας',
+    basket: 'Καλάθι',
+
+    heroEyebrow: 'PREMIUM ΑΘΛΗΤΙΚΑ ΡΟΥΧΑ',
+    heroTitle: 'Still<span class="indent">then</span>sudden.', // kept in English on purpose
+    heroText: 'Φτιαγμένα για την παύση πριν αλλάξει ο ρυθμός — το μισό δευτερόλεπτο ηρεμίας λίγο πριν κινηθείς. Το Olympia Muse είναι για γυναίκες που προπονούνται με τους δικούς τους όρους.',
+    heroShop: 'Δες τη συλλογή',
+    statLabel: 'ελαστικότητα & συμπίεση',
+
+    mq1: 'ΔΟΚΙΜΑΣΜΕΝΑ ΣΤΗΝ ΠΡΟΠΟΝΗΣΗ',
+    mq3: 'ΣΧΕΔΙΑΣΜΕΝΑ ΣΤΟ ΔΙΟΝ ΠΙΕΡΙΑΣ',
+    mq4: 'ΚΑΤΑΣΚΕΥΑΣΜΕΝΑ ΣΤΗΝ ΕΛΛΑΔΑ',
+    mq5: 'ΡΑΦΕΣ ΧΩΡΙΣ ΤΡΙΒΗ',
+
+    shopTitle: 'Η συλλογή Sprint',
+    shopText: 'Κομμάτια με μία ιδέα: ρούχα που ξεχνάς ότι φοράς όσο κινείσαι.',
+    tagBest: 'ΤΑ ΠΙΟ ΑΓΑΠΗΜΕΝΑ',
+    tagNew: 'ΝΕΟ',
+    tagRestocked: 'ΞΑΝΑ ΔΙΑΘΕΣΙΜΟ',
+    leggingsName: 'Κολάν',
+    leggingsDesc: 'Ψηλόμεσο αθλητικό κολάν που ακολουθεί φυσικά τις καμπύλες σου.',
+    topDesc: 'Αμάνικο ελαστικό μπλουζάκι σε μοντέρνα γραμμή, που αγκαλιάζει το σώμα με άνεση.',
+    tshirtName: 'Μπλούζα',
+    tshirtDesc: 'The Signature Coordinates T-Shirt, από 100% premium βαρύ βαμβάκι.',
+    hoodieName: 'Φούτερ',
+    hoodieDesc: 'Oversized hoodie με κουκούλα και εσωτερική επένδυση.',
+    braName: 'Αθλητικό μπουστάκι Hover',
+    braDesc: 'Μεσαία προς υψηλή στήριξη, με ανοιχτή πλάτη για μεγάλες διαδρομές στη ζέστη.',
+    braColors: '3 χρώματα',
+    zipName: 'Μπλούζα Windward με μισό φερμουάρ',
+    zipDesc: 'Ζεστό fleece στο εσωτερικό, τρύπες για τον αντίχειρα και τσέπη με φερμουάρ για κλειδί και κάρτα.',
+
+    logoAltLong: 'Λογότυπο Olympia Muse: γυναίκα με λαδί αθλητικά ρούχα μέσα σε κύκλο, με ένα κυματιστό M δίπλα της',
+    logoAlt: 'Λογότυπο Olympia Muse',
+    storyTitle: 'Εκεί που η φύση συναντά τον μύθο και η απλότητα γίνεται δύναμη.',
+    storyP1: 'Σύμφωνα με τη μυθολογία, οι εννέα Μούσες ζούσαν στην Πιερία, στους πρόποδες του Ολύμπου. Εκεί γεννήθηκε και το Olympia Muse.',
+    storyP2: 'Σχεδιάζουμε για τις σύγχρονες μούσες — καθημερινές γυναίκες που κουβαλούν μέσα τους δύναμη, ομορφιά και δημιουργικότητα. Κάθε κομμάτι βασίζεται στην ποιότητα, την κομψότητα και την ελληνική έμπνευση.',
+    storyClose: 'Ανακάλυψε τη μούσα μέσα σου.',
+    pillar1Title: 'Premium ποιότητα',
+    pillar1Text: 'Ποιότητα, κομψότητα και ελληνική έμπνευση σε κάθε κομμάτι.',
+    pillar2Title: 'Περιορισμένη έκδοση',
+    pillar2Text: 'Μικρές παραγωγές, ώστε κάθε κομμάτι να μένει ξεχωριστό.',
+    pillar3Title: 'Σχεδιασμένα & κατασκευασμένα στην Ελλάδα',
+    pillar3Text: 'Σχεδιασμένα στο Δίον Πιερίας, στους πρόποδες του Ολύμπου.',
+
+    sizeTitle: 'Βρες το μέγεθός σου',
+    sizeText: 'Βρες το ύψος σου στην αριστερή στήλη και δες στην ίδια γραμμή το εύρος βάρους που σου ταιριάζει.',
+    sizeCaption: 'Ύψος σε μέτρα, βάρος σε κιλά.',
+    height: 'Ύψος',
+    small: 'Μικρό',
+    medium: 'Μεσαίο',
+    large: 'Μεγάλο',
+
+    fitTitle: 'Σχεδιασμένα πάνω σε αληθινά σώματα που προπονούνται, όχι σε μία κούκλα βιτρίνας.',
+    fitText: 'Δοκιμάζουμε κάθε σχέδιο σε 14 σωματότυπους πριν κυκλοφορήσει. Πες μας πώς προπονείσαι και θα σου προτείνουμε μέγεθος και στυλ.',
+    fitQuiz: 'Ξεκίνα το τεστ εφαρμογής',
+    fitQ1: 'Για τι προπονείσαι κυρίως;',
+    fitA1: 'Τρέξιμο →',
+    fitQ2: 'Ύψος μέσης',
+    fitA2: 'Ψηλόμεσο →',
+    fitQ3: 'Επίπεδο συμπίεσης',
+    fitA3: 'Μεσαίο →',
+    fitQ4: 'Συνηθισμένο μέγεθος',
+    fitA4: 'Δες τον οδηγό μεγεθών →',
+
+    contactKicker: 'Πού θα μας βρεις',
+    tagline: 'Premium αθλητικά ρούχα<br>με σεβασμό και σκοπό',
+    madeInGreece: 'Σχεδιασμένα και κατασκευασμένα στην Ελλάδα',
+
+    footerTagline: 'Premium αθλητικά ρούχα με σεβασμό και σκοπό.',
+    fLeggings: 'Κολάν',
+    fBras: 'Αθλητικά μπουστάκια',
+    fOuterwear: 'Πανωφόρια',
+    fNew: 'Νέες αφίξεις',
+    fCompany: 'Εταιρεία',
+    fFabrics: 'Τα υφάσματά μας',
+    fSustainability: 'Βιωσιμότητα',
+    fSupport: 'Εξυπηρέτηση',
+    fReturns: 'Επιστροφές',
+    fShipping: 'Αποστολή',
+    rights: '© 2026 Olympia Muse. Με την επιφύλαξη παντός δικαιώματος.',
+    designedIn: 'Σχεδιασμένο στο Δίον Πιερίας · Κατασκευασμένο στην Ελλάδα',
+
+    backToBasket: 'Πίσω στο καλάθι',
+    closeBasket: 'Κλείσιμο καλαθιού',
+    stepCheckout: 'Διεύθυνση & πληρωμή',
+    stepDone: 'Ολοκλήρωση',
+    emptyTitle: 'Το καλάθι σου είναι άδειο.',
+    emptyText: 'Διάλεξε μέγεθος σε οποιοδήποτε κομμάτι και πρόσθεσέ το εδώ.',
+    deliveryAddress: 'Διεύθυνση αποστολής',
+    fullName: 'Ονοματεπώνυμο',
+    phone: 'Τηλέφωνο',
+    street: 'Οδός και αριθμός',
+    city: 'Πόλη',
+    zip: 'Ταχυδρομικός κώδικας',
+    zipHint: '5 ψηφία, π.χ. 601 00',
+    country: 'Χώρα',
+    countryDefault: 'Ελλάδα',
+    notes: 'Σημειώσεις για την παράδοση',
+    optional: '(προαιρετικό)',
+    notesHint: 'Όροφος, όνομα στο κουδούνι, καλύτερη ώρα παράδοσης…',
+    paymentMethod: 'Τρόπος πληρωμής',
+    irisDesc: 'Πλήρωσε άμεσα από την εφαρμογή της τράπεζάς σου. Θα σου δείξουμε πού να στείλεις τα χρήματα μόλις καταχωρήσεις την παραγγελία.',
+    bankTitle: 'Κατάθεση σε τράπεζα',
+    bankDesc: 'Μεταφορά ή κατάθεση στον τραπεζικό μας λογαριασμό. Θα δεις το IBAN μας μόλις καταχωρήσεις την παραγγελία.',
+    total: 'Σύνολο',
+    shippingNote: 'Τα μεταφορικά δεν περιλαμβάνονται ακόμη.',
+    toCheckout: 'Συνέχεια σε διεύθυνση & πληρωμή',
+    placeOrder: 'Καταχώρηση παραγγελίας',
+
+    sizeGroup: 'Μέγεθος',
+    addToBasket: 'Προσθήκη στο καλάθι',
+    chooseSize: 'Διάλεξε πρώτα μέγεθος.',
+    lineSize: 'Μέγεθος',
+    oneLess: 'Ένα λιγότερο',
+    oneMore: 'Ένα ακόμη',
+    remove: 'Αφαίρεση',
+    titleCart: 'Το καλάθι σου',
+    titleCheckout: 'Στοιχεία παραγγελίας',
+    titleDone: 'Η παραγγελία καταχωρήθηκε',
+    payBank: 'Πληρωμή με κατάθεση σε τράπεζα',
+    payIris: 'Πληρωμή με IRIS',
+    accountHolder: 'Δικαιούχος',
+    bank: 'Τράπεζα',
+    amount: 'Ποσό',
+    reference: 'Αιτιολογία',
+    sendTo: 'Αποστολή σε',
+    copy: 'Αντιγραφή',
+    copied: 'Αντιγράφηκε',
+    selectCopy: 'Επίλεξε & αντίγραψε',
+    thanks: 'Ευχαριστούμε, {name}.',
+    orderNumberIs: 'Ο αριθμός της παραγγελίας σου είναι',
+    referenceNote: 'Γράψε τον αριθμό παραγγελίας <strong>{no}</strong> στην αιτιολογία της πληρωμής, ώστε να αντιστοιχίσουμε την πληρωμή με την παραγγελία σου.',
+    keepShopping: 'Συνέχεια αγορών'
+  },
+  en: {
+    pageTitle: 'Olympia Muse — Premium Activewear, Designed and Made in Greece',
+    homeLabel: 'Olympia Muse home',
+    langLabel: 'Language',
+    menuLabel: 'Menu',
+    navShop: 'Shop',
+    navStory: 'Our Story',
+    navSize: 'Size Guide',
+    navFit: 'Fit Finder',
+    navContact: 'Contact',
+    findUs: 'Find us',
+    basket: 'Basket',
+
+    heroEyebrow: 'PREMIUM ACTIVEWEAR',
+    heroTitle: 'Still<span class="indent">then</span>sudden.',
+    heroText: 'Built for the pause before the pace change — the half-second of stillness right before you move. Olympia Muse is made for women who train on their own terms.',
+    heroShop: 'Shop the drop',
+    statLabel: 'compression stretch',
+
+    mq1: 'SWEAT-TESTED IN FIELD',
+    mq3: 'DESIGNED IN DION, PIERIA',
+    mq4: 'MADE IN GREECE',
+    mq5: 'NO CHAFE SEAMS',
+
+    shopTitle: 'The Sprint Collection',
+    shopText: "Pieces built around one idea: gear that disappears while you're moving in it.",
+    tagBest: 'BEST SELLER',
+    tagNew: 'NEW',
+    tagRestocked: 'RESTOCKED',
+    leggingsName: 'High-Rise Leggings',
+    leggingsDesc: 'High-rise sports leggings that naturally follow your curves.',
+    topDesc: 'A sleeveless stretch top with a modern line that hugs your body comfortably.',
+    tshirtName: 'T-shirt',
+    tshirtDesc: 'The Signature Coordinates T-Shirt, in 100% premium heavyweight cotton.',
+    hoodieName: 'Hoodie',
+    hoodieDesc: 'Oversized hooded sweatshirt with an inner lining.',
+    braName: 'Hover Racerback Bra',
+    braDesc: 'Medium-high support with a keyhole back for long runs in the heat.',
+    braColors: '3 colorways',
+    zipName: 'Windward Half-Zip',
+    zipDesc: 'Brushed-back fleece, thumbholes, one zip pocket that fits a key and a card.',
+
+    logoAltLong: 'Olympia Muse logo: a woman in olive activewear posed inside a circle, with a flowing M beside her',
+    logoAlt: 'Olympia Muse logo',
+    storyTitle: 'Where nature meets myth, and simplicity becomes strength.',
+    storyP1: 'According to mythology, the nine Muses lived in Pieria, at the foot of Mount Olympus. That is where Olympia Muse was born.',
+    storyP2: 'We design for modern muses — everyday women who carry strength, beauty and creativity with them. Every piece is built on quality, elegance and Greek inspiration.',
+    storyClose: 'Discover the muse within you.',
+    pillar1Title: 'Premium quality',
+    pillar1Text: 'Built on quality, elegance and Greek inspiration.',
+    pillar2Title: 'Limited edition',
+    pillar2Text: 'Small runs, so every piece stays special.',
+    pillar3Title: 'Designed & made in Greece',
+    pillar3Text: 'Designed in Dion, Pieria, at the foot of Olympus.',
+
+    sizeTitle: 'Find your size',
+    sizeText: 'Find your height in the left column, then read across to the weight range that fits you.',
+    sizeCaption: 'Height in metres, weight in kilograms.',
+    height: 'Height',
+    small: 'Small',
+    medium: 'Medium',
+    large: 'Large',
+
+    fitTitle: 'Sized on real training bodies, not a single mannequin.',
+    fitText: "We fit every style across 14 body types before it ships. Tell us how you train and we'll point you to your size and your style.",
+    fitQuiz: 'Start fit quiz',
+    fitQ1: 'What do you train for most?',
+    fitA1: 'Running →',
+    fitQ2: 'Preferred rise',
+    fitA2: 'High-rise →',
+    fitQ3: 'Compression level',
+    fitA3: 'Medium →',
+    fitQ4: 'Usual size',
+    fitA4: 'See size guide →',
+
+    contactKicker: 'Where to find us',
+    tagline: 'Premium activewear<br>with respect and purpose',
+    madeInGreece: 'Designed and Made in Greece',
+
+    footerTagline: 'Premium activewear with respect and purpose.',
+    fLeggings: 'Leggings',
+    fBras: 'Sports Bras',
+    fOuterwear: 'Outerwear',
+    fNew: 'New Arrivals',
+    fCompany: 'Company',
+    fFabrics: 'Our Fabrics',
+    fSustainability: 'Sustainability',
+    fSupport: 'Support',
+    fReturns: 'Returns',
+    fShipping: 'Shipping',
+    rights: '© 2026 Olympia Muse. All rights reserved.',
+    designedIn: 'Designed in Dion, Pieria · Made in Greece',
+
+    backToBasket: 'Back to basket',
+    closeBasket: 'Close basket',
+    stepCheckout: 'Address & payment',
+    stepDone: 'Done',
+    emptyTitle: 'Your basket is empty.',
+    emptyText: 'Pick a size on any piece and add it here.',
+    deliveryAddress: 'Delivery address',
+    fullName: 'Full name',
+    phone: 'Phone',
+    street: 'Street and number',
+    city: 'City',
+    zip: 'Postal code',
+    zipHint: '5 digits, e.g. 601 00',
+    country: 'Country',
+    countryDefault: 'Greece',
+    notes: 'Delivery notes',
+    optional: '(optional)',
+    notesHint: 'Floor, doorbell name, best time to deliver…',
+    paymentMethod: 'Payment method',
+    irisDesc: "Pay instantly from your bank's app. We'll show you where to send it after you place the order.",
+    bankTitle: 'Bank deposit',
+    bankDesc: "Transfer or deposit to our bank account. You'll see our IBAN after you place the order.",
+    total: 'Total',
+    shippingNote: 'Shipping cost is not included yet.',
+    toCheckout: 'Continue to address & payment',
+    placeOrder: 'Place order',
+
+    sizeGroup: 'Size',
+    addToBasket: 'Add to basket',
+    chooseSize: 'Choose a size first.',
+    lineSize: 'Size',
+    oneLess: 'One less',
+    oneMore: 'One more',
+    remove: 'Remove',
+    titleCart: 'Your basket',
+    titleCheckout: 'Checkout',
+    titleDone: 'Order placed',
+    payBank: 'Pay by bank deposit',
+    payIris: 'Pay with IRIS',
+    accountHolder: 'Account holder',
+    bank: 'Bank',
+    amount: 'Amount',
+    reference: 'Reference',
+    sendTo: 'Send to',
+    copy: 'Copy',
+    copied: 'Copied',
+    selectCopy: 'Select & copy',
+    thanks: 'Thank you, {name}.',
+    orderNumberIs: 'Your order number is',
+    referenceNote: 'Please write your order number <strong>{no}</strong> as the payment reference, so we can match your payment to your order.',
+    keepShopping: 'Continue shopping'
+  }
+};
+</script>
+<script src="i18n.js"></script>
+
 
 <script>
 /* ---- Motion: reveal sections on scroll + highlight current menu item ---- */
@@ -1134,7 +1470,9 @@ const SHOP = {
 
 (function(){
   const STORAGE_KEY = 'olympian-muse-basket';
-  const money = n => new Intl.NumberFormat('en-IE', { style:'currency', currency:'EUR' }).format(n);
+  const t = OM.t;
+  const money = n => new Intl.NumberFormat(OM.lang === 'el' ? 'el-GR' : 'en-IE', { style:'currency', currency:'EUR' }).format(n);
+  const itemName = l => OM.pick(l.names) || l.name;
 
   const $ = s => document.querySelector(s);
   const drawer = $('#basket'), overlay = $('#basket-overlay'), basketBtn = $('#basket-btn');
@@ -1161,12 +1499,12 @@ const SHOP = {
     buy.className = 'buy';
     buy.innerHTML =
       '<div class="buy-row">' +
-        '<div class="size-pick" role="group" aria-label="Size">' +
-          ['XS','S','M','L','XL','XXL'].map(s => '<button type="button" class="size-opt" data-size="' + s + '" aria-pressed="false">' + s + '</button>').join('') +
+        '<div class="size-pick" role="group" data-i18n-attr="aria-label:sizeGroup">' +
+          (card.dataset.sizes ? card.dataset.sizes.split(',') : ['XS','S','M','L','XL','XXL']).map(s => '<button type="button" class="size-opt" data-size="' + s + '" aria-pressed="false">' + s + '</button>').join('') +
         '</div>' +
-        '<button type="button" class="btn-add">Add to basket</button>' +
+        '<button type="button" class="btn-add" data-i18n="addToBasket"></button>' +
       '</div>' +
-      '<p class="buy-hint"><span class="buy-msg" aria-live="polite"></span><a href="#size-guide">Size guide</a></p>';
+      '<p class="buy-hint"><span class="buy-msg" aria-live="polite"></span><a href="#size-guide" data-i18n="navSize"></a></p>';
     card.querySelector('.product-info').appendChild(buy);
 
     const msg = buy.querySelector('.buy-msg');
@@ -1177,9 +1515,10 @@ const SHOP = {
       msg.textContent = '';
     }));
     buy.querySelector('.btn-add').addEventListener('click', () => {
-      if (!size) { msg.textContent = 'Choose a size first.'; return; }
+      if (!size) { msg.textContent = t('chooseSize'); return; }
       const [t1, t2] = (card.dataset.tones || '#7A5642,#3B2A22').split(',');
-      add({ id: card.dataset.id, name: card.dataset.name, price: Number(card.dataset.price), size, t1, t2 });
+      const names = { el: card.dataset.nameEl, en: card.dataset.nameEn };
+      add({ id: card.dataset.id, name: names.el, names, price: Number(card.dataset.price), size, t1, t2 });
       openDrawer();
     });
   });
@@ -1201,17 +1540,17 @@ const SHOP = {
       '<li class="line">' +
         '<div class="line-swatch" style="--t1:' + l.t1 + ';--t2:' + l.t2 + '"></div>' +
         '<div class="line-main">' +
-          '<div class="line-name">' + l.name + '</div>' +
-          '<div class="line-meta">Size ' + l.size + ' · ' + money(l.price) + '</div>' +
+          '<div class="line-name">' + esc(itemName(l)) + '</div>' +
+          '<div class="line-meta">' + t('lineSize') + ' ' + l.size + (l.color ? ' · ' + esc(l.color) : '') + ' · ' + money(l.price) + '</div>' +
           '<div class="qty">' +
-            '<button type="button" data-act="dec" data-i="' + i + '" aria-label="One less">−</button>' +
+            '<button type="button" data-act="dec" data-i="' + i + '" aria-label="' + t('oneLess') + '">−</button>' +
             '<output aria-live="polite">' + l.qty + '</output>' +
-            '<button type="button" data-act="inc" data-i="' + i + '" aria-label="One more">+</button>' +
+            '<button type="button" data-act="inc" data-i="' + i + '" aria-label="' + t('oneMore') + '">+</button>' +
           '</div>' +
         '</div>' +
         '<div class="line-side">' +
           '<div class="line-total">' + money(l.price * l.qty) + '</div>' +
-          '<button type="button" class="line-remove" data-act="remove" data-i="' + i + '">Remove</button>' +
+          '<button type="button" class="line-remove" data-act="remove" data-i="' + i + '">' + t('remove') + '</button>' +
         '</div>' +
       '</li>'
     ).join('');
@@ -1228,7 +1567,7 @@ const SHOP = {
   });
 
   /* ---- steps ---- */
-  const TITLES = { cart:'Your basket', checkout:'Checkout', done:'Order placed' };
+  const TITLES = { cart:'titleCart', checkout:'titleCheckout', done:'titleDone' };
   function showStep(next){
     step = next;
     drawer.querySelectorAll('[data-step]').forEach(p => p.hidden = p.dataset.step !== step);
@@ -1236,7 +1575,7 @@ const SHOP = {
       if (li.dataset.stepLabel === step) li.setAttribute('aria-current', 'step');
       else li.removeAttribute('aria-current');
     });
-    titleEl.textContent = TITLES[step];
+    titleEl.textContent = t(TITLES[step]);
     backBtn.hidden = step !== 'checkout';
     toCheckout.hidden = step !== 'cart';
     placeOrder.hidden = step !== 'checkout';
@@ -1273,7 +1612,7 @@ const SHOP = {
     const order = {
       number: 'OM-' + Date.now().toString(36).toUpperCase().slice(-6),
       date: new Date().toISOString(),
-      items: basket.map(l => ({ name: l.name, size: l.size, qty: l.qty, price: l.price })),
+      items: basket.map(l => ({ name: l.name, names: l.names, color: l.color, size: l.size, qty: l.qty, price: l.price })),
       total: total(),
       customer: data,
       payment: data.payment
@@ -1290,41 +1629,51 @@ const SHOP = {
 
   function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
+  let lastOrder = null;
   function renderDone(o){
+    lastOrder = o;
     const pay = o.payment === 'bank'
-      ? '<h4>Pay by bank deposit</h4><dl>' +
-          '<dt>Account holder</dt><dd>' + esc(SHOP.bank.beneficiary) + '</dd>' +
-          '<dt>Bank</dt><dd>' + esc(SHOP.bank.bankName) + '</dd>' +
-          '<dt>IBAN</dt><dd>' + esc(SHOP.bank.iban) + '<button type="button" class="copy-btn" data-copy="' + esc(SHOP.bank.iban.replace(/\s/g,'')) + '">Copy</button></dd>' +
-          '<dt>Amount</dt><dd>' + money(o.total) + '</dd>' +
-          '<dt>Reference</dt><dd>' + o.number + '</dd>' +
+      ? '<h4>' + t('payBank') + '</h4><dl>' +
+          '<dt>' + t('accountHolder') + '</dt><dd>' + esc(SHOP.bank.beneficiary) + '</dd>' +
+          '<dt>' + t('bank') + '</dt><dd>' + esc(SHOP.bank.bankName) + '</dd>' +
+          '<dt>IBAN</dt><dd>' + esc(SHOP.bank.iban) + '<button type="button" class="copy-btn" data-copy="' + esc(SHOP.bank.iban.replace(/\s/g,'')) + '">' + t('copy') + '</button></dd>' +
+          '<dt>' + t('amount') + '</dt><dd>' + money(o.total) + '</dd>' +
+          '<dt>' + t('reference') + '</dt><dd>' + o.number + '</dd>' +
         '</dl>'
-      : '<h4>Pay with IRIS</h4><dl>' +
-          '<dt>Send to</dt><dd>' + esc(SHOP.iris.recipient) + '<button type="button" class="copy-btn" data-copy="' + esc(SHOP.iris.recipient) + '">Copy</button></dd>' +
-          '<dt>Amount</dt><dd>' + money(o.total) + '</dd>' +
-          '<dt>Reference</dt><dd>' + o.number + '</dd>' +
+      : '<h4>' + t('payIris') + '</h4><dl>' +
+          '<dt>' + t('sendTo') + '</dt><dd>' + esc(SHOP.iris.recipient) + '<button type="button" class="copy-btn" data-copy="' + esc(SHOP.iris.recipient) + '">' + t('copy') + '</button></dd>' +
+          '<dt>' + t('amount') + '</dt><dd>' + money(o.total) + '</dd>' +
+          '<dt>' + t('reference') + '</dt><dd>' + o.number + '</dd>' +
         '</dl>';
 
     doneEl.innerHTML =
       '<div class="done-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.5 10 17 19 7.5"/></svg></div>' +
-      '<h3>Thank you, ' + esc(o.customer.name.split(' ')[0]) + '.</h3>' +
-      '<p class="done-sub">Your order number is</p>' +
+      '<h3>' + t('thanks').replace('{name}', esc(o.customer.name.split(' ')[0])) + '</h3>' +
+      '<p class="done-sub">' + t('orderNumberIs') + '</p>' +
       '<span class="order-no">' + o.number + '</span>' +
       '<div class="pay-box">' + pay +
-        '<p class="note">Please write your order number <strong>' + o.number + '</strong> as the payment reference, so we can match your payment to your order.</p>' +
+        '<p class="note">' + t('referenceNote').replace('{no}', o.number) + '</p>' +
       '</div>' +
       '<ul class="done-items">' +
-        o.items.map(i => '<li><span>' + i.qty + ' × ' + esc(i.name) + ' (' + i.size + ')</span><span>' + money(i.price * i.qty) + '</span></li>').join('') +
-        '<li><span>Total</span><span>' + money(o.total) + '</span></li>' +
+        o.items.map(i => '<li><span>' + i.qty + ' × ' + esc(itemName(i)) + ' (' + i.size + ')</span><span>' + money(i.price * i.qty) + '</span></li>').join('') +
+        '<li><span>' + t('total') + '</span><span>' + money(o.total) + '</span></li>' +
       '</ul>' +
-      '<button type="button" class="btn-primary btn-block" style="margin-top:24px;" id="keep-shopping">Continue shopping</button>';
+      '<button type="button" class="btn-primary btn-block" style="margin-top:24px;" id="keep-shopping">' + t('keepShopping') + '</button>';
 
     doneEl.querySelector('#keep-shopping').addEventListener('click', () => { closeDrawer(); showStep('cart'); });
     doneEl.querySelectorAll('.copy-btn').forEach(b => b.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; }
-      catch(e){ b.textContent = 'Select & copy'; }
+      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = t('copied'); }
+      catch(e){ b.textContent = t('selectCopy'); }
     }));
   }
+
+  /* ---- re-draw the parts built in JavaScript when the language changes ---- */
+  document.addEventListener('langchange', () => {
+    render();
+    titleEl.textContent = t(TITLES[step]);
+    if (step === 'done' && lastOrder) renderDone(lastOrder);
+    document.querySelectorAll('.buy-msg').forEach(m => { m.textContent = ''; });
+  });
 
   /* ---- mobile menu ---- */
   const header = document.querySelector('header'), menuBtn = $('#menu-btn');
@@ -1337,6 +1686,7 @@ const SHOP = {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
   basketBtn.addEventListener('click', () => setMenu(false));
 
+  OM.apply(); // translate the size pickers added to the cards above
   render();
   showStep('cart');
 })();

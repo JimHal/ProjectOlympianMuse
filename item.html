@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F3EEE6" />
+  <title>Olympia Muse</title>
+  <link rel="icon" href="images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:#F3EEE6;
+      --cream-light:#FAF5EC;
+      --sand:#E6DCCC;
+      --taupe:#A68F7B;
+      --brown:#5C4334;
+      --espresso:#3B2A22;
+      --olive:#5B6443;
+      --olive-deep:#474F34;
+      --clay:#94573B;
+      --line:rgba(59,42,34,0.14);
+      --shadow:0 30px 60px rgba(59,42,34,0.15);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    [hidden] { display:none !important; }
+    html { scroll-behavior:smooth; }
+    body {
+      background:var(--cream);
+      color:var(--espresso);
+      font-family:'Fraunces', serif;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+    a { color:inherit; text-decoration:none; }
+    img { max-width:100%; display:block; }
+    button { font:inherit; }
+
+    header {
+      position:sticky;
+      top:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 5vw;
+      background:rgba(243,238,230,0.88);
+      backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { width:42px; height:42px; border-radius:50%; object-fit:cover; }
+    .wordmark { font-family:'Archivo', sans-serif; font-size:20px; letter-spacing:0.01em; }
+    .nav { display:flex; align-items:center; gap:18px; }
+    .nav a { font-family:'Archivo', sans-serif; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; }
+    .nav a:hover { opacity:0.75; }
+    .header-right { display:flex; align-items:center; gap:22px; }
+    .lang-switch { display:flex; border:1px solid var(--line); border-radius:999px; padding:2px; }
+    .lang-switch button {
+      border:0;
+      background:transparent;
+      color:inherit;
+      cursor:pointer;
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      padding:5px 10px;
+      border-radius:999px;
+      transition:background .2s ease, color .2s ease;
+    }
+    .lang-switch button[aria-pressed="true"] { background:var(--espresso); color:var(--cream); }
+
+    .page {
+      max-width:1200px;
+      margin:0 auto;
+      padding:48px 5vw 80px;
+    }
+
+    .crumbs {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:#6B5748;
+    }
+    .crumbs .dot { opacity:0.5; }
+
+    .product-layout {
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:40px;
+      align-items:start;
+      margin-top:28px;
+    }
+
+    /* Gallery: shows photos of the selected colour, or a colour placeholder until photos are added */
+    .gallery {
+      position:sticky;
+      top:96px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      background:var(--cream-light);
+    }
+    .hero-shot {
+      aspect-ratio:4/5;
+      background:linear-gradient(140deg, var(--tone-1, #5A3A2A), var(--tone-2, #2E1D15) 75%);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero-shot img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .hero-shot.placeholder::before {
+      content:'';
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(125deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 15px);
+    }
+    .hero-label {
+      position:absolute;
+      left:22px;
+      bottom:22px;
+      font-family:'Archivo', sans-serif;
+      font-size:11px;
+      letter-spacing:0.13em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.9);
+      text-shadow:0 1px 6px rgba(0,0,0,0.25);
+    }
+    .thumbs {
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:12px;
+      padding:14px;
+    }
+    .thumb {
+      aspect-ratio:1;
+      border-radius:12px;
+      border:2px solid transparent;
+      background:linear-gradient(140deg, var(--tone-1), var(--tone-2) 75%);
+      overflow:hidden;
+      cursor:pointer;
+      padding:0;
+      transition:transform .25s ease, border-color .25s ease;
+    }
+    .thumb img { width:100%; height:100%; object-fit:cover; }
+    .thumb.active {
+      border-color:var(--espresso);
+      transform:translateY(-2px);
+    }
+
+    .product-info { padding:12px 0; }
+    .eyebrow {
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--olive);
+      margin-bottom:12px;
+    }
+    h1 {
+      font-size:clamp(36px, 4.4vw, 60px);
+      font-weight:500;
+      line-height:0.96;
+      letter-spacing:-0.03em;
+      margin-bottom:18px;
+    }
+    .price-row {
+      padding:14px 0;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      margin-bottom:22px;
+    }
+    .price {
+      font-family:'Archivo', sans-serif;
+      font-size:20px;
+      font-weight:700;
+      color:var(--clay);
+    }
+
+    .description {
+      font-family:'Archivo', sans-serif;
+      font-size:16px;
+      color:rgba(59,42,34,0.85);
+      margin-bottom:18px;
+      max-width:56ch;
+    }
+
+    .section-label {
+      font-family:'Archivo', sans-serif;
+      font-size:12px;
+      letter-spacing:0.12em;
+      font-weight:700;
+      text-transform:uppercase;
+      color:var(--brown);
+      margin-bottom:12px;
+    }
+    .section-label .chosen {
+      font-weight:500;
+      letter-spacing:0.04em;
+      text-transform:none;
+      color:#6B5748;
+      margin-left:6px;
+    }
+
+    .color-row, .size-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:26px;
+    }
+    .swatch {
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      border:2px solid rgba(59,42,34,0.2);
+      background:linear-gradient(135deg, var(--c1), var(--c2));
+      cursor:pointer;
+      position:relative;
+      transition:transform .2s ease, border-color .2s ease;
+    }
+    .swatch.active {
+      border-color:var(--espresso);
+      transform:scale(1.08);
+      box-shadow:0 0 0 3px rgba(59,42,34,0.08);
+    }
+    .swatch::after {
+      content:'';
+      position:absolute;
+      inset:8px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,0.3);
+    }
+
+    .size-btn {
+      min-width:52px;
+      padding:10px 12px;
+      border:1px solid rgba(59,42,34,0.25);
+      background:transparent;
+      border-radius:2px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+    .size-btn.selected {
+      background:var(--espresso);
+      border-color:var(--espresso);
+      color:var(--cream);
+    }
+
+    .buy-actions {
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:center;
+    }
+    .primary-btn {
+      min-height:48px;
+      background:var(--olive);
+      color:var(--cream);
+      border:0;
+      border-radius:2px;
+      padding:0 24px;
+      font-family:'Archivo', sans-serif;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.04em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:background .25s ease, transform .25s ease;
+    }
+    .primary-btn:hover { background:var(--olive-deep); transform:translateY(-1px); }
+    .ghost-btn {
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      min-height:48px;
+      padding:0 18px;
+      border:1px solid var(--line);
+      border-radius:2px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      transition:background .2s ease;
+    }
+    .ghost-btn:hover { background:rgba(91,100,67,0.06); }
+
+    .status {
+      margin-top:12px;
+      min-height:20px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      font-weight:600;
+      color:var(--clay);
+    }
+
+    .made-in {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+      font-family:'Archivo', sans-serif;
+      font-size:14px;
+      color:var(--brown);
+    }
+    .composition {
+      margin-top:8px;
+      padding-left:28px;
+      font-family:'Archivo', sans-serif;
+      font-size:14px;
+      color:var(--brown);
+    }
+    .composition strong { font-weight:600; }
+
+    .detail-grid {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:28px;
+      margin-top:54px;
+    }
+    .detail-grid.single { grid-template-columns:1fr; }
+    .buy-actions:has(#add-to-basket[hidden]) { grid-template-columns:auto; justify-content:start; }
+    .detail-panel .panel-text {
+      font-family:'Archivo', sans-serif;
+      font-size:15px;
+      color:rgba(59,42,34,0.75);
+      margin-bottom:12px;
+    }
+    .detail-panel {
+      background:rgba(255,255,255,0.18);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:24px;
+    }
+    .detail-panel h2 {
+      font-size:clamp(22px, 2.4vw, 30px);
+      margin-bottom:12px;
+    }
+    .detail-panel ul {
+      list-style:none;
+      display:grid;
+      gap:10px;
+      font-family:'Archivo', sans-serif;
+      font-size:15px;
+      color:rgba(59,42,34,0.75);
+    }
+    .detail-panel ul li {
+      display:grid;
+      grid-template-columns:16px 1fr;
+    }
+    .detail-panel ul li::before {
+      content:'•';
+      color:var(--olive);
+    }
+    .detail-panel .tip {
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      font-family:'Archivo', sans-serif;
+      font-size:15px;
+      color:rgba(59,42,34,0.75);
+    }
+    .detail-panel .tip strong {
+      display:block;
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--olive);
+      margin-bottom:6px;
+    }
+
+    .footer-note {
+      margin-top:46px;
+      font-family:'Archivo', sans-serif;
+      font-size:13px;
+      color:var(--brown);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+    }
+
+    @media (max-width: 900px) {
+      .product-layout { grid-template-columns:1fr; }
+      .gallery { position:relative; top:0; }
+      .nav { display:none; }
+      .detail-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width: 560px) {
+      .page { padding:32px 16px 64px; }
+      header { padding:12px 16px; }
+      .buy-actions { grid-template-columns:1fr; }
+      .footer-note { flex-direction:column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration:0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="OlympiaMuse.html" class="brand" aria-label="Olympia Muse">
+      <img src="images/logo.jpg" alt="" />
+      <span class="wordmark">Olympia Muse</span>
+    </a>
+    <div class="header-right">
+      <nav class="nav" data-i18n-attr="aria-label:mainNav">
+        <a href="OlympiaMuse.html#shop" data-i18n="navShop"></a>
+        <a href="OlympiaMuse.html#story" data-i18n="navStory"></a>
+        <a href="OlympiaMuse.html#size-guide" data-i18n="navSize"></a>
+        <a href="OlympiaMuse.html#contact" data-i18n="navContact"></a>
+      </nav>
+      <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+        <button type="button" data-set-lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <nav class="crumbs" data-i18n-attr="aria-label:breadcrumb">
+      <a href="OlympiaMuse.html" data-i18n="crumbHome"></a>
+      <span class="dot">/</span>
+      <a href="OlympiaMuse.html#shop" data-i18n="navShop"></a>
+      <span class="dot">/</span>
+      <span id="crumb-name"></span>
+    </nav>
+
+    <div class="product-layout">
+      <section class="gallery" data-i18n-attr="aria-label:gallery">
+        <div class="hero-shot" id="hero-shot">
+          <span class="hero-label" id="hero-label"></span>
+        </div>
+        <div class="thumbs" id="thumbs"></div>
+      </section>
+
+      <section class="product-info">
+        <div class="eyebrow" id="product-eyebrow"></div>
+        <h1 id="product-name"></h1>
+
+        <div class="price-row" id="price-row">
+          <span class="price" id="product-price"></span>
+        </div>
+
+        <p class="description" id="product-intro"></p>
+
+        <div id="color-block">
+          <div class="section-label"><span data-i18n="colorLabel"></span><span class="chosen" id="chosen-color"></span></div>
+          <div class="color-row" id="color-row"></div>
+        </div>
+
+        <div id="size-block">
+          <div class="section-label" data-i18n="sizeLabel"></div>
+          <div class="size-row" id="size-row"></div>
+        </div>
+
+        <div class="buy-actions" id="buy-actions">
+          <button class="primary-btn" type="button" id="add-to-basket" data-i18n="addToBasket"></button>
+          <a class="ghost-btn" href="OlympiaMuse.html#shop" data-i18n="keepShopping"></a>
+        </div>
+        <div id="status" class="status" aria-live="polite"></div>
+
+        <div class="made-in">🤎 <span data-i18n="madeIn"></span></div>
+        <div class="composition" id="composition"><strong data-i18n="compositionLabel"></strong> <span id="composition-value"></span></div>
+      </section>
+    </div>
+
+    <div class="detail-grid" id="panels"></div>
+
+    <div class="footer-note">
+      <span data-i18n="footerLeft"></span>
+      <span>Olympia Muse</span>
+    </div>
+  </main>
+
+  <script src="products.js"></script>
+  <script>
+    // ---- Page texts in Greek (el) and English (en) — see i18n.js. Product texts are in products.js ----
+    window.I18N = {
+      el: {
+        langLabel: 'Γλώσσα',
+        mainNav: 'Κύριο μενού',
+        breadcrumb: 'Διαδρομή',
+        gallery: 'Φωτογραφίες',
+        navShop: 'Κατάστημα',
+        navStory: 'Η ιστορία μας',
+        navSize: 'Οδηγός μεγεθών',
+        navContact: 'Επικοινωνία',
+        crumbHome: 'Αρχική',
+        colorLabel: 'Διαθέσιμα χρώματα',
+        sizeLabel: 'Διαθέσιμα νούμερα',
+        addToBasket: 'Προσθήκη στο καλάθι',
+        keepShopping: 'Συνέχεια αγορών',
+        added: '{name} σε {details}: προστέθηκε στο καλάθι.',
+        addedPlain: '{name}: προστέθηκε στο καλάθι.',
+        madeIn: 'Κατασκευασμένο στην Ελλάδα.',
+        compositionLabel: 'Σύνθεση:',
+        footerLeft: 'Κατασκευασμένο στην Ελλάδα'
+      },
+      en: {
+        langLabel: 'Language',
+        mainNav: 'Main navigation',
+        breadcrumb: 'Breadcrumb',
+        gallery: 'Photos',
+        navShop: 'Shop',
+        navStory: 'Our Story',
+        navSize: 'Size Guide',
+        navContact: 'Contact',
+        crumbHome: 'Home',
+        colorLabel: 'Available colours',
+        sizeLabel: 'Available sizes',
+        addToBasket: 'Add to basket',
+        keepShopping: 'Keep shopping',
+        added: '{name} in {details} was added to your basket.',
+        addedPlain: '{name} was added to your basket.',
+        madeIn: 'Made in Greece.',
+        compositionLabel: 'Composition:',
+        footerLeft: 'Made in Greece'
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const productId = PRODUCTS[params.get('p')] ? params.get('p') : 'leggings';
+    const product = PRODUCTS[productId];
+
+    let selectedColor = 0;
+    let selectedImage = 0;
+    let selectedSize = product.sizes.includes('M') ? 'M' : product.sizes[0];
+
+    const t = OM.t;
+    const pick = OM.pick;
+    const $ = id => document.getElementById(id);
+    // Neutral placeholder for products whose colours aren't set yet
+    const currentColor = () => product.colors[selectedColor] || { name: '', c1: '#A68F7B', c2: '#5C4334', images: [] };
+
+    function renderText() {
+      const name = pick(product.name);
+      document.title = `Olympia Muse | ${name}`;
+      $('product-name').textContent = name;
+      $('crumb-name').textContent = name;
+      $('product-eyebrow').textContent = pick(product.eyebrow);
+      $('product-intro').textContent = pick(product.intro);
+      $('composition').hidden = !product.composition;
+      $('composition-value').textContent = product.composition ? pick(product.composition) : '';
+
+      $('panels').classList.toggle('single', product.panels.length === 1);
+      $('panels').innerHTML = product.panels.map(panel => `
+        <article class="detail-panel">
+          <h2>${pick(panel.title)}</h2>
+          ${panel.text ? `<p class="panel-text">${pick(panel.text)}</p>` : ''}
+          ${panel.items ? `<ul>${pick(panel.items).map(item => `<li>${item}</li>`).join('')}</ul>` : ''}
+          ${panel.tip ? `<p class="tip"><strong>Extra tip</strong><span>${pick(panel.tip)}</span></p>` : ''}
+        </article>
+      `).join('');
+    }
+
+    function renderPrice() {
+      const hasPrice = product.price != null;
+      $('price-row').hidden = !hasPrice;
+      $('add-to-basket').hidden = !hasPrice; // no selling until the price is set
+      if (hasPrice) {
+        $('product-price').textContent = new Intl.NumberFormat(OM.lang === 'el' ? 'el-GR' : 'en-IE', { style: 'currency', currency: 'EUR' }).format(product.price);
+      }
+    }
+
+    function selectColor(i) {
+      selectedColor = i;
+      selectedImage = 0;
+      renderColors();
+      renderGallery();
+    }
+
+    function renderColors() {
+      $('color-block').hidden = product.colors.length === 0;
+      if (!product.colors.length) return;
+      const colorRow = $('color-row');
+      colorRow.innerHTML = product.colors.map((c, i) => `
+        <button type="button" class="swatch ${i === selectedColor ? 'active' : ''}"
+          style="--c1:${c.c1}; --c2:${c.c2};" data-index="${i}"
+          aria-label="${c.name}" aria-pressed="${i === selectedColor}" title="${c.name}"></button>
+      `).join('');
+      colorRow.querySelectorAll('.swatch').forEach(btn => {
+        btn.addEventListener('click', () => selectColor(Number(btn.dataset.index)));
+      });
+      $('chosen-color').textContent = `— ${currentColor().name}`;
+    }
+
+    function renderSizes() {
+      $('size-block').hidden = product.sizes.length === 0;
+      const sizeRow = $('size-row');
+      sizeRow.innerHTML = product.sizes.map(size => `
+        <button type="button" class="size-btn ${size === selectedSize ? 'selected' : ''}"
+          data-size="${size}" aria-pressed="${size === selectedSize}">${size}</button>
+      `).join('');
+      sizeRow.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedSize = btn.dataset.size;
+          renderSizes();
+        });
+      });
+    }
+
+    function renderGallery() {
+      const color = currentColor();
+      const name = pick(product.name);
+      const hero = $('hero-shot');
+      const thumbs = $('thumbs');
+      hero.style.setProperty('--tone-1', color.c1);
+      hero.style.setProperty('--tone-2', color.c2);
+      hero.querySelector('img')?.remove();
+
+      if (color.images.length) {
+        hero.classList.remove('placeholder');
+        const img = document.createElement('img');
+        img.src = color.images[selectedImage];
+        img.alt = `${name} ${color.name}`;
+        hero.prepend(img);
+        $('hero-label').textContent = '';
+
+        // Photos of the selected colour
+        thumbs.innerHTML = color.images.map((src, i) => `
+          <button type="button" class="thumb ${i === selectedImage ? 'active' : ''}" data-index="${i}"
+            style="--tone-1:${color.c1}; --tone-2:${color.c2};" aria-label="${color.name} ${i + 1}">
+            <img src="${src}" alt="" />
+          </button>
+        `).join('');
+        thumbs.querySelectorAll('.thumb').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectedImage = Number(btn.dataset.index);
+            renderGallery();
+          });
+        });
+      } else {
+        hero.classList.add('placeholder');
+        $('hero-label').textContent = color.name ? `${name} • ${color.name}` : name;
+
+        // No photos yet: one tile per colour
+        thumbs.innerHTML = product.colors.map((c, i) => `
+          <button type="button" class="thumb ${i === selectedColor ? 'active' : ''}" data-index="${i}"
+            style="--tone-1:${c.c1}; --tone-2:${c.c2};" aria-label="${c.name}"></button>
+        `).join('');
+        thumbs.querySelectorAll('.thumb').forEach(btn => {
+          btn.addEventListener('click', () => selectColor(Number(btn.dataset.index)));
+        });
+      }
+      thumbs.hidden = thumbs.children.length === 0;
+    }
+
+    $('add-to-basket').addEventListener('click', () => {
+      const color = currentColor();
+      const size = selectedSize || '';
+      let basket = [];
+      try { basket = JSON.parse(localStorage.getItem('olympian-muse-basket') || '[]'); } catch (e) {}
+      const existing = basket.find(item => item.id === productId && item.size === size && item.color === color.name);
+
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        basket.push({
+          id: productId,
+          name: product.name.el,
+          names: product.name,
+          size,
+          color: color.name,
+          price: product.price,
+          qty: 1,
+          t1: color.c1,
+          t2: color.c2
+        });
+      }
+
+      try { localStorage.setItem('olympian-muse-basket', JSON.stringify(basket)); } catch (e) {}
+      const details = [color.name, size].filter(Boolean).join(' / ');
+      $('status').textContent = (details ? t('added') : t('addedPlain'))
+        .replace('{name}', pick(product.name))
+        .replace('{details}', details);
+    });
+
+    document.addEventListener('langchange', () => {
+      renderText();
+      renderPrice();
+      renderGallery();
+      $('status').textContent = '';
+    });
+
+    renderText();
+    renderPrice();
+    renderColors();
+    renderSizes();
+    renderGallery();
+  </script>
+</body>
+</html>
