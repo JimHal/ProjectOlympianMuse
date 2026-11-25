@@ -3,6 +3,8 @@
 
    For each product:
      name, eyebrow, intro    -> { el: 'Greek', en: 'English' }
+     short                   -> { el, en } one-line description on the shop card of the home page
+     tag                     -> 'best' | 'new' | 'restocked' label on the shop card (optional)
      composition             -> { el, en } fabric composition, shown under "Made in Greece" (optional)
      price                   -> number, or null while unknown (the price and "Add to basket" stay hidden)
      sizes                   -> e.g. ['S', 'M', 'L'], or [] if not set yet (the size picker is hidden)
@@ -11,10 +13,16 @@
                                 Leave `colors` as [] if not set yet.
      panels                  -> the info boxes under the product (one or two). Each has a title and
                                 optionally: items (bullet list), text (paragraph), tip (the "Extra tip").
+
+   Once the Supabase database is connected, products are edited on admin.html instead.
+   This file is then only the starting list ("Import products from products.js" in the admin page)
+   and the fallback while the database is empty.
    ============================================================ */
 
 window.PRODUCTS = {
   leggings: {
+    tag: 'best',
+    short: { el: 'Ψηλόμεσο αθλητικό κολάν που ακολουθεί φυσικά τις καμπύλες σου.', en: 'High-rise sports leggings that naturally follow your curves.' },
     name: { el: 'Κολάν', en: 'High-Rise Leggings' },
     eyebrow: { el: 'Ψηλόμεσο αθλητικό κολάν', en: 'High-rise sports leggings' },
     intro: {
@@ -69,6 +77,7 @@ window.PRODUCTS = {
   },
 
   top: {
+    short: { el: 'Αμάνικο ελαστικό μπλουζάκι σε μοντέρνα γραμμή, που αγκαλιάζει το σώμα με άνεση.', en: 'A sleeveless stretch top with a modern line that hugs your body comfortably.' },
     name: { el: 'Top', en: 'Top' },
     eyebrow: { el: 'Αμάνικο ελαστικό μπλουζάκι', en: 'Sleeveless stretch top' },
     intro: {
@@ -120,6 +129,7 @@ window.PRODUCTS = {
   },
 
   tshirt: {
+    short: { el: 'The Signature Coordinates T-Shirt, από 100% premium βαρύ βαμβάκι.', en: 'The Signature Coordinates T-Shirt, in 100% premium heavyweight cotton.' },
     name: { el: 'Μπλούζα', en: 'T-shirt' },
     eyebrow: { el: '✨ The Signature Coordinates T-Shirt', en: '✨ The Signature Coordinates T-Shirt' },
     intro: {
@@ -159,6 +169,7 @@ window.PRODUCTS = {
   },
 
   hoodie: {
+    short: { el: 'Oversized hoodie με κουκούλα και εσωτερική επένδυση.', en: 'Oversized hooded sweatshirt with an inner lining.' },
     name: { el: 'Φούτερ', en: 'Hoodie' },
     eyebrow: { el: 'Oversized hoodie με κουκούλα', en: 'Oversized hoodie' },
     intro: {
@@ -188,5 +199,38 @@ window.PRODUCTS = {
         }
       }
     ]
+  },
+
+  'hover-bra': {
+    tag: 'new',
+    short: { el: 'Μεσαία προς υψηλή στήριξη, με ανοιχτή πλάτη για μεγάλες διαδρομές στη ζέστη.', en: 'Medium-high support with a keyhole back for long runs in the heat.' },
+    name: { el: 'Αθλητικό μπουστάκι Hover', en: 'Hover Racerback Bra' },
+    eyebrow: { el: 'Αθλητικό μπουστάκι', en: 'Sports bra' },
+    intro: {
+      el: 'Μεσαία προς υψηλή στήριξη, με ανοιχτή πλάτη για μεγάλες διαδρομές στη ζέστη.',
+      en: 'Medium-high support with a keyhole back for long runs in the heat.'
+    },
+    price: 58,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [],
+    panels: []
+  },
+
+  'windward-half-zip': {
+    tag: 'restocked',
+    short: { el: 'Ζεστό fleece στο εσωτερικό, τρύπες για τον αντίχειρα και τσέπη με φερμουάρ για κλειδί και κάρτα.', en: 'Brushed-back fleece, thumbholes, one zip pocket that fits a key and a card.' },
+    name: { el: 'Μπλούζα Windward με μισό φερμουάρ', en: 'Windward Half-Zip' },
+    eyebrow: { el: 'Μπλούζα με μισό φερμουάρ', en: 'Half-zip pullover' },
+    intro: {
+      el: 'Ζεστό fleece στο εσωτερικό, τρύπες για τον αντίχειρα και τσέπη με φερμουάρ για κλειδί και κάρτα.',
+      en: 'Brushed-back fleece, thumbholes, one zip pocket that fits a key and a card.'
+    },
+    price: 118,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colors: [
+      { name: 'Rose',     c1: '#D2AE9F', c2: '#8E6A5C', images: [] },
+      { name: 'Espresso', c1: '#5C4334', c2: '#3B2A22', images: [] }
+    ],
+    panels: []
   }
 };

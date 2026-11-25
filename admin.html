@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F3EEE6" />
+  <meta name="robots" content="noindex" />
+  <title>Olympia Muse | Διαχείριση</title>
+  <link rel="icon" href="images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css" />
+  <style>
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:20px; }
+    .toolbar .field { min-width:200px; }
+    .tab-count { display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; margin-left:6px; border-radius:10px; background:var(--clay); color:var(--cream); font-size:11px; }
+    .tab-count:empty { display:none; }
+    .prod-row { display:flex; gap:14px; align-items:center; }
+    .prod-row .grow { flex:1; min-width:0; }
+    .prod-row .id { font-size:12px; color:var(--text-muted); }
+
+    .editor h2 { margin-top:28px; }
+    .editor fieldset { border:1px solid var(--line); border-radius:6px; padding:16px; display:grid; gap:14px; background:#fff; }
+    .editor legend { padding:0 6px; font-family:'Archivo', sans-serif; font-weight:700; font-size:14px; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width:640px) { .two { grid-template-columns:1fr; } }
+    .lang-tag { font-size:10px; background:var(--sand); padding:1px 6px; border-radius:3px; margin-left:4px; }
+    .color-swatches { display:flex; gap:10px; align-items:flex-end; }
+    .color-swatches input[type=color] { width:56px; height:44px; padding:2px; border:1px solid rgba(59,42,34,.25); border-radius:3px; background:#fff; cursor:pointer; }
+    .imgs { display:flex; flex-wrap:wrap; gap:10px; }
+    .img-tile { position:relative; width:92px; }
+    .img-tile img { width:92px; height:115px; object-fit:cover; border-radius:4px; border:1px solid var(--line); }
+    .img-tile .tile-actions { display:flex; justify-content:space-between; margin-top:4px; }
+    .img-tile button { border:1px solid var(--line); background:#fff; border-radius:3px; width:28px; height:28px; cursor:pointer; font-size:14px; line-height:1; }
+    .img-tile button:disabled { opacity:.3; cursor:default; }
+    .upload { display:inline-flex; align-items:center; justify-content:center; width:92px; height:115px; border:1px dashed var(--taupe); border-radius:4px; cursor:pointer; font-family:'Archivo', sans-serif; font-size:12px; text-align:center; padding:6px; color:var(--brown); }
+    .upload input { position:absolute; width:1px; height:1px; opacity:0; }
+    .upload:focus-within { outline:2px solid var(--olive); }
+    .sticky-save { position:sticky; bottom:0; background:rgba(243,238,230,.95); border-top:1px solid var(--line); padding:12px 0; margin-top:24px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; z-index:5; }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <a href="OlympiaMuse.html" class="brand" aria-label="Olympia Muse">
+      <img src="images/logo.jpg" alt="" /><span class="wordmark">Olympia Muse</span>
+    </a>
+    <div class="header-right">
+      <a href="OlympiaMuse.html" data-i18n="viewShop"></a>
+      <a href="account.html" data-i18n="myAccount"></a>
+      <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+        <button type="button" data-set-lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="gate">
+      <h1 data-i18n="title"></h1>
+      <div id="gate-msg" style="margin-top:20px"><p class="msg info" data-i18n="loading"></p></div>
+    </div>
+
+    <div id="app" hidden>
+      <h1 data-i18n="title"></h1>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="orders"><span data-i18n="tabOrders"></span><span class="tab-count" id="pending-count"></span></button>
+        <button type="button" role="tab" data-tab="products" data-i18n="tabProducts"></button>
+      </div>
+
+      <!-- ORDERS -->
+      <section data-pane="orders">
+        <div class="toolbar">
+          <div class="field">
+            <label for="status-filter" class="label" data-i18n="show"></label>
+            <select id="status-filter">
+              <option value="pending" data-i18n="f_pending"></option>
+              <option value="confirmed" data-i18n="f_confirmed"></option>
+              <option value="shipped" data-i18n="f_shipped"></option>
+              <option value="cancelled" data-i18n="f_cancelled"></option>
+              <option value="all" data-i18n="f_all"></option>
+            </select>
+          </div>
+          <button type="button" class="btn ghost sm" id="refresh-orders" style="align-self:flex-end" data-i18n="refresh"></button>
+        </div>
+        <div class="list" id="orders"></div>
+        <p class="panel muted" id="orders-empty" data-i18n="noOrders" hidden></p>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section data-pane="products" hidden>
+        <div id="product-list-view">
+          <div class="toolbar">
+            <button type="button" class="btn olive" id="new-product" data-i18n="newProduct"></button>
+            <button type="button" class="btn ghost" id="import-products" data-i18n="importProducts" hidden></button>
+          </div>
+          <p class="msg" id="products-msg" role="status" style="margin-top:14px"></p>
+          <div class="list" id="products"></div>
+        </div>
+
+        <form class="editor" id="editor" hidden novalidate>
+          <h2 id="editor-title"></h2>
+
+          <h2 data-i18n="secBasics"></h2>
+          <fieldset>
+            <div class="two">
+              <div class="field">
+                <label for="e-id" data-i18n="fId"></label>
+                <input id="e-id" name="id" required pattern="[a-z0-9][a-z0-9\-]*" maxlength="60" autocomplete="off" spellcheck="false">
+                <span class="small muted sans" data-i18n="fIdHint"></span>
+              </div>
+              <div class="field">
+                <label for="e-price" data-i18n="fPrice"></label>
+                <input id="e-price" name="price" type="number" min="0" step="0.01" inputmode="decimal">
+                <span class="small muted sans" data-i18n="fPriceHint"></span>
+              </div>
+            </div>
+            <div class="two">
+              <div class="field">
+                <label for="e-tag" data-i18n="fTag"></label>
+                <select id="e-tag" name="tag">
+                  <option value="" data-i18n="tagNone"></option>
+                  <option value="best" data-i18n="tagBest"></option>
+                  <option value="new" data-i18n="tagNew"></option>
+                  <option value="restocked" data-i18n="tagRestocked"></option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="e-sort" data-i18n="fSort"></label>
+                <input id="e-sort" name="sort" type="number" step="1">
+                <span class="small muted sans" data-i18n="fSortHint"></span>
+              </div>
+            </div>
+            <label class="check"><input type="checkbox" name="active" id="e-active"> <span data-i18n="fActive"></span></label>
+            <div class="field">
+              <label for="e-sizes" data-i18n="fSizes"></label>
+              <input id="e-sizes" name="sizes" placeholder="S, M, L" autocomplete="off">
+              <span class="small muted sans" data-i18n="fSizesHint"></span>
+            </div>
+          </fieldset>
+
+          <h2 data-i18n="secTexts"></h2>
+          <fieldset id="text-fields"></fieldset>
+
+          <h2 data-i18n="secColors"></h2>
+          <p class="muted small sans" style="margin:6px 0 10px" data-i18n="colorsHint"></p>
+          <div class="list" id="colors" style="margin-top:0"></div>
+          <div style="margin-top:12px"><button type="button" class="btn ghost sm" id="add-color" data-i18n="addColor"></button></div>
+
+          <h2 data-i18n="secPanels"></h2>
+          <p class="muted small sans" style="margin:6px 0 10px" data-i18n="panelsHint"></p>
+          <div class="list" id="panels" style="margin-top:0"></div>
+          <div style="margin-top:12px"><button type="button" class="btn ghost sm" id="add-panel" data-i18n="addPanel"></button></div>
+
+          <div class="sticky-save">
+            <button type="submit" class="btn olive" data-i18n="saveProduct"></button>
+            <button type="button" class="btn ghost" id="cancel-edit" data-i18n="cancel"></button>
+            <a class="link-btn" id="preview-link" target="_blank" rel="noopener" data-i18n="preview"></a>
+            <p class="msg" id="editor-msg" role="status" style="flex-basis:100%"></p>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="products.js"></script>
+  <script>
+    window.I18N = {
+      el: {
+        pageTitle: 'Olympia Muse | Διαχείριση',
+        langLabel: 'Γλώσσα',
+        viewShop: 'Κατάστημα',
+        myAccount: 'Λογαριασμός',
+        title: 'Διαχείριση',
+        loading: 'Φόρτωση…',
+        needLogin: 'Συνδέσου με λογαριασμό διαχειριστή.',
+        logIn: 'Σύνδεση',
+        noAccess: 'Αυτός ο λογαριασμός δεν είναι διαχειριστής. (Δες το SETUP.md για το πώς γίνεται κάποιος διαχειριστής.)',
+        tabOrders: 'Παραγγελίες',
+        tabProducts: 'Προϊόντα',
+        show: 'Εμφάνιση',
+        f_pending: 'Αναμονή πληρωμής',
+        f_confirmed: 'Πληρωμένες',
+        f_shipped: 'Σταλμένες',
+        f_cancelled: 'Ακυρωμένες',
+        f_all: 'Όλες',
+        refresh: 'Ανανέωση',
+        noOrders: 'Καμία παραγγελία εδώ.',
+        st_pending: 'Αναμονή πληρωμής',
+        st_confirmed: 'Πληρώθηκε',
+        st_shipped: 'Στάλθηκε',
+        st_cancelled: 'Ακυρώθηκε',
+        iris: 'IRIS',
+        bank: 'Τράπεζα',
+        details: 'Λεπτομέρειες',
+        customer: 'Πελάτης',
+        phone: 'Τηλέφωνο',
+        address: 'Διεύθυνση',
+        notes: 'Σημειώσεις',
+        measurements: 'Μετρήσεις',
+        noMeasurements: 'Δεν έχει αποθηκεύσει μετρήσεις.',
+        confirmPaid: '✓ Η πληρωμή ελήφθη',
+        markShipped: 'Στάλθηκε',
+        cancelOrder: 'Ακύρωση',
+        reopen: 'Επαναφορά σε αναμονή',
+        askConfirm: 'Επιβεβαιώνεις ότι εισπράχθηκαν {amount} για την παραγγελία {no};',
+        askCancel: 'Να ακυρωθεί η παραγγελία {no};',
+        paidAt: 'Επιβεβαιώθηκε',
+        newProduct: '+ Νέο προϊόν',
+        importProducts: 'Εισαγωγή προϊόντων από το products.js',
+        imported: 'Τα προϊόντα εισήχθησαν.',
+        noProducts: 'Δεν υπάρχουν προϊόντα στη βάση. Πάτησε «Εισαγωγή» για να φέρεις τα υπάρχοντα.',
+        edit: 'Επεξεργασία',
+        hide: 'Απόκρυψη',
+        unhide: 'Εμφάνιση',
+        hidden: 'Κρυφό',
+        noPrice: 'χωρίς τιμή',
+        del: 'Διαγραφή',
+        askDelete: 'Οριστική διαγραφή του «{name}» και των φωτογραφιών του; Οι παλιές παραγγελίες δεν επηρεάζονται.',
+        editTitle: 'Επεξεργασία: {name}',
+        newTitle: 'Νέο προϊόν',
+        secBasics: 'Βασικά',
+        fId: 'Κωδικός (στη διεύθυνση της σελίδας)',
+        fIdHint: 'Μόνο λατινικά πεζά, αριθμοί και παύλες, π.χ. biker-shorts. Δεν αλλάζει μετά.',
+        fPrice: 'Τιμή (€)',
+        fPriceHint: 'Άφησέ το κενό για να μην πωλείται ακόμη.',
+        fTag: 'Ετικέτα στην κάρτα',
+        tagNone: '— Καμία —',
+        tagBest: 'Τα πιο αγαπημένα',
+        tagNew: 'Νέο',
+        tagRestocked: 'Ξανά διαθέσιμο',
+        fSort: 'Σειρά εμφάνισης',
+        fSortHint: 'Μικρότερος αριθμός = πιο μπροστά.',
+        fActive: 'Εμφανίζεται στο κατάστημα',
+        fSizes: 'Μεγέθη',
+        fSizesHint: 'Χωρισμένα με κόμμα. Κενό αν δεν έχουν οριστεί.',
+        secTexts: 'Κείμενα',
+        fName: 'Όνομα',
+        fEyebrow: 'Υπότιτλος',
+        fShort: 'Σύντομη περιγραφή (κάρτα αρχικής)',
+        fIntro: 'Περιγραφή (σελίδα προϊόντος)',
+        fComposition: 'Σύνθεση υφάσματος',
+        secColors: 'Χρώματα & φωτογραφίες',
+        colorsHint: 'Κάθε χρώμα έχει τις δικές του φωτογραφίες. Η πρώτη φωτογραφία του πρώτου χρώματος εμφανίζεται στην αρχική.',
+        colorName: 'Όνομα χρώματος',
+        tones: 'Αποχρώσεις',
+        addPhotos: '+ Φωτογραφίες',
+        uploading: 'Ανέβασμα…',
+        needId: 'Συμπλήρωσε πρώτα έγκυρο κωδικό προϊόντος.',
+        moveLeft: 'Μετακίνηση αριστερά',
+        moveRight: 'Μετακίνηση δεξιά',
+        removePhoto: 'Αφαίρεση φωτογραφίας',
+        removeColor: 'Αφαίρεση χρώματος',
+        addColor: '+ Χρώμα',
+        secPanels: 'Πλαίσια πληροφοριών',
+        panelsHint: 'Τα κουτιά κάτω από το προϊόν. Στη λίστα γράψε ένα σημείο ανά γραμμή.',
+        pTitle: 'Τίτλος',
+        pText: 'Κείμενο',
+        pItems: 'Λίστα (μία γραμμή = ένα σημείο)',
+        pTip: 'Extra tip',
+        removePanel: 'Αφαίρεση πλαισίου',
+        addPanel: '+ Πλαίσιο',
+        saveProduct: 'Αποθήκευση προϊόντος',
+        cancel: 'Άκυρο',
+        preview: 'Προβολή σελίδας',
+        savedProduct: 'Αποθηκεύτηκε.',
+        badId: 'Ο κωδικός πρέπει να έχει μόνο λατινικά πεζά, αριθμούς και παύλες.',
+        idTaken: 'Υπάρχει ήδη προϊόν με αυτόν τον κωδικό.',
+        needName: 'Γράψε τουλάχιστον το ελληνικό όνομα.',
+        unsaved: 'Υπάρχουν αλλαγές που δεν αποθηκεύτηκαν. Να κλείσει χωρίς αποθήκευση;',
+        failed: 'Δεν έγινε: '
+      },
+      en: {
+        pageTitle: 'Olympia Muse | Admin',
+        langLabel: 'Language',
+        viewShop: 'Shop',
+        myAccount: 'Account',
+        title: 'Admin',
+        loading: 'Loading…',
+        needLogin: 'Log in with an admin account.',
+        logIn: 'Log in',
+        noAccess: 'This account is not an admin. (See SETUP.md for how to make someone an admin.)',
+        tabOrders: 'Orders',
+        tabProducts: 'Products',
+        show: 'Show',
+        f_pending: 'Awaiting payment',
+        f_confirmed: 'Paid',
+        f_shipped: 'Shipped',
+        f_cancelled: 'Cancelled',
+        f_all: 'All',
+        refresh: 'Refresh',
+        noOrders: 'No orders here.',
+        st_pending: 'Awaiting payment',
+        st_confirmed: 'Paid',
+        st_shipped: 'Shipped',
+        st_cancelled: 'Cancelled',
+        iris: 'IRIS',
+        bank: 'Bank',
+        details: 'Details',
+        customer: 'Customer',
+        phone: 'Phone',
+        address: 'Address',
+        notes: 'Notes',
+        measurements: 'Measurements',
+        noMeasurements: 'No measurements saved.',
+        confirmPaid: '✓ Payment received',
+        markShipped: 'Shipped',
+        cancelOrder: 'Cancel order',
+        reopen: 'Back to awaiting payment',
+        askConfirm: 'Confirm that you received {amount} for order {no}?',
+        askCancel: 'Cancel order {no}?',
+        paidAt: 'Confirmed',
+        newProduct: '+ New product',
+        importProducts: 'Import products from products.js',
+        imported: 'Products imported.',
+        noProducts: 'No products in the database. Press "Import" to bring in the existing ones.',
+        edit: 'Edit',
+        hide: 'Hide',
+        unhide: 'Show',
+        hidden: 'Hidden',
+        noPrice: 'no price',
+        del: 'Delete',
+        askDelete: 'Permanently delete "{name}" and its photos? Past orders are not affected.',
+        editTitle: 'Editing: {name}',
+        newTitle: 'New product',
+        secBasics: 'Basics',
+        fId: 'Code (used in the page address)',
+        fIdHint: 'Lowercase latin letters, numbers and dashes only, e.g. biker-shorts. Cannot change later.',
+        fPrice: 'Price (€)',
+        fPriceHint: 'Leave empty to keep it from being sold yet.',
+        fTag: 'Card label',
+        tagNone: '— None —',
+        tagBest: 'Best seller',
+        tagNew: 'New',
+        tagRestocked: 'Restocked',
+        fSort: 'Display order',
+        fSortHint: 'Lower number = shown first.',
+        fActive: 'Shown in the shop',
+        fSizes: 'Sizes',
+        fSizesHint: 'Comma separated. Empty if not set yet.',
+        secTexts: 'Texts',
+        fName: 'Name',
+        fEyebrow: 'Subtitle',
+        fShort: 'Short description (home page card)',
+        fIntro: 'Description (product page)',
+        fComposition: 'Fabric composition',
+        secColors: 'Colours & photos',
+        colorsHint: 'Each colour has its own photos. The first photo of the first colour is shown on the home page.',
+        colorName: 'Colour name',
+        tones: 'Tones',
+        addPhotos: '+ Photos',
+        uploading: 'Uploading…',
+        needId: 'Fill in a valid product code first.',
+        moveLeft: 'Move left',
+        moveRight: 'Move right',
+        removePhoto: 'Remove photo',
+        removeColor: 'Remove colour',
+        addColor: '+ Colour',
+        secPanels: 'Info panels',
+        panelsHint: 'The boxes under the product. In the list, write one point per line.',
+        pTitle: 'Title',
+        pText: 'Text',
+        pItems: 'List (one line = one point)',
+        pTip: 'Extra tip',
+        removePanel: 'Remove panel',
+        addPanel: '+ Panel',
+        saveProduct: 'Save product',
+        cancel: 'Cancel',
+        preview: 'View page',
+        savedProduct: 'Saved.',
+        badId: 'The code may only contain lowercase latin letters, numbers and dashes.',
+        idTaken: 'A product with this code already exists.',
+        needName: 'Write at least the Greek name.',
+        unsaved: 'You have unsaved changes. Close without saving?',
+        failed: 'Failed: '
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script src="js/backend.js"></script>
+  <script>
+  (async function () {
+    const { sb, esc, money } = OMDB;
+    const t = OM.t, pick = OM.pick;
+    const $ = id => document.getElementById(id);
+    const fmt = (key, vars) => Object.entries(vars).reduce((s, [k, v]) => s.split('{' + k + '}').join(v), t(key));
+    const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
+
+    /* ---------- who is this? ---------- */
+    const gate = html => { $('gate-msg').innerHTML = html; };
+    if (!OMDB.enabled) return gate(`<p class="msg error">${t('errNotConnected')}</p>`);
+    if (!(await OMDB.user())) return gate(`<p class="msg info">${t('needLogin')}</p><p style="margin-top:16px"><a class="btn" href="${esc(OMDB.loginUrl())}">${t('logIn')}</a></p>`);
+    const me = await OMDB.profile().catch(() => null);
+    if (!me || me.role !== 'admin') return gate(`<p class="msg error">${t('noAccess')}</p>`);
+    $('gate').hidden = true;
+    $('app').hidden = false;
+
+    /* ---------- tabs ---------- */
+    function tab(name) {
+      document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+      document.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== name; });
+      history.replaceState(null, '', '#' + name);
+      if (name === 'orders') loadOrders(); else loadProducts();
+    }
+    document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
+      if (b.dataset.tab !== 'products' && !closeEditor()) return;
+      tab(b.dataset.tab);
+    }));
+
+    /* =====================================================
+       ORDERS
+       ===================================================== */
+    let orders = [];
+    const date = d => new Date(d).toLocaleString(OM.lang === 'en' ? 'en-GB' : 'el-GR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const MEASURE_KEYS = { height: 'mHeight', weight: 'mWeight', usualSize: 'mUsual', bust: 'mBust', waist: 'mWaist', hips: 'mHips', inseam: 'mInseam', notes: 'mNotes' };
+    const MEASURE_LABELS = {
+      el: { mHeight: 'Ύψος (cm)', mWeight: 'Βάρος (kg)', mUsual: 'Συνήθες μέγεθος', mBust: 'Στήθος (cm)', mWaist: 'Μέση (cm)', mHips: 'Περιφέρεια (cm)', mInseam: 'Εσωτ. μήκος ποδιού (cm)', mNotes: 'Σημειώσεις' },
+      en: { mHeight: 'Height (cm)', mWeight: 'Weight (kg)', mUsual: 'Usual size', mBust: 'Bust (cm)', mWaist: 'Waist (cm)', mHips: 'Hips (cm)', mInseam: 'Inseam (cm)', mNotes: 'Notes' }
+    };
+
+    async function updatePendingCount() {
+      const { count } = await sb.from('orders').select('id', { count: 'exact', head: true }).eq('status', 'pending');
+      $('pending-count').textContent = count ? String(count) : '';
+    }
+
+    async function loadOrders() {
+      const status = $('status-filter').value;
+      let q = sb.from('orders').select('*').order('created_at', { ascending: false }).limit(200);
+      if (status !== 'all') q = q.eq('status', status);
+      const { data, error } = await q;
+      if (error) { $('orders').innerHTML = `<p class="msg error">${esc(t('failed') + error.message)}</p>`; return; }
+      orders = data;
+      renderOrders();
+      updatePendingCount();
+    }
+
+    function renderOrders() {
+      $('orders-empty').hidden = orders.length > 0;
+      $('orders').innerHTML = orders.map(o => {
+        const c = o.customer || {};
+        const m = o.measurements || {};
+        const labels = MEASURE_LABELS[OM.lang] || MEASURE_LABELS.el;
+        const measures = Object.keys(MEASURE_KEYS).filter(k => m[k] !== undefined && m[k] !== '')
+          .map(k => `<dt>${labels[MEASURE_KEYS[k]]}</dt><dd>${esc(m[k])}</dd>`).join('');
+        const actions = {
+          pending: `<button class="btn sm olive" data-act="confirmed" data-id="${o.id}">${t('confirmPaid')}</button>
+                    <button class="btn sm danger" data-act="cancelled" data-id="${o.id}">${t('cancelOrder')}</button>`,
+          confirmed: `<button class="btn sm" data-act="shipped" data-id="${o.id}">${t('markShipped')}</button>
+                      <button class="btn sm ghost" data-act="pending" data-id="${o.id}">${t('reopen')}</button>`,
+          shipped: '',
+          cancelled: `<button class="btn sm ghost" data-act="pending" data-id="${o.id}">${t('reopen')}</button>`
+        }[o.status] || '';
+        return `<article class="row-card">
+          <div class="row-head">
+            <strong>${esc(o.order_number)}</strong>
+            <span class="badge ${esc(o.status)}">${t('st_' + o.status)}</span>
+            <span class="muted">${date(o.created_at)}</span>
+            <span class="grow">${esc(c.name)}</span>
+            <span class="muted">${t(o.payment)}</span>
+            <strong>${money(o.total)}</strong>
+          </div>
+          <ul class="items">${o.items.map(i => `<li><span>${i.qty} × ${esc(pick(i.name))}${i.size || i.color ? ` <span class="muted">(${esc([i.size, i.color].filter(Boolean).join(' / '))})</span>` : ''}</span><span>${money(i.price * i.qty)}</span></li>`).join('')}</ul>
+          <details>
+            <summary>${t('details')}</summary>
+            <dl>
+              <dt>${t('customer')}</dt><dd>${esc(c.name)}</dd>
+              <dt>Email</dt><dd><a href="mailto:${esc(o.email)}?subject=${encodeURIComponent('Olympia Muse ' + o.order_number)}">${esc(o.email)}</a></dd>
+              <dt>${t('phone')}</dt><dd><a href="tel:${esc(String(c.phone || '').replace(/[^\d+]/g, ''))}">${esc(c.phone)}</a></dd>
+              <dt>${t('address')}</dt><dd>${esc(c.street)}, ${esc(c.zip)} ${esc(c.city)}, ${esc(c.country)}</dd>
+              ${c.notes ? `<dt>${t('notes')}</dt><dd>${esc(c.notes)}</dd>` : ''}
+              ${o.confirmed_at ? `<dt>${t('paidAt')}</dt><dd>${date(o.confirmed_at)}</dd>` : ''}
+            </dl>
+            <h3 style="margin-top:14px">${t('measurements')}</h3>
+            ${measures ? `<dl>${measures}</dl>` : `<p class="muted" style="margin-top:6px">${t('noMeasurements')}</p>`}
+          </details>
+          ${actions ? `<div class="btn-row" style="margin-top:14px">${actions}</div>` : ''}
+        </article>`;
+      }).join('');
+    }
+
+    $('orders').addEventListener('click', async e => {
+      const b = e.target.closest('[data-act]');
+      if (!b) return;
+      const o = orders.find(x => String(x.id) === b.dataset.id);
+      const next = b.dataset.act;
+      if (next === 'confirmed' && !confirm(fmt('askConfirm', { amount: money(o.total), no: o.order_number }))) return;
+      if (next === 'cancelled' && !confirm(fmt('askCancel', { no: o.order_number }))) return;
+      b.disabled = true;
+      const { error } = await sb.from('orders').update({ status: next }).eq('id', o.id);
+      if (error) { b.disabled = false; alert(t('failed') + error.message); return; }
+      loadOrders();
+    });
+    $('status-filter').addEventListener('change', loadOrders);
+    $('refresh-orders').addEventListener('click', loadOrders);
+
+    /* =====================================================
+       PRODUCTS
+       ===================================================== */
+    let rows = [];
+    async function loadProducts() {
+      const { data, error } = await sb.from('products').select('*').order('sort').order('id');
+      if (error) { $('products').innerHTML = `<p class="msg error">${esc(t('failed') + error.message)}</p>`; return; }
+      rows = data;
+      $('import-products').hidden = rows.length > 0 || !Object.keys(window.PRODUCTS || {}).length;
+      renderProductList();
+    }
+
+    function renderProductList() {
+      $('products').innerHTML = rows.length ? rows.map(r => {
+        const d = r.data || {};
+        const c = (d.colors || [])[0] || {};
+        const img = (c.images || [])[0];
+        return `<article class="row-card prod-row">
+          ${img ? `<img class="thumb-sq" src="${esc(img)}" alt="">` : `<span class="thumb-sq" style="--c1:${esc(c.c1 || '#A68F7B')};--c2:${esc(c.c2 || '#5C4334')}"></span>`}
+          <div class="grow">
+            <strong>${esc(pick(d.name) || r.id)}</strong> ${r.active ? '' : `<span class="badge inactive">${t('hidden')}</span>`}
+            <div class="id">${esc(r.id)} · ${r.price != null ? money(r.price) : t('noPrice')}</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn sm" data-edit="${esc(r.id)}">${t('edit')}</button>
+            <button class="btn sm ghost" data-toggle="${esc(r.id)}">${r.active ? t('hide') : t('unhide')}</button>
+            <button class="btn sm danger" data-delete="${esc(r.id)}">${t('del')}</button>
+          </div>
+        </article>`;
+      }).join('') : `<p class="panel muted">${t('noProducts')}</p>`;
+    }
+
+    $('products').addEventListener('click', async e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      if (b.dataset.edit) return openEditor(rows.find(r => r.id === b.dataset.edit));
+      if (b.dataset.toggle) {
+        const r = rows.find(x => x.id === b.dataset.toggle);
+        b.disabled = true;
+        const { error } = await sb.from('products').update({ active: !r.active, updated_at: new Date().toISOString() }).eq('id', r.id);
+        if (error) alert(t('failed') + error.message);
+        return loadProducts();
+      }
+      if (b.dataset.delete) {
+        const r = rows.find(x => x.id === b.dataset.delete);
+        if (!confirm(fmt('askDelete', { name: pick((r.data || {}).name) || r.id }))) return;
+        b.disabled = true;
+        const { error } = await sb.from('products').delete().eq('id', r.id);
+        if (error) { alert(t('failed') + error.message); return loadProducts(); }
+        // tidy up its photos in storage
+        const folder = 'products/' + r.id;
+        const { data: files } = await sb.storage.from('product-images').list(folder, { limit: 1000 });
+        if (files && files.length) await sb.storage.from('product-images').remove(files.map(f => folder + '/' + f.name));
+        loadProducts();
+      }
+    });
+
+    $('import-products').addEventListener('click', async () => {
+      const src = window.PRODUCTS || {};
+      const payload = Object.entries(src).map(([id, p], i) => {
+        const { price, ...data } = JSON.parse(JSON.stringify(p));
+        return { id, data, price: price == null ? null : Number(price), active: true, sort: (i + 1) * 10 };
+      });
+      $('import-products').disabled = true;
+      const { error } = await sb.from('products').upsert(payload);
+      $('import-products').disabled = false;
+      const m = $('products-msg');
+      m.className = 'msg ' + (error ? 'error' : 'ok');
+      m.textContent = error ? t('failed') + error.message : t('imported');
+      loadProducts();
+    });
+
+    /* ---------- product editor ---------- */
+    let ed = null;          // the product being edited
+    let isNew = false;
+    let dirty = false;
+    const form = $('editor');
+    const TEXT_FIELDS = [['name', 'fName'], ['eyebrow', 'fEyebrow'], ['short', 'fShort'], ['intro', 'fIntro', true], ['composition', 'fComposition']];
+    const L = { el: 'ΕΛ', en: 'EN' };
+    const blank = () => ({ id: '', price: null, active: true, sort: (rows.length + 1) * 10, data: { name: { el: '', en: '' }, sizes: ['S', 'M', 'L'], colors: [], panels: [] } });
+
+    function openEditor(row) {
+      isNew = !row;
+      ed = JSON.parse(JSON.stringify(row || blank()));
+      const d = ed.data;
+      d.colors = d.colors || [];
+      d.panels = d.panels || [];
+      dirty = false;
+      $('product-list-view').hidden = true;
+      form.hidden = false;
+      $('editor-title').textContent = isNew ? t('newTitle') : fmt('editTitle', { name: pick(d.name) || ed.id });
+      form.elements.id.value = ed.id;
+      form.elements.id.readOnly = !isNew;
+      form.elements.price.value = ed.price == null ? '' : ed.price;
+      form.elements.sort.value = ed.sort;
+      form.elements.active.checked = ed.active;
+      form.elements.tag.value = d.tag || '';
+      form.elements.sizes.value = (d.sizes || []).join(', ');
+      renderTextFields();
+      renderColors();
+      renderPanels();
+      updatePreviewLink();
+      $('editor-msg').textContent = ''; $('editor-msg').className = 'msg';
+      window.scrollTo({ top: 0 });
+    }
+    function closeEditor(force) {
+      if (form.hidden) return true;
+      if (dirty && !force && !confirm(t('unsaved'))) return false;
+      form.hidden = true;
+      $('product-list-view').hidden = false;
+      ed = null;
+      return true;
+    }
+    function updatePreviewLink() {
+      const id = form.elements.id.value.trim();
+      $('preview-link').hidden = isNew;
+      $('preview-link').href = 'item.html?p=' + encodeURIComponent(id);
+    }
+
+    const bi = (label, key, val, multi, extra = '') => `<div class="two">${['el', 'en'].map(l => `
+      <div class="field"><label>${label}<span class="lang-tag">${L[l]}</span></label>
+        ${multi ? `<textarea ${extra} data-k="${key}" data-l="${l}">${esc(val && val[l] || '')}</textarea>`
+                : `<input ${extra} data-k="${key}" data-l="${l}" value="${esc(val && val[l] || '')}">`}
+      </div>`).join('')}</div>`;
+
+    function renderTextFields() {
+      $('text-fields').innerHTML = TEXT_FIELDS.map(([k, label, multi]) => bi(t(label), k, ed.data[k], multi, 'data-scope="text"')).join('');
+    }
+
+    function renderColors() {
+      $('colors').innerHTML = ed.data.colors.map((c, ci) => `
+        <fieldset data-ci="${ci}">
+          <div class="two">
+            <div class="field"><label>${t('colorName')}</label><input data-scope="color" data-k="name" value="${esc(c.name)}"></div>
+            <div class="field"><span class="label">${t('tones')}</span>
+              <div class="color-swatches">
+                <input type="color" data-scope="color" data-k="c1" value="${esc(c.c1 || '#A68F7B')}" aria-label="${t('tones')} 1">
+                <input type="color" data-scope="color" data-k="c2" value="${esc(c.c2 || '#5C4334')}" aria-label="${t('tones')} 2">
+                <span class="thumb-sq" style="width:44px;height:44px;--c1:${esc(c.c1)};--c2:${esc(c.c2)}"></span>
+              </div>
+            </div>
+          </div>
+          <div class="imgs">
+            ${(c.images || []).map((src, ii, arr) => `
+              <div class="img-tile">
+                <img src="${esc(src)}" alt="">
+                <div class="tile-actions">
+                  <button type="button" data-img-move="-1" data-ii="${ii}" aria-label="${t('moveLeft')}" ${ii === 0 ? 'disabled' : ''}>←</button>
+                  <button type="button" data-img-remove data-ii="${ii}" aria-label="${t('removePhoto')}">✕</button>
+                  <button type="button" data-img-move="1" data-ii="${ii}" aria-label="${t('moveRight')}" ${ii === arr.length - 1 ? 'disabled' : ''}>→</button>
+                </div>
+              </div>`).join('')}
+            <label class="upload"><input type="file" accept="image/jpeg,image/png,image/webp" multiple data-upload><span>${t('addPhotos')}</span></label>
+          </div>
+          <div><button type="button" class="btn sm danger" data-remove-color>${t('removeColor')}</button></div>
+        </fieldset>`).join('');
+    }
+
+    function renderPanels() {
+      $('panels').innerHTML = ed.data.panels.map((p, pi) => {
+        const items = { el: ((p.items && p.items.el) || []).join('\n'), en: ((p.items && p.items.en) || []).join('\n') };
+        return `<fieldset data-pi="${pi}">
+          ${bi(t('pTitle'), 'title', p.title, false, 'data-scope="panel"')}
+          ${bi(t('pText'), 'text', p.text, true, 'data-scope="panel"')}
+          ${bi(t('pItems'), 'items', items, true, 'data-scope="panel" rows="4"')}
+          ${bi(t('pTip'), 'tip', p.tip, true, 'data-scope="panel"')}
+          <div><button type="button" class="btn sm danger" data-remove-panel>${t('removePanel')}</button></div>
+        </fieldset>`;
+      }).join('');
+    }
+
+    // Keep `ed` in step with what is typed
+    form.addEventListener('input', e => {
+      const el = e.target;
+      dirty = true;
+      const { scope, k, l } = el.dataset;
+      if (scope === 'text') {
+        ed.data[k] = Object.assign({}, ed.data[k], { [l]: el.value });
+      } else if (scope === 'color') {
+        const fs = el.closest('[data-ci]');
+        const c = ed.data.colors[Number(fs.dataset.ci)];
+        c[k] = el.value;
+        if (k !== 'name') { const sw = fs.querySelector('.thumb-sq'); sw.style.setProperty('--' + k, el.value); }
+      } else if (scope === 'panel') {
+        const p = ed.data.panels[Number(el.closest('[data-pi]').dataset.pi)];
+        if (k === 'items') {
+          p.items = Object.assign({ el: [], en: [] }, p.items, { [l]: el.value.split('\n').map(s => s.trim()).filter(Boolean) });
+        } else {
+          p[k] = Object.assign({ el: '', en: '' }, p[k], { [l]: el.value });
+        }
+      }
+    });
+
+    form.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b) return;
+      const cfs = b.closest('[data-ci]');
+      const c = cfs && ed.data.colors[Number(cfs.dataset.ci)];
+      if (b.hasAttribute('data-img-remove')) { c.images.splice(Number(b.dataset.ii), 1); dirty = true; renderColors(); }
+      else if (b.dataset.imgMove) {
+        const i = Number(b.dataset.ii), j = i + Number(b.dataset.imgMove);
+        [c.images[i], c.images[j]] = [c.images[j], c.images[i]];
+        dirty = true; renderColors();
+      }
+      else if (b.hasAttribute('data-remove-color')) { ed.data.colors.splice(Number(cfs.dataset.ci), 1); dirty = true; renderColors(); }
+      else if (b.hasAttribute('data-remove-panel')) { ed.data.panels.splice(Number(b.closest('[data-pi]').dataset.pi), 1); dirty = true; renderPanels(); }
+    });
+
+    form.addEventListener('change', async e => {
+      const input = e.target;
+      if (!input.hasAttribute('data-upload') || !input.files.length) return;
+      const id = form.elements.id.value.trim();
+      const msg = $('editor-msg');
+      if (!ID_RE.test(id)) { msg.className = 'msg error'; msg.textContent = t('needId'); input.value = ''; return; }
+      const c = ed.data.colors[Number(input.closest('[data-ci]').dataset.ci)];
+      c.images = c.images || [];
+      const label = input.nextElementSibling;
+      label.textContent = t('uploading');
+      try {
+        for (const file of input.files) c.images.push(await OMDB.uploadImage(file, id));
+        dirty = true;
+        msg.textContent = ''; msg.className = 'msg';
+      } catch (err) {
+        msg.className = 'msg error'; msg.textContent = t('failed') + err.message;
+      }
+      renderColors();
+    });
+
+    $('add-color').addEventListener('click', () => { ed.data.colors.push({ name: '', c1: '#A68F7B', c2: '#5C4334', images: [] }); dirty = true; renderColors(); });
+    $('add-panel').addEventListener('click', () => { ed.data.panels.push({ title: { el: '', en: '' }, items: { el: [], en: [] } }); dirty = true; renderPanels(); });
+    $('cancel-edit').addEventListener('click', () => closeEditor());
+    $('new-product').addEventListener('click', () => openEditor(null));
+
+    // Drop empty texts so the product page hides what is not filled in
+    function cleanBi(v) {
+      if (!v) return undefined;
+      const out = { el: (v.el || '').trim(), en: (v.en || '').trim() };
+      if (!out.el && !out.en) return undefined;
+      if (!out.en) out.en = out.el;
+      if (!out.el) out.el = out.en;
+      return out;
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const msg = $('editor-msg');
+      const say = (text, kind) => { msg.className = 'msg ' + kind; msg.textContent = text; };
+      const id = form.elements.id.value.trim();
+      if (!ID_RE.test(id)) return say(t('badId'), 'error');
+      if (!(ed.data.name && ed.data.name.el && ed.data.name.el.trim())) return say(t('needName'), 'error');
+
+      const d = ed.data;
+      const data = {};
+      TEXT_FIELDS.forEach(([k]) => { const v = cleanBi(d[k]); if (v) data[k] = v; });
+      data.eyebrow = data.eyebrow || { el: '', en: '' };
+      data.intro = data.intro || { el: '', en: '' };
+      const tag = form.elements.tag.value;
+      if (tag) data.tag = tag;
+      data.sizes = form.elements.sizes.value.split(',').map(s => s.trim()).filter(Boolean);
+      data.colors = d.colors.filter(c => c.name.trim()).map(c => ({ name: c.name.trim(), c1: c.c1, c2: c.c2, images: c.images || [] }));
+      data.panels = d.panels.map(p => {
+        const out = {};
+        const title = cleanBi(p.title); if (title) out.title = title;
+        const text = cleanBi(p.text); if (text) out.text = text;
+        const tip = cleanBi(p.tip); if (tip) out.tip = tip;
+        const items = p.items || {};
+        const el = items.el || [], en = items.en || [];
+        if (el.length || en.length) out.items = { el: el.length ? el : en, en: en.length ? en : el };
+        return out;
+      }).filter(p => p.title || p.text || p.items || p.tip)
+        .map(p => Object.assign({ title: { el: '', en: '' } }, p));
+
+      const priceStr = form.elements.price.value.trim();
+      const row = {
+        id, data,
+        price: priceStr === '' ? null : Math.round(Number(priceStr) * 100) / 100,
+        sort: Number(form.elements.sort.value) || 0,
+        active: form.elements.active.checked,
+        updated_at: new Date().toISOString()
+      };
+      const btn = form.querySelector('[type=submit]');
+      btn.disabled = true;
+      const { error } = isNew
+        ? await sb.from('products').insert(row)
+        : await sb.from('products').update(row).eq('id', id);
+      btn.disabled = false;
+      if (error) return say(error.code === '23505' ? t('idTaken') : t('failed') + error.message, 'error');
+      dirty = false;
+      isNew = false;
+      form.elements.id.readOnly = true;
+      ed = JSON.parse(JSON.stringify(row));
+      ed.data.colors = ed.data.colors || [];
+      ed.data.panels = ed.data.panels || [];
+      renderTextFields(); renderColors(); renderPanels();
+      updatePreviewLink();
+      say(t('savedProduct'), 'ok');
+      loadProducts();
+    });
+
+    window.addEventListener('beforeunload', e => { if (dirty && !form.hidden) { e.preventDefault(); e.returnValue = ''; } });
+
+    document.addEventListener('langchange', () => {
+      renderOrders();
+      renderProductList();
+      if (ed) {
+        $('editor-title').textContent = isNew ? t('newTitle') : fmt('editTitle', { name: pick(ed.data.name) || ed.id });
+        renderTextFields(); renderColors(); renderPanels();
+      }
+    });
+
+    tab(location.hash === '#products' ? 'products' : 'orders');
+  })();
+  </script>
+</body>
+</html>

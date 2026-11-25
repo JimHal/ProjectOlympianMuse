@@ -262,7 +262,7 @@
 
     .buy-actions {
       display:grid;
-      grid-template-columns:1fr auto;
+      grid-template-columns:1fr auto auto;
       gap:12px;
       align-items:center;
     }
@@ -333,7 +333,12 @@
       margin-top:54px;
     }
     .detail-grid.single { grid-template-columns:1fr; }
-    .buy-actions:has(#add-to-basket[hidden]) { grid-template-columns:auto; justify-content:start; }
+    .buy-actions:has(#add-to-basket[hidden]) { grid-template-columns:auto auto; justify-content:start; }
+    .fav-btn { gap:8px; cursor:pointer; background:transparent; color:inherit; }
+    .fav-btn svg { width:20px; height:20px; }
+    .fav-btn[aria-pressed="true"] { color:var(--clay); border-color:var(--clay); }
+    .fav-btn[aria-pressed="true"] svg path { fill:currentColor; }
+    .account-link { font-family:'Archivo', sans-serif; font-size:13px; font-weight:600; }
     .detail-panel .panel-text {
       font-family:'Archivo', sans-serif;
       font-size:15px;
@@ -426,6 +431,7 @@
         <a href="OlympiaMuse.html#size-guide" data-i18n="navSize"></a>
         <a href="OlympiaMuse.html#contact" data-i18n="navContact"></a>
       </nav>
+      <a href="account.html" class="account-link" data-account-link hidden><span data-account-label></span></a>
       <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
         <button type="button" data-set-lang="el">ΕΛ</button>
         <button type="button" data-set-lang="en">EN</button>
@@ -473,6 +479,9 @@
         <div class="buy-actions" id="buy-actions">
           <button class="primary-btn" type="button" id="add-to-basket" data-i18n="addToBasket"></button>
           <a class="ghost-btn" href="OlympiaMuse.html#shop" data-i18n="keepShopping"></a>
+          <button class="ghost-btn fav-btn" type="button" id="fav-btn" aria-pressed="false" data-i18n-attr="aria-label:favAdd; title:favAdd" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9A5 5 0 0 1 12 6a5 5 0 0 1 9.2 5C19 15.6 12 20 12 20Z"/></svg>
+          </button>
         </div>
         <div id="status" class="status" aria-live="polite"></div>
 
@@ -489,6 +498,8 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
   <script src="products.js"></script>
   <script>
     // ---- Page texts in Greek (el) and English (en) — see i18n.js. Product texts are in products.js ----
@@ -536,10 +547,15 @@
     };
   </script>
   <script src="i18n.js"></script>
+  <script src="js/backend.js"></script>
   <script>
+  (async function () {
+    // Products come from the database (or products.js until the database is set up)
+    const PRODUCTS = await OMDB.products();
     const params = new URLSearchParams(location.search);
-    const productId = PRODUCTS[params.get('p')] ? params.get('p') : 'leggings';
+    const productId = PRODUCTS[params.get('p')] ? params.get('p') : (PRODUCTS.leggings ? 'leggings' : Object.keys(PRODUCTS)[0]);
     const product = PRODUCTS[productId];
+    if (!product) { location.replace('OlympiaMuse.html#shop'); return; }
 
     let selectedColor = 0;
     let selectedImage = 0;
@@ -701,11 +717,35 @@
       $('status').textContent = '';
     });
 
+    /* ---- favourite (heart) ---- */
+    const favBtn = $('fav-btn');
+    let isFav = false;
+    function renderFav() {
+      favBtn.setAttribute('aria-pressed', String(isFav));
+      const key = isFav ? 'favRemove' : 'favAdd';
+      favBtn.dataset.i18nAttr = 'aria-label:' + key + '; title:' + key;
+      favBtn.setAttribute('aria-label', t(key));
+      favBtn.title = t(key);
+    }
+    if (OMDB.enabled) {
+      favBtn.hidden = false;
+      OMDB.favorites().then(ids => { isFav = ids.includes(productId); renderFav(); }).catch(() => {});
+      renderFav();
+      favBtn.addEventListener('click', async () => {
+        if (!(await OMDB.user())) { location.href = OMDB.loginUrl(); return; }
+        isFav = !isFav;
+        renderFav();
+        try { await OMDB.setFavorite(productId, isFav); }
+        catch (e) { isFav = !isFav; renderFav(); $('status').textContent = OMDB.errorText(e); }
+      });
+    }
+
     renderText();
     renderPrice();
     renderColors();
     renderSizes();
     renderGallery();
+  })();
   </script>
 </body>
 </html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F3EEE6" />
+  <title>Olympia Muse | Πληρωμή</title>
+  <link rel="icon" href="images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <header class="app-header">
+    <a href="OlympiaMuse.html" class="brand" aria-label="Olympia Muse">
+      <img src="images/logo.jpg" alt="" /><span class="wordmark">Olympia Muse</span>
+    </a>
+    <div class="header-right">
+      <a href="account.html#orders" data-i18n="myOrders"></a>
+      <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+        <button type="button" data-set-lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap narrow" style="max-width:560px">
+    <p class="msg info" id="loading" data-i18n="loading"></p>
+    <div id="error" hidden></div>
+
+    <div id="order" hidden>
+      <p class="label" data-i18n="orderNumber"></p>
+      <div class="order-no" id="order-no"></div>
+      <p style="margin-top:6px"><span class="badge" id="status"></span></p>
+
+      <section class="panel">
+        <h2 id="pay-title"></h2>
+        <dl class="pay-details" id="pay-details"></dl>
+        <p class="msg info" style="margin-top:18px" id="ref-note"></p>
+        <p class="muted small sans" style="margin-top:14px" data-i18n="afterPay"></p>
+      </section>
+
+      <section class="panel">
+        <h2 data-i18n="summary"></h2>
+        <ul class="items sans" id="items" style="margin-top:14px"></ul>
+      </section>
+
+      <div class="btn-row" style="margin-top:24px">
+        <a class="btn ghost" href="OlympiaMuse.html#shop" data-i18n="keepShopping"></a>
+        <a class="btn ghost" href="account.html#orders" data-i18n="myOrders"></a>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script>
+    window.I18N = {
+      el: {
+        pageTitle: 'Olympia Muse | Πληρωμή παραγγελίας',
+        langLabel: 'Γλώσσα',
+        loading: 'Φόρτωση παραγγελίας…',
+        myOrders: 'Οι παραγγελίες μου',
+        orderNumber: 'Αριθμός παραγγελίας',
+        payIris: 'Πληρωμή με IRIS',
+        payBank: 'Πληρωμή με κατάθεση σε τράπεζα',
+        irisSteps: 'Άνοιξε την εφαρμογή της τράπεζάς σου, διάλεξε IRIS και στείλε το ποσό στο παρακάτω κινητό.',
+        bankSteps: 'Κάνε μεταφορά ή κατάθεση στον παρακάτω λογαριασμό.',
+        sendTo: 'Αποστολή σε',
+        accountHolder: 'Δικαιούχος',
+        bank: 'Τράπεζα',
+        amount: 'Ποσό',
+        reference: 'Αιτιολογία',
+        copy: 'Αντιγραφή',
+        copied: 'Αντιγράφηκε',
+        referenceNote: 'Γράψε τον αριθμό παραγγελίας {no} στην αιτιολογία, ώστε να αντιστοιχίσουμε την πληρωμή με την παραγγελία σου.',
+        afterPay: 'Μόλις δούμε την πληρωμή θα επιβεβαιώσουμε την παραγγελία σου. Την κατάσταση θα τη βλέπεις στις παραγγελίες σου.',
+        summary: 'Η παραγγελία σου',
+        total: 'Σύνολο',
+        keepShopping: 'Συνέχεια αγορών',
+        notFound: 'Δεν βρέθηκε η παραγγελία. Βεβαιώσου ότι έχεις συνδεθεί με τον λογαριασμό που έκανε την παραγγελία.',
+        logIn: 'Σύνδεση',
+        st_pending: 'Αναμονή πληρωμής',
+        st_confirmed: 'Η πληρωμή επιβεβαιώθηκε',
+        st_shipped: 'Στάλθηκε',
+        st_cancelled: 'Ακυρώθηκε'
+      },
+      en: {
+        pageTitle: 'Olympia Muse | Order payment',
+        langLabel: 'Language',
+        loading: 'Loading your order…',
+        myOrders: 'My orders',
+        orderNumber: 'Order number',
+        payIris: 'Pay with IRIS',
+        payBank: 'Pay by bank deposit',
+        irisSteps: "Open your bank's app, choose IRIS and send the amount to the mobile number below.",
+        bankSteps: 'Make a transfer or deposit to the account below.',
+        sendTo: 'Send to',
+        accountHolder: 'Account holder',
+        bank: 'Bank',
+        amount: 'Amount',
+        reference: 'Reference',
+        copy: 'Copy',
+        copied: 'Copied',
+        referenceNote: 'Write your order number {no} as the payment reference, so we can match your payment to your order.',
+        afterPay: "As soon as we see your payment we'll confirm your order. You can follow its status in your orders.",
+        summary: 'Your order',
+        total: 'Total',
+        keepShopping: 'Continue shopping',
+        notFound: "We couldn't find this order. Make sure you are logged in with the account that placed it.",
+        logIn: 'Log in',
+        st_pending: 'Awaiting payment',
+        st_confirmed: 'Payment confirmed',
+        st_shipped: 'Shipped',
+        st_cancelled: 'Cancelled'
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script src="js/backend.js"></script>
+  <script>
+  (async function () {
+    const { esc, money } = OMDB;
+    const t = OM.t, pick = OM.pick;
+    const $ = id => document.getElementById(id);
+    const PAY = (window.OM_CONFIG || {}).payment || { iris: {}, bank: {} };
+    const number = new URLSearchParams(location.search).get('order') || '';
+    let order = null;
+
+    function fail(html) {
+      $('loading').hidden = true;
+      $('error').hidden = false;
+      $('error').innerHTML = html;
+    }
+
+    function render() {
+      if (!order) return;
+      const copy = v => `<button type="button" class="btn sm ghost" data-copy="${esc(v)}">${t('copy')}</button>`;
+      $('order-no').textContent = order.order_number;
+      $('status').className = 'badge ' + order.status;
+      $('status').textContent = t('st_' + order.status);
+      const rows = order.payment === 'bank'
+        ? [[t('accountHolder'), esc(PAY.bank.beneficiary)],
+           [t('bank'), esc(PAY.bank.bankName)],
+           ['IBAN', esc(PAY.bank.iban) + copy(String(PAY.bank.iban || '').replace(/\s/g, ''))]]
+        : [[t('sendTo'), esc(PAY.iris.recipient) + copy(PAY.iris.recipient)]];
+      rows.push([t('amount'), money(order.total) + copy(Number(order.total).toFixed(2).replace('.', OM.lang === 'en' ? '.' : ','))]);
+      rows.push([t('reference'), esc(order.order_number) + copy(order.order_number)]);
+      $('pay-title').textContent = t(order.payment === 'bank' ? 'payBank' : 'payIris');
+      $('pay-details').innerHTML =
+        `<dt style="grid-column:1/-1" class="muted">${t(order.payment === 'bank' ? 'bankSteps' : 'irisSteps')}</dt>` +
+        rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+      $('ref-note').textContent = t('referenceNote').replace('{no}', order.order_number);
+      $('items').innerHTML = order.items.map(i =>
+        `<li><span>${i.qty} × ${esc(pick(i.name))}${i.size || i.color ? ` <span class="muted">(${esc([i.size, i.color].filter(Boolean).join(' / '))})</span>` : ''}</span><span>${money(i.price * i.qty)}</span></li>`
+      ).join('') + `<li style="border-top:1px solid var(--line);padding-top:8px;margin-top:4px"><strong>${t('total')}</strong><strong>${money(order.total)}</strong></li>`;
+    }
+
+    document.addEventListener('click', async e => {
+      const b = e.target.closest('[data-copy]');
+      if (!b) return;
+      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = t('copied'); setTimeout(() => { b.textContent = t('copy'); }, 1800); } catch (err) {}
+    });
+    document.addEventListener('langchange', render);
+
+    if (!OMDB.enabled) return fail(`<p class="msg error">${t('errNotConnected')}</p>`);
+    if (!(await OMDB.user())) {
+      return fail(`<p class="msg error">${t('notFound')}</p><p style="margin-top:16px"><a class="btn" href="${esc(OMDB.loginUrl())}">${t('logIn')}</a></p>`);
+    }
+    const { data, error } = await OMDB.sb.from('orders').select('*').eq('order_number', number).maybeSingle();
+    if (error || !data) return fail(`<p class="msg error">${t('notFound')}</p>`);
+    order = data;
+    $('loading').hidden = true;
+    $('order').hidden = false;
+    render();
+  })();
+  </script>
+</body>
+</html>

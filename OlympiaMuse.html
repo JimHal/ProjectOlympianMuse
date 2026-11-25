@@ -461,6 +461,35 @@
   .basket-count.bump{transform:scale(1.25);}
   @media(max-width:520px){ .nav-cta, .basket-label{display:none;} }
 
+  /* ---------- ACCOUNT link in header ---------- */
+  .account-link{
+    display:inline-flex; align-items:center; gap:6px; padding:6px 4px;
+    font-family:'Archivo', sans-serif; font-size:13px; font-weight:600;
+  }
+  @media(max-width:520px){ .account-label{display:none;} }
+
+  /* ---------- SHOP: photos + favourite heart on the cards ---------- */
+  .product-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .product-media.has-img::after{display:none;}
+  .card-fav{
+    position:absolute; top:12px; right:12px; z-index:2;
+    display:grid; place-items:center; width:40px; height:40px; border-radius:50%;
+    background:rgba(243,238,230,0.92); border:0; cursor:pointer; color:var(--espresso);
+    transition:transform .2s ease, color .2s ease;
+  }
+  .card-fav:hover{transform:scale(1.08);}
+  .card-fav[aria-pressed="true"]{color:var(--clay);}
+  .card-fav[aria-pressed="true"] path{fill:currentColor;}
+  .shop-msg{padding:40px 5vw; font-family:'Archivo', sans-serif; color:var(--text-muted); background:var(--bg); grid-column:1/-1;}
+
+  /* ---------- CHECKOUT: login needed / errors ---------- */
+  .login-needed{display:grid; gap:14px; padding:8px 0;}
+  .login-needed p{font-family:'Archivo', sans-serif; font-size:14px; color:var(--text-muted);}
+  .form-error{font-family:'Archivo', sans-serif; font-size:14px; color:#7A3A22; background:#F4E2DA; padding:10px 12px; border-radius:2px;}
+  .form-error:empty{display:none;}
+  .measure-note{font-family:'Archivo', sans-serif; font-size:13px; color:var(--text-muted);}
+  .measure-note a{text-decoration:underline; text-underline-offset:2px;}
+
   /* ---------- SHOP: size picker + add to basket ---------- */
   .buy{margin-top:18px; padding-top:18px; border-top:1px solid var(--line);}
   .buy-row{display:grid; gap:10px;}
@@ -821,6 +850,10 @@
       <button type="button" data-set-lang="en">EN</button>
     </div>
     <a href="#contact" class="nav-cta" data-i18n="findUs"></a>
+    <a href="account.html" class="account-link" data-account-link hidden>
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-3.6 4-5.4 7.5-5.4s6.3 1.8 7.5 5.4"/></svg>
+      <span class="account-label" data-account-label></span>
+    </a>
     <button type="button" class="basket-btn" id="basket-btn" aria-controls="basket" aria-expanded="false">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
       <span class="basket-label" data-i18n="basket"></span>
@@ -866,55 +899,8 @@
     <h2 data-i18n="shopTitle"></h2>
     <p data-i18n="shopText"></p>
   </div>
-  <div class="grid-products">
-    <a class="product-card" href="item.html?p=leggings" data-id="leggings" data-name-el="Κολάν" data-name-en="High-Rise Leggings" data-price="98" data-tones="#6A4532,#36231A" data-sizes="S,M,L">
-      <div class="product-media" style="--tone1:#7A5642; --tone2:#3B2A22;"><span class="product-tag" data-i18n="tagBest"></span></div>
-      <div class="product-info">
-        <h3 data-i18n="leggingsName"></h3>
-        <p class="desc" data-i18n="leggingsDesc"></p>
-        <div class="price-row"><span>Chocolate Brown / Pine Green / Navy Blue</span><span class="price">€98</span></div>
-      </div>
-    </a>
-    <!-- No data-id / price yet, so these cards just open the product page (no quick "Add to basket") -->
-    <a class="product-card" href="item.html?p=top">
-      <div class="product-media" style="--tone1:#4E6B58; --tone2:#1F3328;"></div>
-      <div class="product-info">
-        <h3>Top</h3>
-        <p class="desc" data-i18n="topDesc"></p>
-        <div class="price-row"><span>Chocolate Brown / Pine Green / Navy Blue</span></div>
-      </div>
-    </a>
-    <a class="product-card" href="item.html?p=tshirt">
-      <div class="product-media" style="--tone1:#D7C7B0; --tone2:#A68F7B;"></div>
-      <div class="product-info">
-        <h3 data-i18n="tshirtName"></h3>
-        <p class="desc" data-i18n="tshirtDesc"></p>
-      </div>
-    </a>
-    <a class="product-card" href="item.html?p=hoodie">
-      <div class="product-media" style="--tone1:#4A5A7B; --tone2:#1A2438;"></div>
-      <div class="product-info">
-        <h3 data-i18n="hoodieName"></h3>
-        <p class="desc" data-i18n="hoodieDesc"></p>
-      </div>
-    </a>
-    <a class="product-card" href="product-detail.html?product=hover-bra" data-id="hover-bra" data-name-el="Αθλητικό μπουστάκι Hover" data-name-en="Hover Racerback Bra" data-price="58" data-tones="#7C8760,#474F34">
-      <div class="product-media" style="--tone1:#7C8760; --tone2:#474F34;"><span class="product-tag" data-i18n="tagNew"></span></div>
-      <div class="product-info">
-        <h3 data-i18n="braName"></h3>
-        <p class="desc" data-i18n="braDesc"></p>
-        <div class="price-row"><span data-i18n="braColors"></span><span class="price">€58</span></div>
-      </div>
-    </a>
-    <a class="product-card" href="product-detail.html?product=windward-half-zip" data-id="windward-half-zip" data-name-el="Μπλούζα Windward με μισό φερμουάρ" data-name-en="Windward Half-Zip" data-price="118" data-tones="#D2AE9F,#8E6A5C">
-      <div class="product-media" style="--tone1:#D2AE9F; --tone2:#8E6A5C;"><span class="product-tag" data-i18n="tagRestocked"></span></div>
-      <div class="product-info">
-        <h3 data-i18n="zipName"></h3>
-        <p class="desc" data-i18n="zipDesc"></p>
-        <div class="price-row"><span>Rose / Espresso</span><span class="price">€118</span></div>
-      </div>
-    </a>
-  </div>
+  <!-- Cards are built from the products (database, or products.js until it is set up) — see the shop script below -->
+  <div class="grid-products" id="product-grid" aria-live="polite"></div>
 </section>
 
 <section id="story" class="story">
@@ -1075,6 +1061,10 @@
     </div>
 
     <!-- Step 2: address + payment method -->
+    <div data-step="checkout" class="login-needed" id="login-needed" hidden>
+      <p data-i18n="loginNeeded"></p>
+      <a class="btn-primary btn-block" href="account.html?next=OlympiaMuse.html%23basket" data-i18n="loginOrRegister"></a>
+    </div>
     <form data-step="checkout" class="checkout" id="checkout-form" hidden>
       <fieldset>
         <legend data-i18n="deliveryAddress"></legend>
@@ -1109,6 +1099,8 @@
           </span>
         </label>
       </fieldset>
+      <p class="measure-note" id="measure-note" hidden></p>
+      <p class="form-error" id="order-error" role="alert"></p>
     </form>
 
     <!-- Step 3: confirmation + payment instructions -->
@@ -1123,6 +1115,9 @@
   </div>
 </aside>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="products.js"></script>
 <script>
 /* ---- Texts of this page in Greek (el) and English (en) — see i18n.js ---- */
 window.I18N = {
@@ -1269,7 +1264,15 @@ window.I18N = {
     thanks: 'Ευχαριστούμε, {name}.',
     orderNumberIs: 'Ο αριθμός της παραγγελίας σου είναι',
     referenceNote: 'Γράψε τον αριθμό παραγγελίας <strong>{no}</strong> στην αιτιολογία της πληρωμής, ώστε να αντιστοιχίσουμε την πληρωμή με την παραγγελία σου.',
-    keepShopping: 'Συνέχεια αγορών'
+    keepShopping: 'Συνέχεια αγορών',
+    loginNeeded: 'Για να ολοκληρώσεις την παραγγελία χρειάζεσαι λογαριασμό. Το καλάθι σου θα σε περιμένει.',
+    loginOrRegister: 'Σύνδεση ή δημιουργία λογαριασμού',
+    placing: 'Καταχώρηση…',
+    payPageOpened: 'Άνοιξε νέα καρτέλα με τα στοιχεία πληρωμής. Αν δεν την βλέπεις, πάτησε παρακάτω.',
+    openPayPage: 'Άνοιγμα σελίδας πληρωμής',
+    measureSaved: 'Οι αποθηκευμένες μετρήσεις σου θα σταλούν μαζί με την παραγγελία.',
+    measureMissing: 'Θέλεις τέλεια εφαρμογή; <a href="account.html#measurements">Αποθήκευσε τις μετρήσεις σου</a> πριν παραγγείλεις.',
+    shopEmpty: 'Δεν υπάρχουν προϊόντα αυτή τη στιγμή.'
   },
   en: {
     pageTitle: 'Olympia Muse — Premium Activewear, Designed and Made in Greece',
@@ -1414,11 +1417,20 @@ window.I18N = {
     thanks: 'Thank you, {name}.',
     orderNumberIs: 'Your order number is',
     referenceNote: 'Please write your order number <strong>{no}</strong> as the payment reference, so we can match your payment to your order.',
-    keepShopping: 'Continue shopping'
+    keepShopping: 'Continue shopping',
+    loginNeeded: "You need an account to place your order. Your basket will wait for you.",
+    loginOrRegister: 'Log in or create an account',
+    placing: 'Placing order…',
+    payPageOpened: "We opened the payment details in a new tab. If you don't see it, press below.",
+    openPayPage: 'Open payment page',
+    measureSaved: 'Your saved measurements will be sent with the order.',
+    measureMissing: 'Want a perfect fit? <a href="account.html#measurements">Save your measurements</a> before you order.',
+    shopEmpty: 'No products right now.'
   }
 };
 </script>
 <script src="i18n.js"></script>
+<script src="js/backend.js"></script>
 
 
 <script>
@@ -1440,6 +1452,7 @@ window.I18N = {
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     targets.forEach(el => reveal.observe(el));
+    window.OMReveal = el => reveal.observe(el); // for cards added later by the shop script
   }
 
   const links = document.querySelectorAll('#site-nav a[href^="#"]');
@@ -1454,19 +1467,8 @@ window.I18N = {
 </script>
 
 <script>
-/* ============================================================
-   SHOP SETTINGS — fill in your real payment details here.
-   ============================================================ */
-const SHOP = {
-  iris: {
-    recipient: 'ADD YOUR IRIS PHONE NUMBER'          // the mobile number (or VAT no.) your IRIS is linked to
-  },
-  bank: {
-    beneficiary: 'ADD ACCOUNT HOLDER NAME',
-    bankName:    'ADD BANK NAME',
-    iban:        'GR00 0000 0000 0000 0000 0000 000'   // replace with your IBAN
-  }
-};
+/* Payment details (IBAN, IRIS) are set in js/config.js */
+const SHOP = (window.OM_CONFIG || {}).payment || { iris:{}, bank:{} };
 
 (function(){
   const STORAGE_KEY = 'olympian-muse-basket';
@@ -1493,35 +1495,100 @@ const SHOP = {
   const total = () => basket.reduce((s, l) => s + l.price * l.qty, 0);
   const count = () => basket.reduce((s, l) => s + l.qty, 0);
 
-  /* ---- size picker + "Add to basket" on every product card ---- */
-  document.querySelectorAll('.product-card[data-id]').forEach(card => {
+  /* ---- product cards (built from the products) ---- */
+  const grid = $('#product-grid');
+  const TAGS = { best:'tagBest', new:'tagNew', restocked:'tagRestocked' };
+  const HEART = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-9A5 5 0 0 1 12 6a5 5 0 0 1 9.2 5C19 15.6 12 20 12 20Z"/></svg>';
+  let favIds = [];
+  // Text in both languages, switched on 'langchange' without rebuilding the cards
+  const bi = (tag, cls, v) => v ? '<' + tag + (cls ? ' class="' + cls + '"' : '') + ' data-l-el="' + esc(v.el || v.en || '') + '" data-l-en="' + esc(v.en || v.el || '') + '">' + esc(OM.pick(v)) + '</' + tag + '>' : '';
+
+  async function renderShop(){
+    const all = await OMDB.products();
+    const list = Object.values(all).filter(p => p.active !== false).sort((a, b) => (a.sort || 0) - (b.sort || 0));
+    if (!list.length) { grid.innerHTML = '<p class="shop-msg" data-i18n="shopEmpty">' + t('shopEmpty') + '</p>'; return; }
+    grid.innerHTML = list.map(p => {
+      const c = p.colors[0] || { c1:'#A68F7B', c2:'#5C4334', images:[] };
+      const img = (c.images || [])[0];
+      const sellable = p.price != null;
+      return '<a class="product-card" href="item.html?p=' + encodeURIComponent(p.id) + '"' +
+          (sellable ? ' data-id="' + esc(p.id) + '" data-name-el="' + esc(p.name.el || '') + '" data-name-en="' + esc(p.name.en || p.name.el || '') + '"' +
+            ' data-price="' + p.price + '" data-tones="' + esc(c.c1 + ',' + c.c2) + '" data-sizes="' + esc(p.sizes.join(',')) + '"' : '') + '>' +
+        '<div class="product-media' + (img ? ' has-img' : '') + '" style="--tone1:' + esc(c.c1) + '; --tone2:' + esc(c.c2) + ';">' +
+          (img ? '<img src="' + esc(img) + '" alt="" loading="lazy">' : '') +
+          (TAGS[p.tag] ? '<span class="product-tag" data-i18n="' + TAGS[p.tag] + '"></span>' : '') +
+          (OMDB.enabled ? '<button type="button" class="card-fav" data-fav="' + esc(p.id) + '" aria-pressed="false" data-i18n-attr="aria-label:favAdd">' + HEART + '</button>' : '') +
+        '</div>' +
+        '<div class="product-info">' +
+          bi('h3', '', p.name) +
+          bi('p', 'desc', p.short || p.intro) +
+          (p.colors.length || sellable ? '<div class="price-row"><span>' + esc(p.colors.map(x => x.name).join(' / ')) + '</span>' +
+            (sellable ? '<span class="price">' + money(p.price) + '</span>' : '') + '</div>' : '') +
+        '</div>' +
+      '</a>';
+    }).join('');
+    grid.querySelectorAll('.product-card[data-id]').forEach(attachBuy);
+    grid.querySelectorAll('.product-card').forEach(card => { if (window.OMReveal) OMReveal(card); });
+    OM.apply();
+    renderFavs();
+  }
+
+  async function loadFavs(){
+    try { favIds = await OMDB.favorites(); } catch(e){ favIds = []; }
+    renderFavs();
+  }
+  function renderFavs(){
+    grid.querySelectorAll('[data-fav]').forEach(b => {
+      const on = favIds.includes(b.dataset.fav);
+      b.setAttribute('aria-pressed', String(on));
+      b.dataset.i18nAttr = 'aria-label:' + (on ? 'favRemove' : 'favAdd');
+      b.setAttribute('aria-label', t(on ? 'favRemove' : 'favAdd'));
+    });
+  }
+  grid.addEventListener('click', async e => {
+    const b = e.target.closest('[data-fav]');
+    if (!b) return;
+    e.preventDefault();
+    if (!(await OMDB.user())) { location.href = OMDB.loginUrl('OlympiaMuse.html#shop'); return; }
+    const id = b.dataset.fav, on = !favIds.includes(id);
+    favIds = on ? favIds.concat(id) : favIds.filter(x => x !== id);
+    renderFavs();
+    try { await OMDB.setFavorite(id, on); }
+    catch(err){ favIds = on ? favIds.filter(x => x !== id) : favIds.concat(id); renderFavs(); }
+  });
+
+  /* ---- size picker + "Add to basket" on every card that has a price ---- */
+  function attachBuy(card){
+    const sizes = card.dataset.sizes ? card.dataset.sizes.split(',') : [];
     const buy = document.createElement('div');
     buy.className = 'buy';
     buy.innerHTML =
       '<div class="buy-row">' +
-        '<div class="size-pick" role="group" data-i18n-attr="aria-label:sizeGroup">' +
-          (card.dataset.sizes ? card.dataset.sizes.split(',') : ['XS','S','M','L','XL','XXL']).map(s => '<button type="button" class="size-opt" data-size="' + s + '" aria-pressed="false">' + s + '</button>').join('') +
-        '</div>' +
+        (sizes.length ? '<div class="size-pick" role="group" data-i18n-attr="aria-label:sizeGroup">' +
+          sizes.map(s => '<button type="button" class="size-opt" data-size="' + esc(s) + '" aria-pressed="false">' + esc(s) + '</button>').join('') +
+        '</div>' : '') +
         '<button type="button" class="btn-add" data-i18n="addToBasket"></button>' +
       '</div>' +
       '<p class="buy-hint"><span class="buy-msg" aria-live="polite"></span><a href="#size-guide" data-i18n="navSize"></a></p>';
     card.querySelector('.product-info').appendChild(buy);
+    // The card is a link: clicking the buttons inside it must not open the product page
+    buy.addEventListener('click', e => { if (e.target.closest('button')) e.preventDefault(); });
 
     const msg = buy.querySelector('.buy-msg');
-    let size = null;
+    let size = sizes.length ? null : '';
     buy.querySelectorAll('.size-opt').forEach(btn => btn.addEventListener('click', () => {
       size = btn.dataset.size;
       buy.querySelectorAll('.size-opt').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
       msg.textContent = '';
     }));
     buy.querySelector('.btn-add').addEventListener('click', () => {
-      if (!size) { msg.textContent = t('chooseSize'); return; }
+      if (size === null) { msg.textContent = t('chooseSize'); return; }
       const [t1, t2] = (card.dataset.tones || '#7A5642,#3B2A22').split(',');
       const names = { el: card.dataset.nameEl, en: card.dataset.nameEn };
       add({ id: card.dataset.id, name: names.el, names, price: Number(card.dataset.price), size, t1, t2 });
       openDrawer();
     });
-  });
+  }
 
   function add(item){
     const existing = basket.find(l => l.id === item.id && l.size === item.size);
@@ -1541,7 +1608,7 @@ const SHOP = {
         '<div class="line-swatch" style="--t1:' + l.t1 + ';--t2:' + l.t2 + '"></div>' +
         '<div class="line-main">' +
           '<div class="line-name">' + esc(itemName(l)) + '</div>' +
-          '<div class="line-meta">' + t('lineSize') + ' ' + l.size + (l.color ? ' · ' + esc(l.color) : '') + ' · ' + money(l.price) + '</div>' +
+          '<div class="line-meta">' + (l.size ? t('lineSize') + ' ' + esc(l.size) + ' · ' : '') + (l.color ? esc(l.color) + ' · ' : '') + money(l.price) + '</div>' +
           '<div class="qty">' +
             '<button type="button" data-act="dec" data-i="' + i + '" aria-label="' + t('oneLess') + '">−</button>' +
             '<output aria-live="polite">' + l.qty + '</output>' +
@@ -1578,8 +1645,10 @@ const SHOP = {
     titleEl.textContent = t(TITLES[step]);
     backBtn.hidden = step !== 'checkout';
     toCheckout.hidden = step !== 'cart';
-    placeOrder.hidden = step !== 'checkout';
+    placeOrder.hidden = step !== 'checkout' || needLogin;
     footEl.hidden = step === 'done';
+    loginBox.hidden = step !== 'checkout' || !needLogin;
+    form.hidden = step !== 'checkout' || needLogin;
     drawer.querySelector('.drawer-body').scrollTop = 0;
   }
 
@@ -1601,31 +1670,76 @@ const SHOP = {
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && document.body.classList.contains('basket-open')) closeDrawer();
   });
-  toCheckout.addEventListener('click', () => { if (basket.length) showStep('checkout'); });
+  const loginBox = $('#login-needed'), errorEl = $('#order-error'), measureNote = $('#measure-note');
+  let needLogin = false;
+  async function goToCheckout(){
+    if (!basket.length) return;
+    errorEl.textContent = '';
+    needLogin = OMDB.enabled && !(await OMDB.user());
+    showStep('checkout');
+    if (needLogin) return;
+    // fill in saved details (only empty fields)
+    const prof = await OMDB.profile().catch(() => null);
+    const user = await OMDB.user();
+    if (prof || user) {
+      const a = (prof && prof.address) || {};
+      const fill = { name: prof && prof.full_name, email: user && user.email, phone: prof && prof.phone, street: a.street, city: a.city, zip: a.zip };
+      Object.entries(fill).forEach(([k, v]) => { if (v && form.elements[k] && !form.elements[k].value) form.elements[k].value = v; });
+      if (a.country) form.elements.country.value = a.country;
+      const hasMeasures = prof && prof.measurements && Object.keys(prof.measurements).length > 0;
+      measureNote.hidden = false;
+      measureNote.innerHTML = t(hasMeasures ? 'measureSaved' : 'measureMissing');
+    }
+  }
+  toCheckout.addEventListener('click', goToCheckout);
   backBtn.addEventListener('click', () => showStep('cart'));
 
   /* ---- place order ---- */
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!basket.length) { showStep('cart'); return; }
     const data = Object.fromEntries(new FormData(form));
-    const order = {
-      number: 'OM-' + Date.now().toString(36).toUpperCase().slice(-6),
-      date: new Date().toISOString(),
-      items: basket.map(l => ({ name: l.name, names: l.names, color: l.color, size: l.size, qty: l.qty, price: l.price })),
-      total: total(),
-      customer: data,
-      payment: data.payment
-    };
-    // NOTE: this page has no server yet — the order is NOT sent to the shop.
-    // Connect a backend or order-form service here to actually receive orders.
-    console.log('New order', order);
+    const items = basket.map(l => ({ name: l.name, names: l.names, color: l.color, size: l.size, qty: l.qty, price: l.price }));
 
+    if (!OMDB.enabled) {
+      // Database not set up yet (js/config.js): preview only, the order is NOT sent anywhere.
+      const order = { number: 'OM-' + Date.now().toString(36).toUpperCase().slice(-6), items, total: total(), customer: data, payment: data.payment };
+      console.warn('Shop not connected — order not sent', order);
+      finish(order);
+      return;
+    }
+
+    // Open the payment tab right away (browsers block tabs opened after waiting for the server)
+    const payWin = window.open('', '_blank');
+    if (payWin) { try { payWin.document.write('<p style="font-family:sans-serif;padding:24px">' + esc(t('placing')) + '</p>'); } catch(err){} }
+    errorEl.textContent = '';
+    placeOrder.disabled = true;
+    placeOrder.textContent = t('placing');
+    try {
+      const res = await OMDB.placeOrder(
+        basket.map(l => ({ id: l.id, size: l.size || '', color: l.color || '', qty: l.qty })),
+        data, data.payment
+      );
+      const payUrl = 'pay.html?order=' + encodeURIComponent(res.order_number);
+      if (payWin) payWin.location.href = payUrl;
+      finish({ number: res.order_number, items, total: Number(res.total), customer: data, payment: data.payment, payUrl });
+    } catch (err) {
+      if (payWin) payWin.close();
+      errorEl.textContent = OMDB.errorText(err);
+      if (/login_required|JWT/i.test(String(err && err.message))) { needLogin = true; showStep('checkout'); }
+    } finally {
+      placeOrder.disabled = false;
+      placeOrder.textContent = t('placeOrder');
+    }
+  });
+
+  function finish(order){
     renderDone(order);
     basket = []; save(); render();
     form.reset();
+    measureNote.hidden = true;
     showStep('done');
-  });
+  }
 
   function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
@@ -1650,12 +1764,14 @@ const SHOP = {
       '<div class="done-mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12.5 10 17 19 7.5"/></svg></div>' +
       '<h3>' + t('thanks').replace('{name}', esc(o.customer.name.split(' ')[0])) + '</h3>' +
       '<p class="done-sub">' + t('orderNumberIs') + '</p>' +
-      '<span class="order-no">' + o.number + '</span>' +
+      '<span class="order-no">' + esc(o.number) + '</span>' +
+      (o.payUrl ? '<p class="done-sub" style="margin-top:14px">' + t('payPageOpened') + '</p>' +
+        '<a class="btn-primary btn-block" style="margin-top:12px" href="' + esc(o.payUrl) + '" target="_blank" rel="noopener">' + t('openPayPage') + '</a>' : '') +
       '<div class="pay-box">' + pay +
         '<p class="note">' + t('referenceNote').replace('{no}', o.number) + '</p>' +
       '</div>' +
       '<ul class="done-items">' +
-        o.items.map(i => '<li><span>' + i.qty + ' × ' + esc(itemName(i)) + ' (' + i.size + ')</span><span>' + money(i.price * i.qty) + '</span></li>').join('') +
+        o.items.map(i => '<li><span>' + i.qty + ' × ' + esc(itemName(i)) + (i.size ? ' (' + esc(i.size) + ')' : '') + '</span><span>' + money(i.price * i.qty) + '</span></li>').join('') +
         '<li><span>' + t('total') + '</span><span>' + money(o.total) + '</span></li>' +
       '</ul>' +
       '<button type="button" class="btn-primary btn-block" style="margin-top:24px;" id="keep-shopping">' + t('keepShopping') + '</button>';
@@ -1673,6 +1789,8 @@ const SHOP = {
     titleEl.textContent = t(TITLES[step]);
     if (step === 'done' && lastOrder) renderDone(lastOrder);
     document.querySelectorAll('.buy-msg').forEach(m => { m.textContent = ''; });
+    grid.querySelectorAll('[data-l-el]').forEach(el => { el.textContent = el.dataset[OM.lang === 'en' ? 'lEn' : 'lEl']; });
+    if (step === 'checkout' && !measureNote.hidden) goToCheckout();
   });
 
   /* ---- mobile menu ---- */
@@ -1686,9 +1804,11 @@ const SHOP = {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
   basketBtn.addEventListener('click', () => setMenu(false));
 
-  OM.apply(); // translate the size pickers added to the cards above
   render();
   showStep('cart');
+  renderShop().then(loadFavs);
+  // Coming back from the login page with "#basket": reopen the basket
+  if (location.hash === '#basket' && basket.length) { openDrawer(); goToCheckout(); }
 })();
 </script>
 

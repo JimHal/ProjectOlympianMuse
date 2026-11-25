@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F3EEE6" />
+  <title>Olympia Muse | Λογαριασμός</title>
+  <link rel="icon" href="images/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&family=Archivo:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <header class="app-header">
+    <a href="OlympiaMuse.html" class="brand" aria-label="Olympia Muse">
+      <img src="images/logo.jpg" alt="" /><span class="wordmark">Olympia Muse</span>
+    </a>
+    <div class="header-right">
+      <a href="admin.html" id="admin-link" data-i18n="adminPanel" hidden></a>
+      <a href="OlympiaMuse.html#shop" data-i18n="backToShop"></a>
+      <div class="lang-switch" role="group" data-i18n-attr="aria-label:langLabel">
+        <button type="button" data-set-lang="el">ΕΛ</button>
+        <button type="button" data-set-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Not connected yet -->
+    <div class="wrap narrow" id="view-off" hidden>
+      <h1 data-i18n="titleAccount"></h1>
+      <p class="msg info" style="margin-top:20px" data-i18n="errNotConnected"></p>
+    </div>
+
+    <!-- Log in / register -->
+    <div class="wrap narrow" id="view-auth" hidden>
+      <h1 data-i18n="titleWelcome"></h1>
+      <p class="lead" data-i18n="welcomeText"></p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-auth-tab="login" data-i18n="tabLogin"></button>
+        <button type="button" role="tab" data-auth-tab="register" data-i18n="tabRegister"></button>
+      </div>
+
+      <form class="panel form" id="form-login" data-auth-pane="login">
+        <div class="field"><label for="li-email">Email</label><input id="li-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="li-pass" data-i18n="password"></label><input id="li-pass" name="password" type="password" autocomplete="current-password" required></div>
+        <p class="msg" id="login-msg" role="alert"></p>
+        <button class="btn block" type="submit" data-i18n="doLogin"></button>
+        <button class="link-btn" type="button" id="forgot-btn" data-i18n="forgot"></button>
+      </form>
+
+      <form class="panel form" id="form-register" data-auth-pane="register" hidden>
+        <div class="field"><label for="rg-email">Email</label><input id="rg-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="rg-pass" data-i18n="password"></label><input id="rg-pass" name="password" type="password" autocomplete="new-password" minlength="8" required><span class="small muted sans" data-i18n="passHint"></span></div>
+        <div class="field"><label for="rg-pass2" data-i18n="password2"></label><input id="rg-pass2" name="password2" type="password" autocomplete="new-password" minlength="8" required></div>
+        <p class="msg" id="register-msg" role="alert"></p>
+        <button class="btn block" type="submit" data-i18n="doRegister"></button>
+      </form>
+    </div>
+
+    <!-- New password after "forgot password" email -->
+    <div class="wrap narrow" id="view-reset" hidden>
+      <h1 data-i18n="titleReset"></h1>
+      <form class="panel form" id="form-reset">
+        <div class="field"><label for="rs-pass" data-i18n="newPassword"></label><input id="rs-pass" type="password" autocomplete="new-password" minlength="8" required></div>
+        <p class="msg" id="reset-msg" role="alert"></p>
+        <button class="btn block" type="submit" data-i18n="savePassword"></button>
+      </form>
+    </div>
+
+    <!-- Logged in -->
+    <div class="wrap" id="view-me" hidden>
+      <div class="row-head">
+        <div class="grow">
+          <h1 data-i18n="titleAccount"></h1>
+          <p class="lead" id="me-email"></p>
+        </div>
+        <button class="btn ghost sm" type="button" id="logout-btn" data-i18n="logout"></button>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" data-tab="favorites" data-i18n="tabFavorites"></button>
+        <button type="button" role="tab" data-tab="measurements" data-i18n="tabMeasurements"></button>
+        <button type="button" role="tab" data-tab="orders" data-i18n="tabOrders"></button>
+        <button type="button" role="tab" data-tab="details" data-i18n="tabDetails"></button>
+      </div>
+
+      <section data-pane="favorites">
+        <div class="fav-grid" id="fav-grid"></div>
+        <p class="panel muted" id="fav-empty" data-i18n="favEmpty" hidden></p>
+      </section>
+
+      <section data-pane="measurements" hidden>
+        <form class="panel form" id="form-measure">
+          <p class="muted" data-i18n="measureText"></p>
+          <div class="field-row">
+            <div class="field"><label for="m-height" data-i18n="mHeight"></label><input id="m-height" name="height" type="number" inputmode="decimal" min="100" max="230" step="0.5"></div>
+            <div class="field"><label for="m-weight" data-i18n="mWeight"></label><input id="m-weight" name="weight" type="number" inputmode="decimal" min="30" max="200" step="0.5"></div>
+            <div class="field"><label for="m-usual" data-i18n="mUsual"></label>
+              <select id="m-usual" name="usualSize"><option value="">—</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="m-bust" data-i18n="mBust"></label><input id="m-bust" name="bust" type="number" inputmode="decimal" min="50" max="180" step="0.5"></div>
+            <div class="field"><label for="m-waist" data-i18n="mWaist"></label><input id="m-waist" name="waist" type="number" inputmode="decimal" min="40" max="180" step="0.5"></div>
+            <div class="field"><label for="m-hips" data-i18n="mHips"></label><input id="m-hips" name="hips" type="number" inputmode="decimal" min="50" max="200" step="0.5"></div>
+            <div class="field"><label for="m-inseam" data-i18n="mInseam"></label><input id="m-inseam" name="inseam" type="number" inputmode="decimal" min="40" max="110" step="0.5"></div>
+          </div>
+          <div class="field"><label for="m-notes" data-i18n="mNotes"></label><textarea id="m-notes" name="notes" maxlength="500" data-i18n-attr="placeholder:mNotesHint"></textarea></div>
+          <p class="msg" id="measure-msg" role="status"></p>
+          <div><button class="btn" type="submit" data-i18n="save"></button></div>
+        </form>
+      </section>
+
+      <section data-pane="orders" hidden>
+        <div class="list" id="order-list"></div>
+        <p class="panel muted" id="orders-empty" data-i18n="ordersEmpty" hidden></p>
+      </section>
+
+      <section data-pane="details" hidden>
+        <form class="panel form" id="form-details">
+          <p class="muted" data-i18n="detailsText"></p>
+          <div class="field"><label for="d-name" data-i18n="fullName"></label><input id="d-name" name="full_name" autocomplete="name" maxlength="120"></div>
+          <div class="field"><label for="d-phone" data-i18n="phone"></label><input id="d-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"></div>
+          <div class="field"><label for="d-street" data-i18n="street"></label><input id="d-street" name="street" autocomplete="street-address" maxlength="160"></div>
+          <div class="field-row">
+            <div class="field"><label for="d-city" data-i18n="city"></label><input id="d-city" name="city" autocomplete="address-level2" maxlength="80"></div>
+            <div class="field"><label for="d-zip" data-i18n="zip"></label><input id="d-zip" name="zip" autocomplete="postal-code" maxlength="20"></div>
+            <div class="field"><label for="d-country" data-i18n="country"></label><input id="d-country" name="country" autocomplete="country-name" maxlength="60"></div>
+          </div>
+          <p class="msg" id="details-msg" role="status"></p>
+          <div><button class="btn" type="submit" data-i18n="save"></button></div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="products.js"></script>
+  <script>
+    window.I18N = {
+      el: {
+        pageTitle: 'Olympia Muse | Λογαριασμός',
+        langLabel: 'Γλώσσα',
+        backToShop: 'Κατάστημα',
+        adminPanel: 'Διαχείριση',
+        titleAccount: 'Ο λογαριασμός μου',
+        titleWelcome: 'Καλώς ήρθες',
+        welcomeText: 'Συνδέσου για να αποθηκεύεις αγαπημένα, τις μετρήσεις σου και να ολοκληρώνεις παραγγελίες.',
+        tabLogin: 'Σύνδεση',
+        tabRegister: 'Νέος λογαριασμός',
+        password: 'Κωδικός',
+        password2: 'Επανάληψη κωδικού',
+        passHint: 'Τουλάχιστον 8 χαρακτήρες.',
+        doLogin: 'Σύνδεση',
+        doRegister: 'Δημιουργία λογαριασμού',
+        forgot: 'Ξέχασες τον κωδικό σου;',
+        forgotNeedEmail: 'Γράψε πρώτα το email σου στο πεδίο Email.',
+        forgotSent: 'Σου στείλαμε email με σύνδεσμο για νέο κωδικό.',
+        passMismatch: 'Οι δύο κωδικοί δεν ταιριάζουν.',
+        checkEmail: 'Σχεδόν έτοιμο! Άνοιξε το email που σου στείλαμε και πάτησε τον σύνδεσμο επιβεβαίωσης.',
+        badLogin: 'Λάθος email ή κωδικός.',
+        notConfirmed: 'Επιβεβαίωσε πρώτα το email σου από τον σύνδεσμο που σου στείλαμε.',
+        userExists: 'Υπάρχει ήδη λογαριασμός με αυτό το email.',
+        weakPass: 'Ο κωδικός είναι πολύ αδύναμος. Δοκίμασε μεγαλύτερο.',
+        titleReset: 'Νέος κωδικός',
+        newPassword: 'Νέος κωδικός',
+        savePassword: 'Αποθήκευση κωδικού',
+        passSaved: 'Ο κωδικός άλλαξε.',
+        logout: 'Αποσύνδεση',
+        tabFavorites: 'Αγαπημένα',
+        tabMeasurements: 'Μετρήσεις',
+        tabOrders: 'Παραγγελίες',
+        tabDetails: 'Στοιχεία',
+        favEmpty: 'Δεν έχεις αγαπημένα ακόμη. Πάτησε την καρδιά σε ένα προϊόν για να το κρατήσεις εδώ.',
+        remove: 'Αφαίρεση',
+        measureText: 'Αποθήκευσε τις μετρήσεις σου μία φορά. Τις στέλνουμε μαζί με κάθε παραγγελία ώστε να σου ταιριάξει τέλεια το μέγεθος. Σε εκατοστά (cm) και κιλά (kg).',
+        mHeight: 'Ύψος (cm)',
+        mWeight: 'Βάρος (kg)',
+        mUsual: 'Συνήθες μέγεθος',
+        mBust: 'Στήθος (cm)',
+        mWaist: 'Μέση (cm)',
+        mHips: 'Περιφέρεια γοφών (cm)',
+        mInseam: 'Εσωτ. μήκος ποδιού (cm)',
+        mNotes: 'Σημειώσεις εφαρμογής',
+        mNotesHint: 'π.χ. προτιμώ πιο χαλαρή εφαρμογή στη μέση',
+        save: 'Αποθήκευση',
+        saved: 'Αποθηκεύτηκε.',
+        ordersEmpty: 'Δεν έχεις κάνει παραγγελία ακόμη.',
+        payNow: 'Στοιχεία πληρωμής',
+        st_pending: 'Αναμονή πληρωμής',
+        st_confirmed: 'Επιβεβαιώθηκε',
+        st_shipped: 'Στάλθηκε',
+        st_cancelled: 'Ακυρώθηκε',
+        total: 'Σύνολο',
+        detailsText: 'Συμπληρώνονται αυτόματα στο ταμείο.',
+        fullName: 'Ονοματεπώνυμο',
+        phone: 'Τηλέφωνο',
+        street: 'Οδός και αριθμός',
+        city: 'Πόλη',
+        zip: 'Ταχυδρομικός κώδικας',
+        country: 'Χώρα'
+      },
+      en: {
+        pageTitle: 'Olympia Muse | Account',
+        langLabel: 'Language',
+        backToShop: 'Shop',
+        adminPanel: 'Admin',
+        titleAccount: 'My account',
+        titleWelcome: 'Welcome',
+        welcomeText: 'Log in to save favourites and your measurements, and to place orders.',
+        tabLogin: 'Log in',
+        tabRegister: 'Create account',
+        password: 'Password',
+        password2: 'Repeat password',
+        passHint: 'At least 8 characters.',
+        doLogin: 'Log in',
+        doRegister: 'Create account',
+        forgot: 'Forgot your password?',
+        forgotNeedEmail: 'Type your email in the Email field first.',
+        forgotSent: 'We sent you an email with a link to set a new password.',
+        passMismatch: "The two passwords don't match.",
+        checkEmail: 'Almost done! Open the email we sent you and click the confirmation link.',
+        badLogin: 'Wrong email or password.',
+        notConfirmed: 'Please confirm your email first, using the link we sent you.',
+        userExists: 'An account with this email already exists.',
+        weakPass: 'That password is too weak. Try a longer one.',
+        titleReset: 'New password',
+        newPassword: 'New password',
+        savePassword: 'Save password',
+        passSaved: 'Your password was changed.',
+        logout: 'Log out',
+        tabFavorites: 'Favourites',
+        tabMeasurements: 'Measurements',
+        tabOrders: 'Orders',
+        tabDetails: 'Details',
+        favEmpty: 'No favourites yet. Tap the heart on a product to keep it here.',
+        remove: 'Remove',
+        measureText: 'Save your measurements once. We send them with every order so your size fits perfectly. In centimetres (cm) and kilograms (kg).',
+        mHeight: 'Height (cm)',
+        mWeight: 'Weight (kg)',
+        mUsual: 'Usual size',
+        mBust: 'Bust (cm)',
+        mWaist: 'Waist (cm)',
+        mHips: 'Hips (cm)',
+        mInseam: 'Inseam (cm)',
+        mNotes: 'Fit notes',
+        mNotesHint: 'e.g. I prefer a looser fit at the waist',
+        save: 'Save',
+        saved: 'Saved.',
+        ordersEmpty: "You haven't placed an order yet.",
+        payNow: 'Payment details',
+        st_pending: 'Awaiting payment',
+        st_confirmed: 'Confirmed',
+        st_shipped: 'Shipped',
+        st_cancelled: 'Cancelled',
+        total: 'Total',
+        detailsText: 'These fill in the checkout for you.',
+        fullName: 'Full name',
+        phone: 'Phone',
+        street: 'Street and number',
+        city: 'City',
+        zip: 'Postal code',
+        country: 'Country'
+      }
+    };
+  </script>
+  <script src="i18n.js"></script>
+  <script src="js/backend.js"></script>
+  <script>
+  (function () {
+    const { sb, esc, money } = OMDB;
+    const t = OM.t, pick = OM.pick;
+    const $ = id => document.getElementById(id);
+    const views = ['off', 'auth', 'reset', 'me'];
+    const show = name => views.forEach(v => { $('view-' + v).hidden = v !== name; });
+
+    // Where to go after logging in (only pages of this site)
+    const nextParam = new URLSearchParams(location.search).get('next') || '';
+    const next = /^[\w-]+\.html([?#][^\s]*)?$/.test(nextParam) ? nextParam : '';
+    const here = location.href.split(/[?#]/)[0];
+
+    if (!OMDB.enabled) { show('off'); return; }
+
+    function setMsg(el, text, kind) { el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); }
+    function authError(err) {
+      const m = String(err && err.message || '');
+      if (/invalid login/i.test(m)) return t('badLogin');
+      if (/not confirmed/i.test(m)) return t('notConfirmed');
+      if (/already registered|already exists/i.test(m)) return t('userExists');
+      if (/password/i.test(m)) return t('weakPass');
+      return OMDB.errorText(err);
+    }
+
+    /* ---------- log in / register ---------- */
+    function authTab(name) {
+      document.querySelectorAll('[data-auth-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.authTab === name)));
+      document.querySelectorAll('[data-auth-pane]').forEach(p => { p.hidden = p.dataset.authPane !== name; });
+    }
+    document.querySelectorAll('[data-auth-tab]').forEach(b => b.addEventListener('click', () => authTab(b.dataset.authTab)));
+    authTab('login');
+
+    $('form-login').addEventListener('submit', async e => {
+      e.preventDefault();
+      const f = new FormData(e.target), btn = e.target.querySelector('[type=submit]');
+      btn.disabled = true; setMsg($('login-msg'), '');
+      const { error } = await sb.auth.signInWithPassword({ email: f.get('email').trim(), password: f.get('password') });
+      btn.disabled = false;
+      if (error) return setMsg($('login-msg'), authError(error), 'error');
+      if (next) location.href = next; else enter();
+    });
+
+    $('form-register').addEventListener('submit', async e => {
+      e.preventDefault();
+      const f = new FormData(e.target), btn = e.target.querySelector('[type=submit]');
+      if (f.get('password') !== f.get('password2')) return setMsg($('register-msg'), t('passMismatch'), 'error');
+      btn.disabled = true; setMsg($('register-msg'), '');
+      const { data, error } = await sb.auth.signUp({
+        email: f.get('email').trim(),
+        password: f.get('password'),
+        options: { emailRedirectTo: here + (next ? '?next=' + encodeURIComponent(next) : '') }
+      });
+      btn.disabled = false;
+      if (error) return setMsg($('register-msg'), authError(error), 'error');
+      if (data.session) { if (next) location.href = next; else enter(); }
+      else { setMsg($('register-msg'), t('checkEmail'), 'ok'); e.target.reset(); }
+    });
+
+    $('forgot-btn').addEventListener('click', async () => {
+      const email = $('li-email').value.trim();
+      if (!email) return setMsg($('login-msg'), t('forgotNeedEmail'), 'error');
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: here + '?reset=1' });
+      setMsg($('login-msg'), error ? authError(error) : t('forgotSent'), error ? 'error' : 'ok');
+    });
+
+    $('form-reset').addEventListener('submit', async e => {
+      e.preventDefault();
+      const { error } = await sb.auth.updateUser({ password: $('rs-pass').value });
+      if (error) return setMsg($('reset-msg'), authError(error), 'error');
+      setMsg($('reset-msg'), t('passSaved'), 'ok');
+      history.replaceState(null, '', here);
+      setTimeout(enter, 900);
+    });
+
+    let recovering = new URLSearchParams(location.search).has('reset');
+    sb.auth.onAuthStateChange(event => {
+      if (event === 'PASSWORD_RECOVERY') { recovering = true; show('reset'); }
+    });
+
+    $('logout-btn').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      show('auth');
+    });
+
+    /* ---------- logged-in area ---------- */
+    let profile = null;
+    let currentTab = 'favorites';
+    function tab(name) {
+      currentTab = name;
+      document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+      document.querySelectorAll('[data-pane]').forEach(p => { p.hidden = p.dataset.pane !== name; });
+      if (name === 'favorites') renderFavorites();
+      if (name === 'orders') renderOrders();
+    }
+    document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => {
+      tab(b.dataset.tab);
+      history.replaceState(null, '', '#' + b.dataset.tab);
+    }));
+
+    async function enter() {
+      const user = await OMDB.user();
+      if (!user) { show('auth'); return; }
+      if (recovering) { show('reset'); return; }
+      profile = await OMDB.profile(true);
+      show('me');
+      $('me-email').textContent = user.email;
+      $('admin-link').hidden = !(profile && profile.role === 'admin');
+      fillForms();
+      const fromHash = location.hash.slice(1);
+      tab(['favorites', 'measurements', 'orders', 'details'].includes(fromHash) ? fromHash : 'favorites');
+    }
+
+    function fillForms() {
+      const m = (profile && profile.measurements) || {};
+      const fm = $('form-measure');
+      ['height', 'weight', 'usualSize', 'bust', 'waist', 'hips', 'inseam', 'notes'].forEach(k => { fm.elements[k].value = m[k] ?? ''; });
+      const a = (profile && profile.address) || {};
+      const fd = $('form-details');
+      fd.elements.full_name.value = (profile && profile.full_name) || '';
+      fd.elements.phone.value = (profile && profile.phone) || '';
+      ['street', 'city', 'zip', 'country'].forEach(k => { fd.elements[k].value = a[k] || ''; });
+    }
+
+    $('form-measure').addEventListener('submit', async e => {
+      e.preventDefault();
+      const measurements = {};
+      new FormData(e.target).forEach((v, k) => { v = String(v).trim(); if (v) measurements[k] = k === 'notes' || k === 'usualSize' ? v : Number(v); });
+      const { error } = await sb.from('profiles').update({ measurements }).eq('id', profile.id);
+      setMsg($('measure-msg'), error ? OMDB.errorText(error) : t('saved'), error ? 'error' : 'ok');
+    });
+
+    $('form-details').addEventListener('submit', async e => {
+      e.preventDefault();
+      const f = Object.fromEntries(new FormData(e.target));
+      const { error } = await sb.from('profiles').update({
+        full_name: f.full_name.trim(), phone: f.phone.trim(),
+        address: { street: f.street.trim(), city: f.city.trim(), zip: f.zip.trim(), country: f.country.trim() }
+      }).eq('id', profile.id);
+      setMsg($('details-msg'), error ? OMDB.errorText(error) : t('saved'), error ? 'error' : 'ok');
+    });
+
+    async function renderFavorites() {
+      const [ids, products] = await Promise.all([OMDB.favorites(), OMDB.products()]);
+      const list = ids.map(id => products[id]).filter(Boolean);
+      $('fav-empty').hidden = list.length > 0;
+      $('fav-grid').innerHTML = list.map(p => {
+        const c = p.colors[0] || {};
+        const img = (c.images || [])[0];
+        return `<article class="fav-card">
+          <a href="item.html?p=${encodeURIComponent(p.id)}" class="media" style="display:block;--c1:${esc(c.c1 || '#A68F7B')};--c2:${esc(c.c2 || '#5C4334')}">${img ? `<img src="${esc(img)}" alt="">` : ''}</a>
+          <div class="body">
+            <a href="item.html?p=${encodeURIComponent(p.id)}">${esc(pick(p.name))}</a>
+            ${p.price != null ? `<span>${money(p.price)}</span>` : ''}
+            <button type="button" class="link-btn" data-unfav="${esc(p.id)}" style="justify-self:start">${t('remove')}</button>
+          </div>
+        </article>`;
+      }).join('');
+    }
+    $('fav-grid').addEventListener('click', async e => {
+      const b = e.target.closest('[data-unfav]');
+      if (!b) return;
+      b.disabled = true;
+      try { await OMDB.setFavorite(b.dataset.unfav, false); renderFavorites(); } catch (err) { b.disabled = false; alert(OMDB.errorText(err)); }
+    });
+
+    async function renderOrders() {
+      const { data, error } = await sb.from('orders').select('*').eq('user_id', profile.id).order('created_at', { ascending: false });
+      if (error) { $('order-list').innerHTML = `<p class="msg error">${esc(OMDB.errorText(error))}</p>`; return; }
+      $('orders-empty').hidden = data.length > 0;
+      const date = d => new Date(d).toLocaleDateString(OM.lang === 'en' ? 'en-GB' : 'el-GR', { day: 'numeric', month: 'short', year: 'numeric' });
+      $('order-list').innerHTML = data.map(o => `
+        <article class="row-card">
+          <div class="row-head">
+            <strong>${esc(o.order_number)}</strong>
+            <span class="muted">${date(o.created_at)}</span>
+            <span class="badge ${esc(o.status)}">${t('st_' + o.status)}</span>
+            <span class="grow"></span>
+            <strong>${money(o.total)}</strong>
+          </div>
+          <ul class="items">${o.items.map(i => `<li><span>${i.qty} × ${esc(pick(i.name))}${i.size || i.color ? ` <span class="muted">(${esc([i.size, i.color].filter(Boolean).join(' / '))})</span>` : ''}</span><span>${money(i.price * i.qty)}</span></li>`).join('')}</ul>
+          ${o.status === 'pending' ? `<div class="btn-row" style="margin-top:12px"><a class="btn sm olive" href="pay.html?order=${encodeURIComponent(o.order_number)}" target="_blank" rel="noopener">${t('payNow')}</a></div>` : ''}
+        </article>`).join('');
+    }
+
+    document.addEventListener('langchange', () => {
+      if (!$('view-me').hidden) { if (currentTab === 'favorites') renderFavorites(); if (currentTab === 'orders') renderOrders(); }
+    });
+
+    enter();
+  })();
+  </script>
+</body>
+</html>
