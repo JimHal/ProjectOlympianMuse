@@ -34,9 +34,31 @@ Dashboard → **Authentication → URL Configuration**:
 - **Redirect URLs**: add `https://jimhal.github.io/ProjectOlympianMuse/account.html*`
   (and `http://127.0.0.1:5500/*` if you test locally with VS Code *Live Server*).
 
-Supabase's built-in email sender only allows a few emails per hour. Before going live, set
+**Required before customers can register or reset passwords:** Supabase's built-in email sender only
+delivers to the members of your Supabase organisation (not to customers) and only a few per hour. Set
 **Authentication → Emails → SMTP Settings** to Resend's SMTP (host `smtp.resend.com`, port `465`,
 user `resend`, password = your Resend API key) so sign-up and password emails always arrive.
+
+### Greek texts for the account emails
+Dashboard → **Authentication → Emails → Templates**. Replace the default English texts:
+
+**Reset Password** — Subject: `Νέος κωδικός για το Olympia Muse`
+```html
+<h2>Ορισμός νέου κωδικού</h2>
+<p>Γεια σου! Ζήτησες νέο κωδικό για τον λογαριασμό σου στο Olympia Muse.</p>
+<p><a href="{{ .ConfirmationURL }}">Πάτησε εδώ για να ορίσεις νέο κωδικό</a></p>
+<p>Ο σύνδεσμος ισχύει για 1 ώρα και μπορείς να τον ανοίξεις από υπολογιστή ή κινητό.
+Αν δεν το ζήτησες εσύ, αγνόησε αυτό το email — ο κωδικός σου δεν αλλάζει.</p>
+<hr><p style="color:#888">Hi! Click the link above to set a new password for your Olympia Muse account (valid for 1 hour).
+If you didn't ask for this, ignore this email.</p>
+```
+
+**Confirm signup** — Subject: `Επιβεβαίωσε τον λογαριασμό σου στο Olympia Muse`
+```html
+<h2>Καλώς ήρθες στο Olympia Muse!</h2>
+<p><a href="{{ .ConfirmationURL }}">Πάτησε εδώ για να επιβεβαιώσεις το email σου</a></p>
+<hr><p style="color:#888">Welcome! Click the link above to confirm your email.</p>
+```
 
 ## 5. Make yourself admin
 1. Open `account.html` on the site → **Create account** → confirm the email.

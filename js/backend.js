@@ -15,7 +15,11 @@
 (function () {
   const cfg = window.OM_CONFIG || {};
   const enabled = !!(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
-  const sb = enabled ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
+  // flowType 'implicit': links in emails (confirm account, reset password) carry their own code,
+  // so a link asked for on a computer also works when opened on a phone, and the other way round.
+  const sb = enabled ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+    auth: { flowType: 'implicit', detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+  }) : null;
 
   /* ---- texts used by this file (pages can override any of them) ---- */
   const TEXTS = {

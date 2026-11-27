@@ -42,12 +42,24 @@
         <button type="button" role="tab" data-auth-tab="register" data-i18n="tabRegister"></button>
       </div>
 
+      <p class="msg" id="auth-notice" role="alert" style="margin-top:20px"></p>
+
       <form class="panel form" id="form-login" data-auth-pane="login">
-        <div class="field"><label for="li-email">Email</label><input id="li-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="li-email">Email</label><input id="li-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required></div>
         <div class="field"><label for="li-pass" data-i18n="password"></label><input id="li-pass" name="password" type="password" autocomplete="current-password" required></div>
+        <label class="check"><input type="checkbox" data-show-pass="li-pass"> <span data-i18n="showPass"></span></label>
         <p class="msg" id="login-msg" role="alert"></p>
         <button class="btn block" type="submit" data-i18n="doLogin"></button>
         <button class="link-btn" type="button" id="forgot-btn" data-i18n="forgot"></button>
+      </form>
+
+      <!-- Forgot password: ask for the email, then a link is emailed -->
+      <form class="panel form" id="form-forgot" data-auth-pane="forgot" hidden>
+        <p class="muted" data-i18n="forgotText"></p>
+        <div class="field"><label for="fg-email">Email</label><input id="fg-email" name="email" type="email" autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" required></div>
+        <p class="msg" id="forgot-msg" role="alert"></p>
+        <button class="btn block" type="submit" data-i18n="sendLink"></button>
+        <button class="link-btn" type="button" id="back-to-login" data-i18n="backToLogin"></button>
       </form>
 
       <form class="panel form" id="form-register" data-auth-pane="register" hidden>
@@ -63,7 +75,10 @@
     <div class="wrap narrow" id="view-reset" hidden>
       <h1 data-i18n="titleReset"></h1>
       <form class="panel form" id="form-reset">
-        <div class="field"><label for="rs-pass" data-i18n="newPassword"></label><input id="rs-pass" type="password" autocomplete="new-password" minlength="8" required></div>
+        <p class="muted" id="reset-for"></p>
+        <div class="field"><label for="rs-pass" data-i18n="newPassword"></label><input id="rs-pass" type="password" autocomplete="new-password" minlength="8" required><span class="small muted sans" data-i18n="passHint"></span></div>
+        <div class="field"><label for="rs-pass2" data-i18n="password2"></label><input id="rs-pass2" type="password" autocomplete="new-password" minlength="8" required></div>
+        <label class="check"><input type="checkbox" data-show-pass="rs-pass rs-pass2"> <span data-i18n="showPass"></span></label>
         <p class="msg" id="reset-msg" role="alert"></p>
         <button class="btn block" type="submit" data-i18n="savePassword"></button>
       </form>
@@ -157,8 +172,16 @@
         doLogin: 'Σύνδεση',
         doRegister: 'Δημιουργία λογαριασμού',
         forgot: 'Ξέχασες τον κωδικό σου;',
-        forgotNeedEmail: 'Γράψε πρώτα το email σου στο πεδίο Email.',
-        forgotSent: 'Σου στείλαμε email με σύνδεσμο για νέο κωδικό.',
+        forgotText: 'Γράψε το email του λογαριασμού σου και θα σου στείλουμε σύνδεσμο για να ορίσεις νέο κωδικό. Μπορείς να τον ανοίξεις από οποιαδήποτε συσκευή, υπολογιστή ή κινητό.',
+        sendLink: 'Αποστολή συνδέσμου',
+        backToLogin: '← Πίσω στη σύνδεση',
+        forgotSent: 'Αν υπάρχει λογαριασμός με το {email}, θα λάβεις email σε λίγα λεπτά. Δες και τον φάκελο «Ανεπιθύμητα». Ο σύνδεσμος ισχύει για 1 ώρα.',
+        tooFast: 'Περίμενε λίγο πριν ζητήσεις νέο email και δοκίμασε ξανά.',
+        resendIn: 'Ξανά σε {s}″',
+        linkExpired: 'Ο σύνδεσμος έχει λήξει ή έχει ήδη χρησιμοποιηθεί. Ζήτα έναν καινούργιο παρακάτω.',
+        resetFor: 'Λογαριασμός: {email}',
+        samePass: 'Ο νέος κωδικός πρέπει να είναι διαφορετικός από τον παλιό.',
+        showPass: 'Εμφάνιση κωδικού',
         passMismatch: 'Οι δύο κωδικοί δεν ταιριάζουν.',
         checkEmail: 'Σχεδόν έτοιμο! Άνοιξε το email που σου στείλαμε και πάτησε τον σύνδεσμο επιβεβαίωσης.',
         badLogin: 'Λάθος email ή κωδικός.',
@@ -219,8 +242,16 @@
         doLogin: 'Log in',
         doRegister: 'Create account',
         forgot: 'Forgot your password?',
-        forgotNeedEmail: 'Type your email in the Email field first.',
-        forgotSent: 'We sent you an email with a link to set a new password.',
+        forgotText: "Type your account's email and we'll send you a link to set a new password. You can open it on any device, computer or phone.",
+        sendLink: 'Send link',
+        backToLogin: '← Back to log in',
+        forgotSent: "If there is an account for {email}, you'll get an email in a few minutes. Check your spam folder too. The link is valid for 1 hour.",
+        tooFast: 'Please wait a moment before asking for another email, then try again.',
+        resendIn: 'Again in {s}s',
+        linkExpired: 'This link has expired or was already used. Ask for a new one below.',
+        resetFor: 'Account: {email}',
+        samePass: 'The new password must be different from the old one.',
+        showPass: 'Show password',
         passMismatch: "The two passwords don't match.",
         checkEmail: 'Almost done! Open the email we sent you and click the confirmation link.',
         badLogin: 'Wrong email or password.',
@@ -287,6 +318,9 @@
     function setMsg(el, text, kind) { el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); }
     function authError(err) {
       const m = String(err && err.message || '');
+      if (err && err.status === 429 || /rate limit|security purposes|after \d+ seconds/i.test(m)) return t('tooFast');
+      if (/different from the old|same_password/i.test(m) || (err && err.code === 'same_password')) return t('samePass');
+      if (/session missing|session_not_found|expired/i.test(m)) return t('linkExpired');
       if (/invalid login/i.test(m)) return t('badLogin');
       if (/not confirmed/i.test(m)) return t('notConfirmed');
       if (/already registered|already exists/i.test(m)) return t('userExists');
@@ -328,25 +362,83 @@
       else { setMsg($('register-msg'), t('checkEmail'), 'ok'); e.target.reset(); }
     });
 
-    $('forgot-btn').addEventListener('click', async () => {
-      const email = $('li-email').value.trim();
-      if (!email) return setMsg($('login-msg'), t('forgotNeedEmail'), 'error');
+    /* ---------- forgot password ---------- */
+    // "Show password" checkboxes (handy on phones)
+    document.querySelectorAll('[data-show-pass]').forEach(box => box.addEventListener('change', () => {
+      box.dataset.showPass.split(' ').forEach(id => { $(id).type = box.checked ? 'text' : 'password'; });
+    }));
+
+    $('forgot-btn').addEventListener('click', () => {
+      $('fg-email').value = $('li-email').value.trim();
+      setMsg($('forgot-msg'), '');
+      authTab('forgot');
+      $('fg-email').focus();
+    });
+    $('back-to-login').addEventListener('click', () => {
+      if ($('fg-email').value) $('li-email').value = $('fg-email').value.trim();
+      authTab('login');
+    });
+
+    // After sending, keep the button off for 60s (Supabase allows one email per minute)
+    function cooldown(btn, seconds) {
+      const label = btn.dataset.i18n;
+      btn.disabled = true;
+      const tick = () => {
+        if (seconds <= 0) { btn.disabled = false; btn.dataset.i18n = label; btn.textContent = t(label); return; }
+        btn.removeAttribute('data-i18n');
+        btn.textContent = t('resendIn').replace('{s}', seconds--);
+        setTimeout(tick, 1000);
+      };
+      tick();
+    }
+
+    $('form-forgot').addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = $('fg-email').value.trim();
+      const btn = e.target.querySelector('[type=submit]');
+      btn.disabled = true; setMsg($('forgot-msg'), ''); setMsg($('auth-notice'), '');
       const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: here + '?reset=1' });
-      setMsg($('login-msg'), error ? authError(error) : t('forgotSent'), error ? 'error' : 'ok');
+      if (error) { btn.disabled = false; return setMsg($('forgot-msg'), authError(error), 'error'); }
+      setMsg($('forgot-msg'), t('forgotSent').replace('{email}', email), 'ok');
+      cooldown(btn, 60);
     });
 
     $('form-reset').addEventListener('submit', async e => {
       e.preventDefault();
-      const { error } = await sb.auth.updateUser({ password: $('rs-pass').value });
-      if (error) return setMsg($('reset-msg'), authError(error), 'error');
+      const pass = $('rs-pass').value;
+      if (pass !== $('rs-pass2').value) return setMsg($('reset-msg'), t('passMismatch'), 'error');
+      const btn = e.target.querySelector('[type=submit]');
+      btn.disabled = true; setMsg($('reset-msg'), '');
+      const { error } = await sb.auth.updateUser({ password: pass });
+      btn.disabled = false;
+      if (error) {
+        const text = authError(error);
+        if (text === t('linkExpired')) return linkProblem();
+        return setMsg($('reset-msg'), text, 'error');
+      }
+      recovering = false;
+      e.target.reset();
       setMsg($('reset-msg'), t('passSaved'), 'ok');
       history.replaceState(null, '', here);
-      setTimeout(enter, 900);
+      setTimeout(enter, 1200);
     });
 
-    let recovering = new URLSearchParams(location.search).has('reset');
+    // The emailed link brings the visitor back as  account.html?reset=1#access_token=...&type=recovery
+    // (it works on any device: the code is inside the link). An old or used link comes back with an error instead.
+    const urlInfo = new URLSearchParams(location.search + '&' + location.hash.replace(/^#/, ''));
+    let recovering = urlInfo.has('reset') || urlInfo.get('type') === 'recovery';
+    const linkError = urlInfo.get('error_code') || urlInfo.get('error');
+
+    function linkProblem() {
+      recovering = false;
+      history.replaceState(null, '', here);
+      show('auth');
+      authTab('forgot');
+      setMsg($('auth-notice'), t('linkExpired'), 'error');
+    }
+
     sb.auth.onAuthStateChange(event => {
-      if (event === 'PASSWORD_RECOVERY') { recovering = true; show('reset'); }
+      if (event === 'PASSWORD_RECOVERY') { recovering = true; setTimeout(enter, 0); }
     });
 
     $('logout-btn').addEventListener('click', async () => {
@@ -371,8 +463,18 @@
 
     async function enter() {
       const user = await OMDB.user();
-      if (!user) { show('auth'); return; }
-      if (recovering) { show('reset'); return; }
+      if (linkError && recovering) { linkProblem(); return; }
+      if (!user) {
+        // Came from a reset link but no valid session came with it: the link is no good any more
+        if (recovering) { linkProblem(); return; }
+        show('auth'); return;
+      }
+      if (recovering) {
+        show('reset');
+        $('reset-for').textContent = t('resetFor').replace('{email}', user.email);
+        $('rs-pass').focus();
+        return;
+      }
       profile = await OMDB.profile(true);
       show('me');
       $('me-email').textContent = user.email;
