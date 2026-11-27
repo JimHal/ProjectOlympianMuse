@@ -177,6 +177,7 @@
         backToLogin: '← Πίσω στη σύνδεση',
         forgotSent: 'Αν υπάρχει λογαριασμός με το {email}, θα λάβεις email σε λίγα λεπτά. Δες και τον φάκελο «Ανεπιθύμητα». Ο σύνδεσμος ισχύει για 1 ώρα.',
         tooFast: 'Περίμενε λίγο πριν ζητήσεις νέο email και δοκίμασε ξανά.',
+        emailLimit: 'Δεν μπορέσαμε να στείλουμε το email αυτή τη στιγμή, επειδή έχουν σταλεί πολλά email την τελευταία ώρα. Δοκίμασε ξανά σε λίγο.',
         resendIn: 'Ξανά σε {s}″',
         linkExpired: 'Ο σύνδεσμος έχει λήξει ή έχει ήδη χρησιμοποιηθεί. Ζήτα έναν καινούργιο παρακάτω.',
         resetFor: 'Λογαριασμός: {email}',
@@ -247,6 +248,7 @@
         backToLogin: '← Back to log in',
         forgotSent: "If there is an account for {email}, you'll get an email in a few minutes. Check your spam folder too. The link is valid for 1 hour.",
         tooFast: 'Please wait a moment before asking for another email, then try again.',
+        emailLimit: "We couldn't send the email right now because many emails were sent in the last hour. Please try again a bit later.",
         resendIn: 'Again in {s}s',
         linkExpired: 'This link has expired or was already used. Ask for a new one below.',
         resetFor: 'Account: {email}',
@@ -318,6 +320,8 @@
     function setMsg(el, text, kind) { el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); }
     function authError(err) {
       const m = String(err && err.message || '');
+      // The shop's hourly email allowance is used up (Supabase limit), vs. the same person asking twice within a minute
+      if ((err && err.code === 'over_email_send_rate_limit') || /email rate limit/i.test(m)) return t('emailLimit');
       if (err && err.status === 429 || /rate limit|security purposes|after \d+ seconds/i.test(m)) return t('tooFast');
       if (/different from the old|same_password/i.test(m) || (err && err.code === 'same_password')) return t('samePass');
       if (/session missing|session_not_found|expired/i.test(m)) return t('linkExpired');

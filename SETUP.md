@@ -71,27 +71,33 @@ If you didn't ask for this, ignore this email.</p>
 To remove an admin: `update public.profiles set role = 'client' where email = '...';`
 
 ## 6. New-order email to the admin (and so to the admin's phone)
-1. Sign up at <https://resend.com> → **API Keys** → create one.
-   (Until you verify your own domain in Resend, mail is sent from `onboarding@resend.dev` and can only go to the email you signed up to Resend with — use that as `ADMIN_EMAIL`.)
-2. Supabase Dashboard → **Edge Functions** → **Deploy a new function** → *Via Editor* → name it `notify-order`,
+1. **Resend** (<https://resend.com>) → **Domains** → add `olympiamuse.gr` (region *Ireland*).
+   Add its DNS records at Papaki (already done: `resend._domainkey` TXT, `rsend` and `send` CNAMEs).
+   Keep **Enable receiving** off — it would replace the domain's existing mail (MX).
+2. Resend → **API Keys** → create `olympiamuse-orders` (Sending access, domain `olympiamuse.gr`).
+   The key is shown only once. (A separate key, `olympiamuse-site`, is used by Supabase SMTP — don't delete it.)
+3. Supabase → **Edge Functions** → **Deploy a new function** → *Via Editor* → name `notify-order`,
    paste [`supabase/functions/notify-order/index.ts`](supabase/functions/notify-order/index.ts) → **Deploy**.
-   Then open the function → **Details / Settings** → switch **Enforce JWT verification** *off* → save.
-   (New projects use `sb_...` keys, which are not JWTs, so the webhook would be rejected otherwise.
-   This is safe: the function only re-reads the order from the database and emails each order once.)
-3. **Edge Functions → Secrets** → add:
-   - `RESEND_API_KEY` = your Resend key
+   Then the function → **Details** → switch **Verify JWT with legacy secret** *off* → **Save changes**.
+   (Safe: the function only re-reads the order from the database and emails each order once.)
+   To change the code later: the function → **Code** → paste the new version → **Deploy updates**.
+4. **Edge Functions → Secrets** → add:
+   - `RESEND_API_KEY` = the `olympiamuse-orders` key
    - `ADMIN_EMAIL` = where orders should go (several: comma separated)
-   - `FROM_EMAIL` = `Olympia Muse <onboarding@resend.dev>` (or your own domain once verified)
-   - `SITE_URL` = e.g. `https://jimhal.github.io/ProjectOlympianMuse` (adds an "open admin" link)
-4. **Database → Webhooks** → **Create a new hook**:
-   name `new-order`, table `orders`, events **Insert**, type **Supabase Edge Functions**, function `notify-order`,
-   method POST, and press **Add auth header with service key**. Save.
-5. Install the Gmail (or your mail) app on the admin's phone with notifications on — every order then
+   - `FROM_EMAIL` = `Olympia Muse <orders@olympiamuse.gr>`
+   - `SITE_URL` = `https://www.olympiamuse.gr` (adds an "open admin" link)
+5. **Integrations → Database Webhooks** → **Create a new hook**:
+   name `new_order`, table `orders`, events **Insert** only, type **Supabase Edge Functions**,
+   method POST, function `notify-order`. No auth header needed. **Create webhook**.
+6. Install the Gmail (or your mail) app on the admin's phone with notifications on — every order then
    pops up on the phone too.
+7. If an email doesn't arrive: Edge Functions → `notify-order` → **Logs**.
 
-## 7. Publish
-GitHub → the repository → **Settings → Pages** → *Deploy from a branch* → `master` / root.
-The shop is then at `https://jimhal.github.io/ProjectOlympianMuse/OlympiaMuse.html`.
+## 7. Publish (done)
+GitHub Pages from `master` / root, custom domain `www.olympiamuse.gr` (DNS at Papaki: 4 × A records to
+`185.199.108–111.153`, `www` CNAME to `jimhal.github.io`), **Enforce HTTPS** on.
+Supabase → Authentication → URL Configuration: Site URL `https://www.olympiamuse.gr`,
+Redirect URLs `https://www.olympiamuse.gr/*` and `https://olympiamuse.gr/*`.
 
 ---
 
